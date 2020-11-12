@@ -1,6 +1,5 @@
 #!/bin/python3
 import os
-import Event
 import sys
 from login import user_auth as authorisation
 
