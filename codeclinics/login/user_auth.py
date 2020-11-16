@@ -7,7 +7,6 @@ from datetime import datetime
 
 
 def user_login():
-
     try:
         os.remove(path.realpath("token.pickle"))
     except FileNotFoundError:
@@ -50,7 +49,7 @@ def status():
         f.close()       
         print(f"[CONNECTED] Google Calendar | Code Clinics\nSigned in as: {user_email}")
     else:
-        print("[OFFLINE]\nPlease run: \"wtc-calendar login\"")
+        print("[OFFLINE]\nPlease run: \"wtc-cal login\"")
 
 
 def get_time_date():

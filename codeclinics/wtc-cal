@@ -13,6 +13,7 @@ def command_summary():
     # print("\tregister\t\tused to register for ")
     print("\tstatus\t\tRun this to check the connection")
     print("\tlogin\t\tRun this to log into the calendars")
+    print("\tlogout\t\tRun this to logout of the calendar")
     print("\tslots\t\tRun this to see all slots [BOOKED], [OPEN]")
     print("\tbook\t\tRun this to book someone's slot")
     print("\tvolunteer\tRun this to open a slot for someone")
@@ -22,7 +23,9 @@ def command_summary():
 if len(sys.argv) == 2 and sys.argv[1] in commands:
     command = sys.argv[1]
     if "status" == command:
-        authorisation.status()
+        print("TF")
+
+        # authorisation.status()
     elif "login" == command:
         authorisation.user_login()
     elif "logout" == command:
