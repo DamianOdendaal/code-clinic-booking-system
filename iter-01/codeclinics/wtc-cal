@@ -1,0 +1,47 @@
+#!/bin/python3
+import os
+import sys
+from login import user_auth as authorisation
+
+commands = ["register", "status", "login", "logout", "slots", "volunteer", "book", "cancel", "logout"]
+
+
+
+def command_summary():
+    print('\nThese are the wtc-cal commands that can be used in various situations:\n')
+
+    # print("\tregister\t\tused to register for ")
+    print("\tstatus\t\tRun this to check the connection")
+    print("\tlogin\t\tRun this to log into the calendars")
+    print("\tlogout\t\tRun this to log out of the calendar")
+    print("\tslots\t\tRun this to see all slots [BOOKED], [OPEN]")
+    print("\tbook\t\tRun this to book someone's slot")
+    print("\tvolunteer\tRun this to open a slot for someone")
+    print("\tcancel\t\tRun this to cancel a bookings or a voluteering slot")
+
+
+if len(sys.argv) == 2 and sys.argv[1] in commands:
+    command = sys.argv[1]
+    if "status" == command:
+        authorisation.status()
+    elif "login" == command:
+        authorisation.user_login()
+    elif "logout" == command:
+        authorisation.user_logout()
+    elif "slots" == command:
+        pass
+    elif "book" == command:
+        pass
+    elif "volunteer" == command:
+        pass
+    elif "cancel" == command:
+        pass
+
+    """
+    could add info, which basically shows the rundown of the given commands
+    """
+else:
+    command_summary()
+    # print('login   Used to login')
+    # print('Logout  Used to logout\n')
+    # print('Working with bookings')
