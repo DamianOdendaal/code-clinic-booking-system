@@ -1,0 +1,48 @@
+#!/bin/python3
+import os
+import sys
+from login import user_auth as authentication
+
+
+valid_sys_commands = ['register', 'status', 'login', 'logout', 'slots',
+    'book', 'cancel', 'logout']
+
+def command_instructions():
+    """Print out statements that shows how the booking system works."""
+    
+    print('\nThese are wtc-cal commands that can be used in this Code Clinic:\n')
+
+    print("\tstatus\t\tRun this command to check the connection")
+    print("\tlogin\t\tRun this command to log into the calendars")
+    print("\tslots\t\tRun this command to see all slots [BOOKED], [OPEN]")
+    print("\tbook\t\tRun this command to book someone's slot")
+    print("\tvolunteer\tRun this command to open a slot for someone")
+    print("\tcancel\t\tRun this to command cancel a bookings or a voluteering slot\n")
+
+
+def command_sys_argv():
+    """Different command line argument values that work with the booking system.
+    """
+
+    if len(sys.argv) == 2 and sys.argv[1] in valid_sys_commands:
+        command = sys.argv[1]
+
+        if 'status' == command:
+            authentication.get_user_status()
+        elif 'login' == command:
+            authentication.user_login()
+        elif 'logout' == command:
+            authentication.user_logout()
+        elif "slots" == command:
+            pass
+        elif "book" == command:
+            pass
+        elif "volunteer" == command:
+            pass
+        elif "cancel" == command:
+            pass
+    else:
+        command_instructions()
+
+if __name__ == "__main__":
+    command_sys_argv()
