@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 rbrummer@student.wethinkcode.co.za
+=======
+tsoulo@student.wethinkcode.co.za
+>>>>>>> 9e72c654f03f08dc31d0215fefa5ff538b1bcaa8
