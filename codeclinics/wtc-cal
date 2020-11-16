@@ -1,49 +1,48 @@
 #!/bin/python3
 import os
 import sys
-from login import user_auth as authorisation
-
-commands = ["register", "status", "login", "logout", "slots", "volunteer", "book", "cancel", "logout"]
+from login import user_auth as authentication
 
 
+valid_sys_commands = ['register', 'status', 'login', 'logout', 'slots',
+    'book', 'cancel', 'logout']
 
-def command_summary():
-    print('\nThese are the wtc-cal commands that can be used in various situations:\n')
+def command_instructions():
+    """Print out statements that shows how the booking system works."""
+    
+    print('\nThese are wtc-cal commands that can be used in this Code Clinic:\n')
 
-    # print("\tregister\t\tused to register for ")
-    print("\tstatus\t\tRun this to check the connection")
-    print("\tlogin\t\tRun this to log into the calendars")
-    print("\tlogout\t\tRun this to logout of the calendar")
-    print("\tslots\t\tRun this to see all slots [BOOKED], [OPEN]")
-    print("\tbook\t\tRun this to book someone's slot")
-    print("\tvolunteer\tRun this to open a slot for someone")
-    print("\tcancel\t\tRun this to cancel a bookings or a voluteering slot")
+    print("\tstatus\t\tRun this command to check the connection")
+    print("\tlogin\t\tRun this command to log into the calendars")
+    print("\tslots\t\tRun this command to see all slots [BOOKED], [OPEN]")
+    print("\tbook\t\tRun this command to book someone's slot")
+    print("\tvolunteer\tRun this command to open a slot for someone")
+    print("\tcancel\t\tRun this to command cancel a bookings or a voluteering slot\n")
 
 
-if len(sys.argv) == 2 and sys.argv[1] in commands:
-    command = sys.argv[1]
-    if "status" == command:
-        print("TF")
-
-        # authorisation.status()
-    elif "login" == command:
-        authorisation.user_login()
-    elif "logout" == command:
-        authorisation.user_logout()
-    elif "slots" == command:
-        pass
-    elif "book" == command:
-        pass
-    elif "volunteer" == command:
-        pass
-    elif "cancel" == command:
-        pass
-
+def command_sys_argv():
+    """Different command line argument values that work with the booking system.
     """
-    could add info, which basically shows the rundown of the given commands
-    """
-else:
-    command_summary()
-    # print('login   Used to login')
-    # print('Logout  Used to logout\n')
-    # print('Working with bookings')
+
+    if len(sys.argv) == 2 and sys.argv[1] in valid_sys_commands:
+        command = sys.argv[1]
+
+        if 'status' == command:
+            authentication.get_user_status()
+        elif 'login' == command:
+            authentication.user_login()
+        elif 'logout' == command:
+            authentication.user_logout()
+        elif "slots" == command:
+            pass
+        elif "book" == command:
+            pass
+        elif "volunteer" == command:
+            pass
+        elif "cancel" == command:
+            pass
+    else:
+        command_instructions()
+
+if __name__ == "__main__":
+    command_sys_argv()
