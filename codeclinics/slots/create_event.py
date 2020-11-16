@@ -17,6 +17,22 @@ def main():
             "description": 'This is a tutorial example of automating google calendar with python',
             "start": {"dateTime": start, "timeZone": 'Africa/Johannesburg'},
             "end": {"dateTime": end, "timeZone": 'Africa/Johannesburg'},
+            
+            # Adds the 'attendance UI' on the user's calendar
+            'attendees': [{
+              'email': 'rbrummer@student.wethinkcode.co.za'  
+            }],
+
+            'scope': {
+                # visibility property of the event
+                'visibility': 'private',
+                # limits the scope to a single user
+                'type': 'user'
+                # the email address of a user, group or domain
+                # 'value': 'rbrummer@student.wethinkcode.co.za',
+            },
+            # the type of access the user receives on the events
+            'role': 'reader'
         }
     ).execute()
 
@@ -26,5 +42,5 @@ def main():
     print("starts at: ", event_result['start']['dateTime'])
     print("ends at: ", event_result['end']['dateTime'])
 
-if __name__ == '__main__':
-   main()
+if __name__ == "__main__":
+    main()

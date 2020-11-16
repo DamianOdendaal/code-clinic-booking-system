@@ -65,12 +65,8 @@ def validate_email(user_email):
     if domain_name.find("wethinkcode.co.za") > -1:
         print(f'Welcome {str(user_name).capitalize()}.')
     else:
-<<<<<<< HEAD
-        print("[OFFLINE]\nPlease run: \"wtc-cal login\"")
-=======
         os.remove(path.realpath('token.pickle'))
         print("Invalid email address!")
->>>>>>> 9e72c654f03f08dc31d0215fefa5ff538b1bcaa8
 
 
 def writing_to_json_file(user_details):
