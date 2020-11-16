@@ -35,16 +35,21 @@ def create_event():
     start_day = date_time.get('start_day')
     end_day = date_time.get('day_7')
 
+    d = datetime.now().date()
+    tomorrow = datetime(d.year, d.month, d.day, 10)+timedelta(days=1)
+    start = tomorrow.isoformat()
+    end = (tomorrow + timedelta(hours=1)).isoformat()
+
     event_result = service.events().insert(calendarId='wtcteam19jhb@gmail.com',
         body={
             "summary": "Testing the automation",
             "description": "Automation Calendar bleeeeeeh!",
             "start": {
-                "dateTime": start_day,
+                "dateTime": start,
                 "timeZone": "Africa/Johannesburg"
             },
             "end": {
-                "dateTime": end_day,
+                "dateTime": end,
                 "timeZone": "Africa/Johannesburg"
             }
         }).execute()

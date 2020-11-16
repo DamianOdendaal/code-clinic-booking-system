@@ -31,22 +31,28 @@ def create_event():
     """A function that creates an event in the Google Calendar using the sys
     argument value."""
 
-    date_time = date_and_time_str_google()
-    start_day = date_time.get('start_day')
-    end_day = date_time.get('day_7')
+    d = datetime.now().date()
+    tomorrow = datetime(d.year, d.month, d.day, 10)+timedelta(days=1)
+    start = tomorrow.isoformat() + 'Z'
+    end = (tomorrow + timedelta(hours=1)).isoformat() + 'Z'
 
     event_result = service.events().insert(calendarId='wtcteam19jhb@gmail.com',
         body={
             "summary": "Testing the automation",
             "description": "Automation Calendar bleeeeeeh!",
             "start": {
-                "dateTime": start_day,
+                "dateTime": start,
                 "timeZone": "Africa/Johannesburg"
             },
             "end": {
-                "dateTime": end_day,
+                "dateTime": end,
                 "timeZone": "Africa/Johannesburg"
-            }
+            },
+            "attendees": [
+                {
+                    "email": 'tetema@student.wethinkcode.co.za'
+                }
+            ]
         }).execute()
 
 
@@ -57,5 +63,5 @@ def create_event():
     print("ends at: ", event_result['end']['dateTime'])
 
 if __name__ == '__main__':
-#    create_event()
-    print(date_and_time_str_google())
+    create_event()
+    # print(date_and_time_str_google())
