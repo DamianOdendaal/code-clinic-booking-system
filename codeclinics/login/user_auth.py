@@ -105,7 +105,15 @@ def get_user_status():
         offline = colored('[OFFLINE]', 'red')
         print(offline + "\nPlease run: \"wtc-cal login\"")
 
-
+def get_login_state():
+    """
+    This function check's whether the user is logged in or not
+    Return:bool
+    """
+    if path.exists('token.pickle'):
+        return True
+    else:
+        return False    
 def user_login():
     """Signing the user by redirecting them to the sign in page. If they are
     logged in, print out a statemet. If they're not, create a token file for
@@ -116,7 +124,7 @@ def user_login():
     user_details = get_user_details()
     user_email = user_details.get("email")
 
-    if not path.exists("../token.pickle"):
+    if not path.exists(path.abspath("token.pickle")):
         validate_email(user_email)
         writing_to_json_file(user_details)
         writing_to_a_txt(user_email)

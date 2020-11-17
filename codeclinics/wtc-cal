@@ -2,6 +2,7 @@
 import os
 import sys
 from login import user_auth as authentication
+from bookings import create_event
 
 
 valid_sys_commands = ['register', 'status', 'login', 'logout', 'slots',
@@ -34,7 +35,10 @@ def command_sys_argv():
         elif 'logout' == command:
             authentication.user_logout()
         elif "slots" == command:
-            pass
+            if authentication.get_login_state():
+                create_event.get_slots()
+            else:
+                print("Please login to use this command")    
         elif "book" == command:
             pass
         elif "volunteer" == command:
