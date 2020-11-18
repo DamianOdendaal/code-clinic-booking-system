@@ -27,6 +27,7 @@ def command_instructions():
 
     print("\tstatus\t\tRun this command to check the connection")
     print("\tlogin\t\tRun this command to log into the calendars")
+    print("\tlogout\t\tRun this command to log out of the system")
     print("\tslots\t\tRun this command to see all slots [BOOKED], [OPEN]")
     print("\tbook\t\tRun this command to book someone's slot")
     print("\tvolunteer\tRun this command to open a slot for someone")
@@ -46,7 +47,6 @@ def command_sys_argv():
             user_auth.user_login()
         elif 'logout' == command:
             user_auth.user_logout()
-            #Replace the true below with a boolean that will check if token exist
         elif os.path.exists("token.pickle") and command in valid_sys_commands:
             if "slots" == command:
                 get_slots()
