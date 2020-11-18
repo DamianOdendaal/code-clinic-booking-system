@@ -37,7 +37,7 @@ def get_events_results():
             pickle.dump(creds, token)
 
     service = build('calendar', 'v3', credentials=creds)
-
+      
     # I think this should be returning the codeclinics calendarId, have to look into it
     events_results = service.events().list(calendarId='primary').execute()
 

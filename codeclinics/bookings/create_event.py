@@ -8,48 +8,94 @@ from bookings.calendar_setup import get_events_results
 from tabulate import tabulate
 from prettytable import PrettyTable
 from termcolor import colored
+from pon import PON, loads
+# Calling the Google Calendar API
+events_results = get_events_results()
+events = events_results.get('items', [])
+
+
+def get_date_and_time():
+    """Get time and date from Google Calendar API. It has to look more readable."""
+
+
+def colored_headings():
+    """Defining variables for the Slot Grid template."""
+    
+    colors = {
+        "date_header": colored("DATE", 'green'),
+        "time_header": colored("TIME", 'yellow'),
+        "summary": colored("SUMMARY", 'cyan'),
+        "volunteer": colored("VOLUNTEER", 'red'),
+        "etag": colored("ID", "yellow"),
+        "booked": colored("[BOOKED]", "green"),
+        "available": colored("[OPEN]", "cyan"),
+        "canceled": colored("[CANCELED]", "red")convert list dictionary python
+    return colors
+
+
+def adding_data_to_the_table():
+    """Adding data to a list that will include data from the patient's API."""
+
+    colors = colored_headings()
+
+    data = []
+    
+    if not events:
+        print('No upcoming events found.')
+    #[event] = events[2]     
+    pon = PON(obj=events)
+    #ev = {events}
+    #pon.dump()
+    evn = [ev for ev in events ]
+    print(evn)
+    with open('bookings/slotdata.pon', 'w') as outfile:
+        pon.dump(outfile)
+    #read_back = loads(open('bookings/slotdata.pon').read())
+    #print(read_back)        
+    for event in events:
+        start = event['start'].get('dateTime', event['start'].get('date'))
+        
+        date = start.split('T')[0]
+        time = start.split('+')[0].split('T')[1]
+     
+        x = randint(1,50)
+        if x % 3 == 0:
+            data.append([date, time, event['summary'], 
+                event['creator'].get('email'),
+                event['etag'], colors.get("booked")])
+
+        elif x % 2 == 0:
+            data.append([date, time, event['summary'], 
+                event['creator'].get('email'),
+                event['etag'], colors.get("available")])
+            
+        else:
+            data.append([date, time, event['summary'], 
+                event['creator'].get('email'),
+                event['etag'], colors.get("canceled")])
+
+    return data
 
 def get_slots():
     # Must use free/busy to query for open slots
     # Return events for the current 7 days
     # If 'attendees' >= 1, the event is booked
     #max 20 slots a day given that each slot is 30 mins long and are available from 8am to 18pm
-   
-    """
-    This will get all the available slots form the WTC calendar. 
-    """
-    events_results = get_events_results()
-    #print(events_results[0])
-    events = events_results.get('items', [])
-    datetime = colored("TIME", 'green')
-    summary = colored("SUMMARY", 'cyan')
-    volunteer = colored("VOLUNTEER", 'red')
-    etag = colored("ID", "yellow")
-    booked = colored("[BOOKED]", "green")
-    available = colored("[OPEN]", "cyan")
-    canceled = colored("[CANCELED]", "red")
 
-    data = []
-    if not events:
-        print('No upcoming events found.')
-    for event in events:
-        start = event['start'].get('dateTime', event['start'].get('date'))
-        x = randint(1,50)
-        if x % 3 == 0:
-            data.append([start, event['summary'], event['creator'].get('email'), event['etag'], booked])
-        elif x % 2 == 0:
-            data.append([start, event['summary'], event['creator'].get('email'), event['etag'], available])
-        else:
-            data.append([start, event['summary'], event['creator'].get('email'), event['etag'], canceled])
+    colors = colored_headings()
+    
+    data = adding_data_to_the_table()
         
 
-    t = PrettyTable()
-    t.field_names = [datetime, summary, volunteer, etag, "STATUS"]
+    table = PrettyTable()
+    table.field_names = [colors.get("date_header"), colors.get("time_header"), 
+        colors.get("summary"), colors.get("volunteer"), colors.get("etag"), 
+        "STATUS"]
+        
     for entry in data:
-        t.add_row(entry)
-    # t.sortby("datetime")
-    print(t)
-    # print(tabulate(data, headers=[time, summary, volunteer], tablefmt='textile'))
+        table.add_row(entry)
+
+    print(table)
 
 
 def book_event(tag):
@@ -96,4 +142,3 @@ def cancel(tag,person):
     # prompt = "booking"
     msg = colored(f"Code clinics {prompt} canceled", "green")
     print(f"{msg}\nID:{tag}\nDate:Sometime")
-
