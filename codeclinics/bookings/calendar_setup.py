@@ -39,6 +39,6 @@ def get_events_results():
     service = build('calendar', 'v3', credentials=creds)
       
     # I think this should be returning the codeclinics calendarId, have to look into it
-    events_results = service.events().list(calendarId='primary').execute()
+    #events_results = service.events().list(calendarId='primary').execute()
 
-    return events_results
+    return service

@@ -2,11 +2,12 @@
 import os
 import sys
 from login import user_auth as authentication
-from bookings import create_event
+from bookings import view_slots
+from bookings import create_slots
 
 
 valid_sys_commands = ['register', 'status', 'login', 'logout', 'slots',
-    'book', 'cancel', 'logout']
+    'book', 'cancel', 'logout','volunteer']
 
 def command_instructions():
     """Print out statements that shows how the booking system works."""
@@ -27,22 +28,25 @@ def command_sys_argv():
 
     if len(sys.argv) == 2 and sys.argv[1] in valid_sys_commands:
         command = sys.argv[1]
-
         if 'status' == command:
             authentication.get_user_status()
         elif 'login' == command:
             authentication.user_login()
         elif 'logout' == command:
             authentication.user_logout()
+        elif "volunteer" == command:
+            if authentication.get_login_state():
+                create_slots.create_slot()
+            else:
+                print("Please login to use this command")         
         elif "slots" == command:
             if authentication.get_login_state():
-                create_event.get_slots()
+                view_slots.get_slots()
             else:
                 print("Please login to use this command")    
         elif "book" == command:
             pass
-        elif "volunteer" == command:
-            pass
+       
         elif "cancel" == command:
             pass
     else:

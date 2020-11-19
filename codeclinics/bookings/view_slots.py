@@ -8,9 +8,11 @@ from bookings.calendar_setup import get_events_results
 from tabulate import tabulate
 from prettytable import PrettyTable
 from termcolor import colored
-from pon import PON, loads
+import json
 # Calling the Google Calendar API
-events_results = get_events_results()
+service = get_events_results()
+events_results = service.events().list(calendarId='primary').execute()
+
 events = events_results.get('items', [])
 
 
@@ -21,6 +23,7 @@ def get_date_and_time():
 def colored_headings():
     """Defining variables for the Slot Grid template."""
     
+     
     colors = {
         "date_header": colored("DATE", 'green'),
         "time_header": colored("TIME", 'yellow'),
@@ -29,8 +32,11 @@ def colored_headings():
         "etag": colored("ID", "yellow"),
         "booked": colored("[BOOKED]", "green"),
         "available": colored("[OPEN]", "cyan"),
-        "canceled": colored("[CANCELED]", "red")convert list dictionary python
+        "canceled": colored("[CANCELED]", "red")
+    }
+
     return colors
+
 
 
 def adding_data_to_the_table():
@@ -41,17 +47,9 @@ def adding_data_to_the_table():
     data = []
     
     if not events:
-        print('No upcoming events found.')
-    #[event] = events[2]     
-    pon = PON(obj=events)
-    #ev = {events}
-    #pon.dump()
-    evn = [ev for ev in events ]
-    print(evn)
-    with open('bookings/slotdata.pon', 'w') as outfile:
-        pon.dump(outfile)
-    #read_back = loads(open('bookings/slotdata.pon').read())
-    #print(read_back)        
+        print('No upcoming events found.')   
+  
+    writing_to_json_file(events)     
     for event in events:
         start = event['start'].get('dateTime', event['start'].get('date'))
         
@@ -75,6 +73,14 @@ def adding_data_to_the_table():
                 event['etag'], colors.get("canceled")])
 
     return data
+
+def writing_to_json_file(user_details):
+    """Writing user data to a hidden .config file."""
+
+  
+
+    with open('bookings/.slotsdata.json', 'w') as write_config:
+        json.dump(user_details, write_config)
 
 def get_slots():
     # Must use free/busy to query for open slots
