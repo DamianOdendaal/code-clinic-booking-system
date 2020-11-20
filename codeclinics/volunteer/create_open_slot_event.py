@@ -32,13 +32,13 @@ def get_user_event_input():
     for i in range(7):
         d = datetime.date.today() + datetime.timedelta(days=i)
         dates[str(d)[-2:]] = d
-    
+
     print('\nThese are the dates for the next 7 days:\n')
     for i in dates:
         print('\t' + i, dates[i], print_day(dates[i].weekday()+1), sep=' : ')
 
     try:    
-        d = input('\nPlease choose the date of a day that you would like to volunteer on\n\n\tDate : ')
+        dt = input('\nPlease choose the date of a day that you would like to volunteer on\n\n\tDate : ')
         print('\n')
         time = input('Please specify a time between 07:00-17:00 at which you will avail yourself for 30 minutes\n\n\tHH:MM : ')
         print('\n')
@@ -47,7 +47,7 @@ def get_user_event_input():
         description = input('Please add a description of the concept you are offering help with\n\n\tDescription : ')
         print('\n')
 
-        start = datetime.datetime.strptime(str(dates[d])+'T'+time, '%Y-%m-%dT%H:%M').isoformat()
+        start = datetime.datetime.strptime(str(dates[dt])+'T'+time, '%Y-%m-%dT%H:%M').isoformat()
         start_event = datetime.datetime.strptime(start, '%Y-%m-%dT%H:%M:%S')
         end = (start_event + timedelta(minutes=30)).isoformat()
 
@@ -59,27 +59,26 @@ def get_user_event_input():
                 "description": description,
                 "start": {"dateTime": start, "timeZone": 'Africa/Johannesburg'},
                 "end": {"dateTime": end, "timeZone": 'Africa/Johannesburg'},
-                
-                # Adds the 'attendance UI' on the user's calendar
-                # 'attendees': [{
-                #   'email': 'rbrummer@student.wethinkcode.co.za'  
-                # }],
-
-                'scope': {
+                "scope": {
                     # visibility property of the event
-                    'visibility': 'public',
+                    "visibility": "public",
                     # limits the scope to a single user
-                    'type': 'default',
+                    "type": "default",
                     # the email address of a user, group or domain
-                    'value': 'rbrummer@student.wethinkcode.co.za',
+                    "value": "rbrummer@student.wethinkcode.co.za",
                 },
                 # the type of access the user receives on the events
                 'role': 'reader'
             }
         ).execute()
 
+        # 'summary' in this scope is used as event titles.
+        # This is just to get 'summary' as the event creator's email address.
+        events_creator = service.events().list(calendarId='primary').execute()
+        creator = events_creator.get('summary')
+
         print("Created [OPEN] volunteer slot\n")
-        print("\tOrganizer :", organizer.email())
+        print("\tCreator :\t", creator)
         print("\t[OPEN] slot ID :", event_result['id'])
         print("\tSummary :\t", event_result['summary'])
         print("\tDescription :\t", event_result['description'])
@@ -101,14 +100,12 @@ def get_user_event_input():
         return False
 
 
-
 def main():
     while True:
         if get_user_event_input():
             break
         else:
             continue
-
 
 
 if __name__ == "__main__":
