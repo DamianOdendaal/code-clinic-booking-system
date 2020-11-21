@@ -48,7 +48,10 @@ def colored_headings():
 
 
 def show_code_clinics_calendar():
-    """ """
+    """This function shows the calendar for Code Clinic Calendar. This calendar
+    is global, and can be seen by every WeThinkCode_ student. It returns a list
+    of date, time, meeting summary, the patient email (booked), the volunteer
+    email and the meeting ID."""
 
     colors = colored_headings()
     date = date_and_time_str_google()
@@ -77,7 +80,56 @@ def show_code_clinics_calendar():
     return data
 
 
+def show_student_calendar():
+    """This function shows the personal student calendar. It's only visible to
+    the logged in student alone. It returns a list of the date, time, the 
+    meeting topic, the creator email and the meeting ID. """
+
+    colors = colored_headings()
+    date = date_and_time_str_google()
+
+    events_result = service.events().list(calendarId='primary',
+        timeMin=date.get('start_day'), timeMax=date.get('end_day'),
+        maxResults=100, singleEvents=True, orderBy='startTime').execute()
+
+    events = events_result.get('items', [])
+
+    student_calendar = []
+    if not events:
+        print("No upcoming events found!")
+
+    for event in events:
+        start = event['start'].get('dateTime', event['start'].get('date'))
+
+        start_date = start.split('T')[0]
+        start_time_UCT = start.split('+')[0].split('T')[1]
+
+        student_calendar.append([start_date, start_time_UCT, event['summary'],
+            event['creator'].get('email'), event['id']])
+
+    return student_calendar
+
+
+def get_student_calendar():
+    """It displays the data of the student in a table form.
+    > Prints out 7 days of content to the terminal."""
+
+    colors = colored_headings()
+    data = show_student_calendar()
+
+    table = PrettyTable()
+    table.field_names = ["DATE", "TIME",
+        "SUMMARY", "CREATOR", "ID"]
+
+    for entry in data:
+        table.add_row(entry)
+
+    print(table)
+
+
 def get_slots_calendar():
+    """It displays the data of the Code Clinic Calendar in a table form.
+    > Prints out 7 days of calendar content to the terminal."""
 
     colors = colored_headings()
     data = show_code_clinics_calendar()
@@ -92,33 +144,3 @@ def get_slots_calendar():
 
     print(table)
 
-
-def view_student_calendar():
-
-    colors = colored_headings()
-    
-    
-# def show_student_calendar():
-#     """Displaying 7 days of events from the student's calendar."""
-
-#     date = date_and_time_str_google()
-#     events_result = service.events().list(calendarId='wtcteam19jhb@gmail.com',
-#         timeMin=date.get('start_day'), timeMax=date.get('end_day'), 
-#         maxResults=100, singleEvents=True, orderBy='startTime').execute()
-#     events = events_result.get('items')
-
-#     if not events:
-#         print('No upcoming events found!')
-
-#     print('Your next 7 days upcoming events:\n')
-#     for event in events:
-        # start = event['start'].get('dateTime', event['start'].get('date'))
-        
-        # start_date = start.split('T')[0]
-        # start_time_UCT = start.split('+')[0].split('T')[1]
-        
-#         print(f"{start_date} | {start_time_UCT} | {event['summary']}")
-
-
-if __name__ == "__main__":
-    get_slots_calendar()
