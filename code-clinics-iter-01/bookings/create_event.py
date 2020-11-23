@@ -70,13 +70,46 @@ def get_user_event_input():
 
         event_result = service.events().insert(calendarId='wtcteam19jhb@gmail.com',
             body={
-                "summary": summary,
-                "description": description,
+                "summary": "Created an Event",
+                "description": "Automation Calendar bleeeeeeh!",
                 "start": {
-                    "dateTime": start
+                    "dateTime": start,
+                    "timeZone": "Africa/Johannesburg"
+                },
+                "end": {
+                    "dateTime": end,
+                    "timeZone": "Africa/Johannesburg"
                 }
-            }
-            )
+            }).execute()
+
+        events_creator = service.events().list(calendarId='primary').execute()
+        creator = events_creator.get('summary')
+
+        print("Created [OPEN] volunteer slot\n")
+        print("\tCreator :\t", creator)
+        print("\t[OPEN] slot ID :", event_result['id'])
+        print("\tSummary :\t", event_result['summary'])
+        print("\tDescription :\t", event_result['description'])
+        print("\tStarts at :\t", event_result['start']['dateTime'])
+        print("\tEnds at :\t", event_result['end']['dateTime'])
+
+        return True
+
+    except KeyError:
+        print('>>> Please select 1 of the available dates of the next 7 days.')
+        print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+
+        return False
+
+    except ValueError:
+        print('>>> Please use a \':\' (colon) between your chosen time\'s hours and minutes.')
+        print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+
+        return False
+
+
+def get_user_input():
+    """  """
 
 def create_event():
     """A function that creates an event in the Google Calendar using the sys
