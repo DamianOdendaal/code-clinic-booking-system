@@ -19,6 +19,7 @@ def print_day(day):
 def create_slot():
     # dates = {str((datetime.date.today() + datetime.timedelta(days=i)))[-2:]:(datetime.date.today() + datetime.timedelta(days=i)) for i in range(7)}
     dates = {}
+   
     
     for i in range(7):
         d = datetime.date.today() + datetime.timedelta(days=i)
@@ -90,6 +91,7 @@ def create_slot():
             #   'email': 'rbrummer@student.wethinkcode.co.za'  
             # }],
 
+            "status": 'tentative', 
             'scope': {
                 # visibility property of the event
                 'visibility': 'public',
@@ -102,12 +104,23 @@ def create_slot():
             'role': 'reader'
         }
     ).execute()
-
+    
     print("created event")
     print("id: ", event_result['id'])
     print("summary: ", event_result['summary'])
     print("starts at: ", event_result['start']['dateTime'])
     print("ends at: ", event_result['end']['dateTime'])
+
+def create_booking(id):
+    service = get_events_results()
+    event = service.events().get(calendarId='primary', eventId=id).execute()
+    event['status'] = 'confirmed'
+    event['attendees'] = {
+                ''
+    }
+
+    updated_event = service.events().update(calendarId='primary', eventId=event['id'], body=event).execute()
+    print('Booking confirmed')        
 
 if __name__ == "__main__":
     create_slot()

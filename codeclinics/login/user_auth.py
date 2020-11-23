@@ -83,7 +83,7 @@ def writing_to_a_txt(current_user):
 
     user_file_txt = get_user_details()
     current_user = user_file_txt.get('email')
-
+    print(user_file_txt) 
     current_logged_in = open('current_login.txt', 'w')
     current_logged_in.write(current_user)
     current_logged_in.close()
@@ -105,6 +105,7 @@ def get_user_status():
         offline = colored('[OFFLINE]', 'red')
         print(offline + "\nPlease run: \"wtc-cal login\"")
 
+
 def get_login_state():
     """
     This function check's whether the user is logged in or not
@@ -113,7 +114,9 @@ def get_login_state():
     if path.exists('token.pickle'):
         return True
     else:
-        return False    
+        return False   
+
+
 def user_login():
     """Signing the user by redirecting them to the sign in page. If they are
     logged in, print out a statemet. If they're not, create a token file for

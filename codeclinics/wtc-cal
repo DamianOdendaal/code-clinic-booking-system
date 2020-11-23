@@ -44,11 +44,18 @@ def command_sys_argv():
                 view_slots.get_slots()
             else:
                 print("Please login to use this command")    
-        elif "book" == command:
-            pass
        
         elif "cancel" == command:
             pass
+    elif len(sys.argv) == 3 and sys.argv[1] in valid_sys_commands:
+        command = sys.argv[1]
+        id = sys.argv[2]
+        if "book" == command:
+            if authentication.get_login_state():
+                create_slots.create_booking(id)
+                #print(id)
+            else:
+                print("Please login to use this command")    
     else:
         command_instructions()
 

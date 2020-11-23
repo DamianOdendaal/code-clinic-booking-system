@@ -8,6 +8,7 @@ from bookings.calendar_setup import get_events_results
 from tabulate import tabulate
 from prettytable import PrettyTable
 from termcolor import colored
+from datetime import datetime, timedelta
 import json
 # Calling the Google Calendar API
 service = get_events_results()
@@ -37,40 +38,53 @@ def colored_headings():
 
     return colors
 
+def date_and_time_str_google():
+    """Converting datetime python data format into a date string that matches 
+    the google time format. 
+    This function returns a dictionary of date and time."""
+
+    raw_date_min = datetime.now()
+    now_split = str(raw_date_min).split(" ")
+    now = now_split[0] + 'T' + now_split[1] + 'Z'
+
+    raw_date_max = raw_date_min + timedelta(6)
+    day_7_split = str(raw_date_max).split(" ")
+    day_7 = day_7_split[0] + 'T' + day_7_split[1] + 'Z'
+
+    date = {
+        "start_day": now,
+        "end_day": day_7
+    }
+
+    return date
 
 
 def adding_data_to_the_table():
     """Adding data to a list that will include data from the patient's API."""
 
     colors = colored_headings()
+    date = date_and_time_str_google()
 
     data = []
-    
+    print(events)
     if not events:
         print('No upcoming events found.')   
   
     writing_to_json_file(events)     
+   
+    if not events:
+        print("No upcoming events found!")
+
     for event in events:
         start = event['start'].get('dateTime', event['start'].get('date'))
-        
-        date = start.split('T')[0]
-        time = start.split('+')[0].split('T')[1]
-     
-        x = randint(1,50)
-        if x % 3 == 0:
-            data.append([date, time, event['summary'], 
-                event['creator'].get('email'),
-                event['etag'], colors.get("booked")])
+        patient = "--"
 
-        elif x % 2 == 0:
-            data.append([date, time, event['summary'], 
-                event['creator'].get('email'),
-                event['etag'], colors.get("available")])
-            
-        else:
-            data.append([date, time, event['summary'], 
-                event['creator'].get('email'),
-                event['etag'], colors.get("canceled")])
+        start_date = start.split('T')[0]
+        start_time_UCT = start.split('+')[0].split('T')[1]
+
+        data.append([start_date, start_time_UCT, event['summary'], patient, 
+            event['creator'].get('email'),
+            event['id']])
 
     return data
 
