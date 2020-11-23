@@ -79,7 +79,7 @@ def create_slot():
     end = (start_obj + timedelta(minutes=30)).isoformat()
 
 
-    event_result = service.events().insert(calendarId='primary',
+    event_result = service.events().insert(calendarId='wtcteam19jhb@gmail.com',
         body={
             "summary": summary,
             "description": description,
@@ -112,12 +112,15 @@ def create_slot():
     print("ends at: ", event_result['end']['dateTime'])
 
 def create_booking(id):
-    service = get_events_results()
-    event = service.events().get(calendarId='primary', eventId=id).execute()
+    service = get_events_results() 
+    # user_email = events_result.get('summary')
+    # print(user_email)
+    
+    event = service.events().get(calendarId='wtcteam19jhb@gmail.com', eventId=id).execute()
     event['status'] = 'confirmed'
-    event['attendees'] = {
-                ''
-    }
+    event['attendees'] = [{
+        'email':'tsoulo@student.wethinkcode.co.za'
+    }]
 
     updated_event = service.events().update(calendarId='primary', eventId=event['id'], body=event).execute()
     print('Booking confirmed')        

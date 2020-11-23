@@ -12,7 +12,7 @@ from datetime import datetime, timedelta
 import json
 # Calling the Google Calendar API
 service = get_events_results()
-events_results = service.events().list(calendarId='primary').execute()
+events_results = service.events().list(calendarId='wtcteam19jhb@gmail.com').execute()
 
 events = events_results.get('items', [])
 
@@ -31,9 +31,11 @@ def colored_headings():
         "summary": colored("SUMMARY", 'cyan'),
         "volunteer": colored("VOLUNTEER", 'red'),
         "etag": colored("ID", "yellow"),
-        "booked": colored("[BOOKED]", "green"),
+        "booked": colored("[BOOKED]", "red"),
         "available": colored("[OPEN]", "cyan"),
-        "canceled": colored("[CANCELED]", "red")
+        "canceled": colored("[CANCELED]", "red"),
+        'status': colored('STATUS', 'green'),
+        "patient": colored("PATIENT", "magenta")
     }
 
     return colors
@@ -78,13 +80,12 @@ def adding_data_to_the_table():
     for event in events:
         start = event['start'].get('dateTime', event['start'].get('date'))
         patient = "--"
+        status = event['status']
 
         start_date = start.split('T')[0]
         start_time_UCT = start.split('+')[0].split('T')[1]
 
-        data.append([start_date, start_time_UCT, event['summary'], patient, 
-            event['creator'].get('email'),
-            event['id']])
+        data.append([start_date, start_time_UCT, event['summary'], patient, event['creator'].get('email'), status, event['id']])
 
     return data
 
@@ -105,12 +106,14 @@ def get_slots():
     colors = colored_headings()
     
     data = adding_data_to_the_table()
-        
-
+         
+   
+    
     table = PrettyTable()
-    table.field_names = [colors.get("date_header"), colors.get("time_header"), 
-        colors.get("summary"), colors.get("volunteer"), colors.get("etag"), 
-        "STATUS"]
+    table.field_names = [colors.get("date_header"), colors.get("time_header"),
+        colors.get("summary"), colors.get("patient"), colors.get("volunteer"), 
+        colors.get('status'), colors.get("etag")]
+
         
     for entry in data:
         table.add_row(entry)
