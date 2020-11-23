@@ -57,8 +57,8 @@ def get_user_event_input():
             
             return False
         elif int(time.split(':')[1]) > 59 or int(time.split(':')[1]) < 0:
-            print('That\'s a strange amount of minutes.')
-            print('+++++++++++++++++++++++++++++++++++')
+            print('That\'s a strange, invalid amount of minutes.')
+            print('++++++++++++++++++++++++++++++++++++++++++++')
 
             return False
 
