@@ -4,10 +4,11 @@ import sys
 import subprocess
 from login import user_auth as authentication
 from bookings import list_calendars as calendar
+from bookings import create_event as create
 
 
 valid_sys_commands = ['register', 'status', 'login', 'logout', 'slots',
-    'book', 'cancel', 'logout', 'view-cal']
+    'book', 'cancel', 'logout', 'view-cal', 'volunteer']
 
 def command_instructions():
     """Print out statements that shows how the booking system works."""
@@ -45,7 +46,7 @@ def command_sys_argv():
         elif "book" == command:
             pass
         elif "volunteer" == command:
-            pass
+            create.get_user_input()
         elif "cancel" == command:
             pass
     else:

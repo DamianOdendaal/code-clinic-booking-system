@@ -1,5 +1,7 @@
+import datetime
+from datetime import timedelta
 from calendar_setup import get_calendar_service
-from datetime import datetime, timedelta
+# from datetime import datetime, timedelta
 from pprint import pprint
 
 # Fetching the Google Calendar API
@@ -54,6 +56,10 @@ def get_user_event_input():
         day = datetime.date.today() + datetime.timedelta(days=i)
         dates[str(day)[-2:]] = day
 
+    print('\nThese are the dates for the next 7 days:\n')
+    for i in dates:
+        print('\t' + i, dates[i], weekdays(dates[i].weekday()+1), sep=' : ')
+
     try:
         dt = input('\nPlease choose the date of a day that you would like to volunteer on\n\n\tDate : ')
         print('\n')
@@ -70,8 +76,8 @@ def get_user_event_input():
 
         event_result = service.events().insert(calendarId='wtcteam19jhb@gmail.com',
             body={
-                "summary": "Created an Event",
-                "description": "Automation Calendar bleeeeeeh!",
+                "summary": summary,
+                "description": description,
                 "start": {
                     "dateTime": start,
                     "timeZone": "Africa/Johannesburg"
@@ -79,7 +85,8 @@ def get_user_event_input():
                 "end": {
                     "dateTime": end,
                     "timeZone": "Africa/Johannesburg"
-                }
+                },
+                "summary": 'tentative'
             }).execute()
 
         events_creator = service.events().list(calendarId='primary').execute()
@@ -109,50 +116,10 @@ def get_user_event_input():
 
 
 def get_user_input():
-    """  """
+    """Get the volunteer user input. """
 
-def create_event():
-    """A function that creates an event in the Google Calendar using the sys
-    argument value."""
-
-    date_time = date_and_time_str_google()
-    start_day = date_time.get('start_day')
-    end_day = date_time.get('day_7')
-
-    d = datetime.now().date()
-    tomorrow = datetime(d.year, d.month, d.day, 10)+timedelta(days=1)
-    start = tomorrow.isoformat()
-    end = (tomorrow + timedelta(hours=1)).isoformat()
-
-    event_result = service.events().insert(calendarId='wtcteam19jhb@gmail.com',
-        body={
-            "summary": "Created an Event",
-            "description": "Automation Calendar bleeeeeeh!",
-            "start": {
-                "dateTime": start,
-                "timeZone": "Africa/Johannesburg"
-            },
-            "end": {
-                "dateTime": end,
-                "timeZone": "Africa/Johannesburg"
-            }
-        }).execute()
-
-
-
-    print("created event")
-    print("id: ", event_result['id'])
-    print("summary: ", event_result['summary'])
-    print("starts at: ", event_result['start']['dateTime'])
-    print("ends at: ", event_result['end']['dateTime'])
-
-
-def test():
-    events_result = service.events().list(calendarId='primary').execute()
-    events = events_result.get('items', [])
-
-    # pprint(events)
-    print(events.get('organizer'))
-
-if __name__ == '__main__':
-    test()
+    while True:
+        if get_user_event_input():
+            break
+        else:
+            continue
