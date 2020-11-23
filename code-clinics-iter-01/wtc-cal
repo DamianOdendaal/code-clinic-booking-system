@@ -41,7 +41,7 @@ def command_sys_argv():
             calendar.get_slots_calendar()
         elif "view-cal" == command:
             calendar.get_student_calendar()
-            subprocess.call("./.view.sh", shell=True)
+            # subprocess.call("./.view.sh", shell=True)
         elif "book" == command:
             pass
         elif "volunteer" == command:

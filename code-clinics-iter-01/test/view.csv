@@ -1,0 +1,9 @@
++------------+----------+---------------------------------+------------------------------------+---------------------------------------------+
+|    DATE    |   TIME   |             SUMMARY             |              CREATOR               |                      ID                     |
++------------+----------+---------------------------------+------------------------------------+---------------------------------------------+
+| 2020-11-24 | 10:30:00 |             Stand up            | dodendaa@student.wethinkcode.co.za | 54ekju1qjsp36incsds0cfse6q_20201124T083000Z |
+| 2020-11-24 | 14:00:00 | Cohort 2020 Town Hall - Group 2 |      moloko@wethinkcode.co.za      |          7le6u2ar2q2joso9pt1s4ijuum         |
+| 2020-11-25 | 10:30:00 |             Stand up            | dodendaa@student.wethinkcode.co.za | 54ekju1qjsp36incsds0cfse6q_20201125T083000Z |
+| 2020-11-26 | 10:30:00 |             Stand up            | dodendaa@student.wethinkcode.co.za | 54ekju1qjsp36incsds0cfse6q_20201126T083000Z |
+| 2020-11-27 | 10:30:00 |             Stand up            | dodendaa@student.wethinkcode.co.za | 54ekju1qjsp36incsds0cfse6q_20201127T083000Z |
++------------+----------+---------------------------------+------------------------------------+---------------------------------------------+

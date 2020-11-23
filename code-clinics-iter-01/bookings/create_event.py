@@ -27,6 +27,57 @@ def date_and_time_str_google():
     return date
 
 
+def weekdays(day):
+    """Printing out days of the week, and returning a dictionary with days of
+    the week."""
+
+    week_days = {
+        1: "Monday",
+        2: "Tuesday",
+        3: "Wednesday",
+        4: "Thursday",
+        5: "Friday",
+        6: "Saturday",
+        7: "Sunday"
+    }
+
+    return week_days[day]
+
+
+def get_user_event_input():
+    """Prompting the user (volunteer) to enter the date and time they'll like to
+    add the slot to the calendar."""
+
+    dates = {}
+
+    for i in range(7):
+        day = datetime.date.today() + datetime.timedelta(days=i)
+        dates[str(day)[-2:]] = day
+
+    try:
+        dt = input('\nPlease choose the date of a day that you would like to volunteer on\n\n\tDate : ')
+        print('\n')
+        time = input('Please specify a time between 07:00-17:00 at which you will avail yourself for 30 minutes\n\n\tHH:MM : ')
+        print('\n')
+        summary = input('Please name the concept you are offering help with\n\n\tTopic : ')
+        print('\n')
+        description = input('Please add a description of the concept you are offering help with\n\n\tDescription : ')
+        print('\n')
+
+        start = datetime.datetime.strptime(str(dates[dt])+'T'+time, '%Y-%m-%dT%H:%M').isoformat()
+        start_event = datetime.datetime.strptime(start, '%Y-%m-%dT%H:%M:%S')
+        end = (start_event + timedelta(minutes=30)).isoformat()        
+
+        event_result = service.events().insert(calendarId='wtcteam19jhb@gmail.com',
+            body={
+                "summary": summary,
+                "description": description,
+                "start": {
+                    "dateTime": start
+                }
+            }
+            )
+
 def create_event():
     """A function that creates an event in the Google Calendar using the sys
     argument value."""
@@ -42,7 +93,7 @@ def create_event():
 
     event_result = service.events().insert(calendarId='wtcteam19jhb@gmail.com',
         body={
-            "summary": "Testing the automation",
+            "summary": "Created an Event",
             "description": "Automation Calendar bleeeeeeh!",
             "start": {
                 "dateTime": start,
@@ -55,11 +106,20 @@ def create_event():
         }).execute()
 
 
+
     print("created event")
     print("id: ", event_result['id'])
     print("summary: ", event_result['summary'])
     print("starts at: ", event_result['start']['dateTime'])
     print("ends at: ", event_result['end']['dateTime'])
 
+
+def test():
+    events_result = service.events().list(calendarId='primary').execute()
+    events = events_result.get('items', [])
+
+    # pprint(events)
+    print(events.get('organizer'))
+
 if __name__ == '__main__':
-   create_event()
+    test()
