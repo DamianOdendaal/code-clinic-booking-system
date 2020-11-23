@@ -53,6 +53,15 @@ def remove_token():
     except FileNotFoundError:
         pass
 
+def get_login_state():
+    """This function checks whether the user is logged in or not.
+        > Returns a boolean."""
+
+    if path.exists('token.pickle'):
+        return True
+    else:
+        return False
+
 
 def validate_email(user_email):
     """Ths function checks if used email is in the WeThinkCode_ organization.

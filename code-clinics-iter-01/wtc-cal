@@ -5,6 +5,7 @@ import subprocess
 from login import user_auth as authentication
 from bookings import list_calendars as calendar
 from bookings import create_event as create
+from bookings import book_slot as book
 
 
 valid_sys_commands = ['register', 'status', 'login', 'logout', 'slots',
@@ -43,8 +44,16 @@ def command_sys_argv():
         elif "view-cal" == command:
             calendar.get_student_calendar()
             # subprocess.call("./.view.sh", shell=True)
-        elif "book" == command:
-            pass
+        elif len(sys.argv) == 3 and sys.argv[1] in valid_sys_commands:
+            command = sys.argv[1]
+            id = sys.argv[2]
+            
+            if "book" == command:
+                if authentication.get_login_state():
+                    book.create_bookings(id)
+                else:
+                    print("Please login to use this command.")
+                    
         elif "volunteer" == command:
             create.get_user_input()
         elif "cancel" == command:

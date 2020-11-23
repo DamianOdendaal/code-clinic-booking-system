@@ -34,14 +34,15 @@ def colored_headings():
     
     colors = {
         "date_header": colored("DATE", 'green'),
-        "time_header": colored("TIME", 'green'),
+        "time_header": colored("TIME", 'yellow'),
         "summary": colored("SUMMARY", 'cyan'),
         "volunteer": colored("VOLUNTEER", 'red'),
-        "patient": colored("PATIENT", "magenta"),
         "etag": colored("ID", "yellow"),
-        "booked": colored("[BOOKED]", "green"),
+        "booked": colored("[BOOKED]", "red"),
         "available": colored("[OPEN]", "cyan"),
-        "canceled": colored("[CANCELED]", "red")
+        "canceled": colored("[CANCELED]", "red"),
+        'status': colored('STATUS', 'green'),
+        "patient": colored("PATIENT", "magenta")
     }
 
     return colors
