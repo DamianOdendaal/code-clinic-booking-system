@@ -7,9 +7,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
 
-
-
-if __name__ == "__main__":
+def cancel_open_slot():
     arg_list = []
 
     for arg in sys.argv[1:]:
@@ -24,3 +22,17 @@ if __name__ == "__main__":
             calendarId='wtcteam19jhb@gmail.com',
             eventId=event_id
         ).execute()
+
+    return True
+
+
+def main():
+    while True:
+        if cancel_open_slot():
+            break
+        else:
+            continue
+
+
+if __name__ == "__main__":
+    main()
