@@ -20,12 +20,6 @@ def print_day(day):
 
 
 def get_user_event_input():
-    
-    """
-    Still need to handle for SATURDAYS & SUNDAYS.
-    Still need to handle for times before 07:00 & after 17:00.
-    """
-    
     # dates = {str((datetime.date.today() + datetime.timedelta(days=i)))[-2:]:(datetime.date.today() + datetime.timedelta(days=i)) for i in range(7)}
     dates = {}
     
@@ -47,28 +41,40 @@ def get_user_event_input():
         description = input('Please add a description of the concept you are offering help with\n\n\tDescription : ')
         print('\n')
 
+        if int(time.split(':')[0]) < 7:
+            print('>>> You can\'t [OPEN] a slot before 07:00 in the morning.')
+            print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+
+            return False
+        elif int(time.split(':')[0]) > 17:
+            print('You can\'t [OPEN] a slot after 17:00 in the afternoon.')
+            print('+++++++++++++++++++++++++++++++++++++++++++++++++++++')
+            
+            return False
+        elif int(time.split(':')[0]) == 17 and int(time.split(':')[1]) > 0:
+            print('Please create an [OPEN] slot before 17:00 in the afternoon.')
+            print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+            
+            return False
+        elif int(time.split(':')[1]) > 59 or int(time.split(':')[1]) < 0:
+            print('That\'s a strange amount of minutes.')
+            print('+++++++++++++++++++++++++++++++++++')
+
+            return False
+
         start = datetime.datetime.strptime(str(dates[dt])+'T'+time, '%Y-%m-%dT%H:%M').isoformat()
         start_event = datetime.datetime.strptime(start, '%Y-%m-%dT%H:%M:%S')
         end = (start_event + timedelta(minutes=30)).isoformat()
 
         service = get_calendar_service()
 
-        event_result = service.events().insert(calendarId='primary',
+        event_result = service.events().insert(calendarId='wtcteam19jhb@gmail.com',
             body={
                 "summary": summary,
                 "description": description,
                 "start": {"dateTime": start, "timeZone": 'Africa/Johannesburg'},
                 "end": {"dateTime": end, "timeZone": 'Africa/Johannesburg'},
-                "scope": {
-                    # visibility property of the event
-                    "visibility": "public",
-                    # limits the scope to a single user
-                    "type": "default",
-                    # the email address of a user, group or domain
-                    "value": "rbrummer@student.wethinkcode.co.za",
-                },
-                # the type of access the user receives on the events
-                'role': 'reader'
+                # 'role': 'reader'
             }
         ).execute()
 
