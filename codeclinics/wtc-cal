@@ -53,6 +53,7 @@ def command_sys_argv():
         if "book" == command:
             if authentication.get_login_state():
                 create_slots.create_booking(id)
+                view_slots.get_slots()
                 #print(id)
             else:
                 print("Please login to use this command")    

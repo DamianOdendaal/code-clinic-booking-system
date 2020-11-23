@@ -1,6 +1,7 @@
 import datetime
 from datetime import timedelta
-from bookings.calendar_setup import get_events_results
+from calendar_setup import get_calendar_service
+
 
 
 def print_day(day):
@@ -70,7 +71,7 @@ def create_slot():
 
 
     # creates one hour event tomorrow 10 AM GMT
-    service = get_events_results()
+    service = get_calendar_service()
     
     # d = datetime.now().date()
     # tomorrow = datetime(d.year, d.month, d.day, 10)+timedelta(days=1)
@@ -91,19 +92,7 @@ def create_slot():
             #   'email': 'rbrummer@student.wethinkcode.co.za'  
             # }],
 
-            "status": 'tentative', 
-            'scope': {
-                # visibility property of the event
-                'visibility': 'public',
-                # limits the scope to a single user
-                'type': 'default',
-                # the email address of a user, group or domain
-                'value': 'rbrummer@student.wethinkcode.co.za',
-            },
-            # the type of access the user receives on the events
-            'role': 'reader'
-        }
-    ).execute()
+            "status": 'tentative'}).execute()
     
     print("created event")
     print("id: ", event_result['id'])
@@ -111,18 +100,20 @@ def create_slot():
     print("starts at: ", event_result['start']['dateTime'])
     print("ends at: ", event_result['end']['dateTime'])
 
+
 def create_booking(id):
-    service = get_events_results() 
+    service = get_calendar_service() 
     # user_email = events_result.get('summary')
     # print(user_email)
     
-    event = service.events().get(calendarId='wtcteam19jhb@gmail.com', eventId=id).execute()
+    event = service.events().get(calendarId='wtcteam19jhb@gmail.com'
+    , eventId=id).execute()
     event['status'] = 'confirmed'
     event['attendees'] = [{
-        'email':'tsoulo@student.wethinkcode.co.za'
-    }]
+         'email':'tsoulo@student.wethinkcode.co.za'
+     }]
 
-    updated_event = service.events().update(calendarId='primary', eventId=event['id'], body=event).execute()
+    updated_event = service.events().update(calendarId='wtcteam19jhb@gmail.com', eventId=event['id'], body=event).execute()
     print('Booking confirmed')        
 
 if __name__ == "__main__":

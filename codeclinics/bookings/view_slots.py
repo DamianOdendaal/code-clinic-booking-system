@@ -4,14 +4,14 @@ This module basically carries out the functionality for commands
 book, slots, volunteer and cancel.
 """
 from random import randint
-from bookings.calendar_setup import get_events_results
+from calendar_setup import get_calendar_service
 from tabulate import tabulate
 from prettytable import PrettyTable
 from termcolor import colored
 from datetime import datetime, timedelta
 import json
 # Calling the Google Calendar API
-service = get_events_results()
+service = get_calendar_service()
 events_results = service.events().list(calendarId='wtcteam19jhb@gmail.com').execute()
 
 events = events_results.get('items', [])
@@ -68,7 +68,6 @@ def adding_data_to_the_table():
     date = date_and_time_str_google()
 
     data = []
-    print(events)
     if not events:
         print('No upcoming events found.')   
   
