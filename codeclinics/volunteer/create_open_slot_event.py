@@ -5,6 +5,7 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
+service = get_calendar_service()
 
 def print_day(day):
     week_days = {
@@ -66,7 +67,6 @@ def get_user_event_input():
         start_event = datetime.datetime.strptime(start, '%Y-%m-%dT%H:%M:%S')
         end = (start_event + timedelta(minutes=30)).isoformat()
 
-        service = get_calendar_service()
 
         event_result = service.events().insert(calendarId='wtcteam19jhb@gmail.com',
             body={
@@ -106,7 +106,7 @@ def get_user_event_input():
         return False
 
 
-def main():
+def get_user_input():
     while True:
         if get_user_event_input():
             break
@@ -114,5 +114,5 @@ def main():
             continue
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()

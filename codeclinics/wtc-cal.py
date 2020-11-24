@@ -4,10 +4,11 @@
 import os
 import sys
 from login import user_auth as authentication
+from volunteer import create_open_slot_event as volunteer
 
 
 valid_sys_commands = ['register', 'status', 'login', 'logout', 'slots',
-    'book', 'cancel', 'logout']
+    'volunteer', 'book', 'cancel', 'logout']
 
 def command_instructions():
     """Print out statements that shows how the booking system works."""
@@ -25,7 +26,6 @@ def command_instructions():
 def command_sys_argv():
     """Different command line argument values that work with the booking system.
     """
-
     if len(sys.argv) == 2 and sys.argv[1] in valid_sys_commands:
         command = sys.argv[1]
 
@@ -40,11 +40,15 @@ def command_sys_argv():
         elif "book" == command:
             pass
         elif "volunteer" == command:
-            pass
+            volunteer.get_user_input()
+            # pass
         elif "cancel" == command:
             pass
     else:
         command_instructions()
+
+    print(len(sys.argv))
+
 
 if __name__ == "__main__":
     command_sys_argv()
