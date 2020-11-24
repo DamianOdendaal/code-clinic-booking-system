@@ -16,8 +16,7 @@ def create_bookings(id):
     attendee = user.get_user_details().get('email')
     event['attendees'] = [
         {
-            "email": attendee,
-            "responseStatus": "accepted"
+            "email": attendee
         }
     ]
 

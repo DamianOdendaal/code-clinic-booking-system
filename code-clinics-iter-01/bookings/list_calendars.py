@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from tabulate import tabulate
 from prettytable import PrettyTable
 from termcolor import colored
+from login import user_auth as user
 
 # Fetching the Google Calendar API
 service = get_calendar_service()
@@ -62,7 +63,7 @@ def show_code_clinics_calendar():
         maxResults=100, singleEvents=True, orderBy='startTime').execute()
 
     events = events_result.get('items', [])
-
+    
     data = []
     if not events:
         print("No upcoming events found!")
