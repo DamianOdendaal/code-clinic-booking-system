@@ -70,13 +70,13 @@ def show_code_clinics_calendar():
     for event in events:
         start = event['start'].get('dateTime', event['start'].get('date'))
         patient = "--"
+        status = event['status']
 
         start_date = start.split('T')[0]
         start_time_UCT = start.split('+')[0].split('T')[1]
 
         data.append([start_date, start_time_UCT, event['summary'], patient, 
-            event['creator'].get('email'),
-            event['id']])
+            event['creator'].get('email'), status, event['id']])
 
     return data
 
@@ -138,7 +138,7 @@ def get_slots_calendar():
     table = PrettyTable()
     table.field_names = [colors.get("date_header"), colors.get("time_header"),
         colors.get("summary"), colors.get("patient"), colors.get("volunteer"), 
-        colors.get("etag")]
+        colors.get('status'), colors.get("etag")]
 
     for entry in data:
         table.add_row(entry)

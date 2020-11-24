@@ -86,7 +86,7 @@ def get_user_event_input():
                     "dateTime": end,
                     "timeZone": "Africa/Johannesburg"
                 },
-                "summary": 'tentative'
+                "status": 'tentative'
             }).execute()
 
         events_creator = service.events().list(calendarId='primary').execute()

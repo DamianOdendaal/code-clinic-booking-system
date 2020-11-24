@@ -14,6 +14,12 @@ def create_bookings(id):
 
     event['status'] = 'confirmed'
     attendee = user.get_user_details().get('email')
+    event['attendees'] = [
+        {
+            "email": attendee,
+            "responseStatus": "accepted"
+        }
+    ]
 
     update_event = service.events().update(calendarId='wtcteam19jhb@gmail.com',
     eventId=event['id'], body=event).execute()
