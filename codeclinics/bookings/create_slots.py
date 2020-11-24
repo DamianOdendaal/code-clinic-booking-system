@@ -110,11 +110,19 @@ def create_booking(id):
     , eventId=id).execute()
     event['status'] = 'confirmed'
     event['attendees'] = [{
-         'email':'tsoulo@student.wethinkcode.co.za'
+         'email':'think@student.wethinkcode.co.za'
      }]
 
     updated_event = service.events().update(calendarId='wtcteam19jhb@gmail.com', eventId=event['id'], body=event).execute()
-    print('Booking confirmed')        
+    print('Booking confirmed')
+
+def cancel_booking(id):
+   service = get_calendar_service()  
+   event = service.events().get(calendarId='wtcteam19jhb@gmail.com'
+    , eventId=id).execute()
+   event['status'] = 'tentative' 
+   event['attendees'] = []
+   updated_event = service.events().update(calendarId='wtcteam19jhb@gmail.com', eventId=event['id'], body=event).execute()    
 
 if __name__ == "__main__":
     create_slot()
