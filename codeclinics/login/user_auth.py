@@ -1,6 +1,6 @@
 from os import path
 from calendar_setup import get_events_results
-from datetime import datetime
+from datetime import datetime, timedelta
 from termcolor import colored
 import sys
 import os
@@ -26,7 +26,6 @@ def get_time_date():
 def get_user_details():
     """Retrieving user details from the calendar setup module."""
 
-    # Fetching the Google Calendar API
     events_results = get_events_results()
     
     user_email = events_results.get('summary')
@@ -46,27 +45,27 @@ def get_user_details():
 def remove_token():
     """ Removing the token file if the user is not logged in or if the token
     file exists.""" 
-    print(sys.path)
+
+    not_error = False
+    # user_details = get_user_details()
+
+    token_path = f"{sys.path[0]}/token.pickle"
+    current_login_path = f"{sys.path[0]}/current_login.txt"
+    
     try:
-        os.remove(path.realpath("token.pickle"))
+        os.remove(token_path)
+        os.remove(current_login_path)
     except FileNotFoundError:
-        pass
+        not_error = False
+        print("You already loggged out!")
+        print("\nPlease run: \"wtc-cal login\"\n")
 
     
-    if not path.exists("token.pickle"):
-        events_results = get_events_results()
-        user_email = events_results.get('summary')
-        user_name = user_email.split("@")[0]
-        date_time = get_time_date()
-        user_details = {
-                    "Username": user_name,
-                    "Email": user_email,
-                    "Date": date_time['date'],
-                    "Time": date_time['time']       
-                }
-    
-        with open('.config.json','w') as write_config:
-            json.dump(user_details, write_config)
+    # if not path.exists(token_path):
+    #     with open('.config.json','w') as write_config:
+    #         json.dump(user_details, write_config)
+
+    return not_error
 
 
 def validate_email(user_email):
@@ -99,23 +98,24 @@ def writing_to_a_txt(current_user):
     user_file_txt = get_user_details()
     current_user = user_file_txt.get('email')
 
-    current_logged_in = open('current_login.txt', 'w')
-    current_logged_in.write(current_user)
-    current_logged_in.close()
+    with open('current_login.txt', 'w') as current_login:
+        current_login.write(current_user)
 
 
 def get_user_status():
     """Getting the status of the signed in user. If they're signed in, it should
     print out that the user is logged in, if not, then it should instructions to
     the user about loggin in."""
+    
+    token_path = f"{sys.path[0]}/token.pickle"
+    if path.exists(token_path):
+        user_email = ""
+        with open("current_login.txt", 'r') as f:
+            user_email = f.readline()
 
-    if path.exists('token.pickle'):
-        current_user = open("current_login.txt", 'r')
-        user_email = current_user.readline()
-        current_user.close()
         connected = colored('[CONNECTED]', 'green')
         print(connected + " Google Calendar | Code Clinic Booking System") 
-        print(f"Signed in as {user_email}.")
+        print(f"Signed in as {user_email}")
     else:
         offline = colored('[OFFLINE]', 'red')
         print(offline + "\nPlease run: \"wtc-cal login\"")
@@ -127,7 +127,7 @@ def user_login():
     them."""
 
     remove_token()
-
+    
     user_details = get_user_details()
     user_email = user_details.get("email")
 
@@ -143,12 +143,15 @@ def user_login():
 def user_logout():
     """Loggin out the user from the booking sysem."""
 
-    try:
-        os.remove(path.abspath("token.pickle"))
+    if remove_token():
         print("You have been logged out from the system!")
-    except FileNotFoundError:
-        print("You already loggged out!")
-        print("Please run: \"wtc-cal login\"")
 
 
-#add something for auto logout
+time_out = datetime.now() + timedelta(minutes=30)
+def auto_logout():
+    """
+    This function checks if your token is still valid
+    """
+    if datetime.now() >= time_out:
+        user_logout()
+        print("\nToken expired:\nPlease login using \"wtc-cal login\"")

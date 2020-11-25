@@ -1,19 +1,21 @@
 from __future__ import print_function
-import datetime
+from datetime import datetime, timedelta
 import pickle
 import os.path
 import sys
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
+import pytz
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 
 
-def get_events_results():
-    """It sets up the Google calendar API, and it returns a list of calendar events
-    results, which includes all attributes that come with the Calendar API.
+def get_service():
+    """
+    This function sets up the Google calendar API, and it returns the calendar 
+    service
     """
     
     creds = None
@@ -38,7 +40,37 @@ def get_events_results():
 
     service = build('calendar', 'v3', credentials=creds)
 
-    # I think this should be returning the codeclinics calendarId, have to look into it
-    events_results = service.events().list(calendarId='primary').execute()
+    return service
 
+
+def get_events_results():
+    """
+    This function returns a list of calendar events results from the calendar
+    service
+    """
+
+    service = get_service()
+
+    start, end = get_time_constraints()
+
+    events_results = service.events().list(calendarId='primary',
+                    timeMin=start, 
+                    timeMax=end, 
+                    singleEvents=True,
+                    orderBy="startTime").execute()
+    
     return events_results
+
+
+def get_time_constraints(): 
+    """
+    This function returns the start and end times for the calendar timeMin
+    and timeMax
+    """
+
+    now = datetime.now(pytz.timezone("Africa/Cairo"))
+    end = now + timedelta(days=7)
+    start = now.isoformat(sep="T",timespec="seconds") + "Z"
+    end = end.isoformat(sep="T",timespec="seconds") + "Z"
+
+    return start, end
