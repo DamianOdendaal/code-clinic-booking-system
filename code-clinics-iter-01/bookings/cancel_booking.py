@@ -9,6 +9,8 @@ def cancel_booking(id):
     service = get_calendar_service()  
     event = service.events().get(calendarId='wtcteam19jhb@gmail.com', 
         eventId=id).execute()
+    
+    event['status'] = 'tentative'
 
     event['attendees'] = []
 

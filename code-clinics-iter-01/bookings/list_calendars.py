@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from tabulate import tabulate
 from prettytable import PrettyTable
 from termcolor import colored
+
 from login import user_auth as user
 
 # Fetching the Google Calendar API
@@ -70,8 +71,13 @@ def show_code_clinics_calendar():
 
     for event in events:
         start = event['start'].get('dateTime', event['start'].get('date'))
-        patient = "--"
-        status = event['status']
+
+        if event['status'] == 'tentative':
+            status = colors.get('available')
+            patient = colored('[AVAILABLE]', 'green')
+        elif event['status'] == 'confirmed':
+            status = colors.get('booked')
+            patient = event['attendees'][0]['email']
 
         start_date = start.split('T')[0]
         start_time_UCT = start.split('+')[0].split('T')[1]

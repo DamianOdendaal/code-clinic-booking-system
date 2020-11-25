@@ -10,13 +10,14 @@ def create_bookings(id):
     as the system argument."""
 
     event = service.events().get(calendarId='wtcteam19jhb@gmail.com', 
-        eventId=id).execute()
+        maxAttendees = 1, eventId=id).execute()
 
     event['status'] = 'confirmed'
     attendee = user.get_user_details().get('email')
     event['attendees'] = [
         {
-            "email": attendee
+            "email": attendee,
+            # "responseStatus": 'accepted'
         }
     ]
 
