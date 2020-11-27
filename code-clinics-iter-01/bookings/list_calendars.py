@@ -90,6 +90,9 @@ def show_code_clinics_calendar():
     return data
 
 
+def save_volunteer_id
+
+
 def show_student_calendar():
     """This function shows the personal student calendar. It's only visible to
     the logged in student alone. It returns a list of the date, time, the 
