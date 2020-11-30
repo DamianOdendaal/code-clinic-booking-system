@@ -1,4 +1,3 @@
-
 from os import path
 from calendar_setup import get_calendar_service
 from datetime import datetime
@@ -54,6 +53,15 @@ def remove_token():
     except FileNotFoundError:
         pass
 
+def get_login_state():
+    """This function checks whether the user is logged in or not.
+        > Returns a boolean."""
+
+    if path.exists('token.pickle'):
+        return True
+    else:
+        return False
+
 
 def validate_email(user_email):
     """Ths function checks if used email is in the WeThinkCode_ organization.
@@ -79,16 +87,16 @@ def writing_to_json_file(user_details):
         json.dump(user_details, write_config)
 
 
-def writing_to_a_txt():
+def writing_to_a_txt(current_user):
     """ Writing the current user email address to a .txt file"""
 
-    user_details = get_user_details()
-    current_user = user_details.get('email')
+    user_file_txt = get_user_details()
+    current_user = user_file_txt.get('email')
 
     current_logged_in = open('current_login.txt', 'w')
     current_logged_in.write(current_user)
     current_logged_in.close()
-    return current_user
+
 
 def get_user_status():
     """Getting the status of the signed in user. If they're signed in, it should
@@ -96,27 +104,15 @@ def get_user_status():
     the user about loggin in."""
 
     if path.exists('token.pickle'):
-        current_user = writing_to_a_txt()
-        # current_user = open("current_login.txt", 'r')
-        # user_email = current_user.readline()
-        # current_user.close()
+        current_user = open("current_login.txt", 'r')
+        user_email = current_user.readline()
+        current_user.close()
         connected = colored('[CONNECTED]', 'green')
         print(connected + " Google Calendar | Code Clinic Booking System") 
-        print(f"Signed in as {current_user}.")
+        print(f"Signed in as {user_email}.")
     else:
         offline = colored('[OFFLINE]', 'red')
         print(offline + "\nPlease run: \"wtc-cal login\"")
-
-
-def get_login_state():
-    """
-    This function check's whether the user is logged in or not
-    Return:bool
-    """
-    if path.exists('token.pickle'):
-        return True
-    else:
-        return False  
 
 
 def user_login():
@@ -129,13 +125,11 @@ def user_login():
     user_details = get_user_details()
     user_email = user_details.get("email")
 
-    if not path.exists("token.pickle"):
-
-        #user_details =  writing_to_a_txt(user_email)
+    if not path.exists("../token.pickle"):
         validate_email(user_email)
         writing_to_json_file(user_details)
+        writing_to_a_txt(user_email)
     else:
-        writing_to_a_txt()
         print("You are already logged in!")
 
 
@@ -147,7 +141,4 @@ def user_logout():
         print("You have been logged out from the system!")
     except FileNotFoundError:
         print("You already loggged out!")
-        print("Please run: \"wtc-cal login\"")
-
-if __name__ == "__main__":
-    writing_to_a_txt()       
+        print("Please run: \"wtc-cal login\"")     
