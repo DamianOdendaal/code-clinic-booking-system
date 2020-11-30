@@ -8,12 +8,12 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
 # If modifying these scopes, delete the file token.pickle.
-SCOPES = ['https://www.googleapis.com/auth/calendar']
+SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 
 
-def get_calendar_service():
-    """It sets up the Google calendar API, and it returns services dictionary, 
-    which includes all attributes that come with the Calendar API.
+def get_events_results():
+    """It sets up the Google calendar API, and it returns a list of calendar events
+    results, which includes all attributes that come with the Calendar API.
     """
     
     creds = None
@@ -37,5 +37,8 @@ def get_calendar_service():
             pickle.dump(creds, token)
 
     service = build('calendar', 'v3', credentials=creds)
+
+    # I think this should be returning the codeclinics calendarId, have to look into it
+    events_results = service.events().list(calendarId='primary').execute()
 
     return service

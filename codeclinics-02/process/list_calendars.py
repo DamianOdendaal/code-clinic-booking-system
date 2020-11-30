@@ -29,6 +29,7 @@ def date_and_time_str_google():
 
 def show_student_calendar():
     """Displaying 7 days of events from the student's calendar."""
+    # Change this to using the intergrated (e.g wtc_team19_jhb) Codeclinic email
 
     date = date_and_time_str_google()
     events_result = service.events().list(calendarId='primary',
@@ -51,5 +52,5 @@ def show_student_calendar():
         
         # print(f"{start} || {event['summary']}")
 
-if __name__ == "__main__":
-    show_student_calendar()
+# if __name__ == "__main__":
+#     show_student_calendar()

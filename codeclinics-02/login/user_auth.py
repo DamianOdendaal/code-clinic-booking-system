@@ -1,5 +1,5 @@
 from os import path
-from calendar_setup import get_calendar_service
+from calendar_setup import get_events_results
 from datetime import datetime
 from termcolor import colored
 import sys
@@ -27,10 +27,9 @@ def get_user_details():
     """Retrieving user details from the calendar setup module."""
 
     # Fetching the Google Calendar API
-    service = get_calendar_service()
-    events_result = service.events().list(calendarId='primary').execute()
+    events_results = get_events_results()
     
-    user_email = events_result.get('summary')
+    user_email = events_results.get('summary')
     username = user_email.split('@')[0]
     date_and_time = get_time_date()
 
@@ -47,20 +46,27 @@ def get_user_details():
 def remove_token():
     """ Removing the token file if the user is not logged in or if the token
     file exists.""" 
-
+    print(sys.path)
     try:
         os.remove(path.realpath("token.pickle"))
     except FileNotFoundError:
         pass
 
-def get_login_state():
-    """This function checks whether the user is logged in or not.
-        > Returns a boolean."""
-
-    if path.exists('token.pickle'):
-        return True
-    else:
-        return False
+    
+    if not path.exists("token.pickle"):
+        events_results = get_events_results()
+        user_email = events_results.get('summary')
+        user_name = user_email.split("@")[0]
+        date_time = get_time_date()
+        user_details = {
+                    "Username": user_name,
+                    "Email": user_email,
+                    "Date": date_time['date'],
+                    "Time": date_time['time']       
+                }
+    
+        with open('.config.json','w') as write_config:
+            json.dump(user_details, write_config)
 
 
 def validate_email(user_email):
@@ -125,7 +131,8 @@ def user_login():
     user_details = get_user_details()
     user_email = user_details.get("email")
 
-    if not path.exists("../token.pickle"):
+    token_path = f"{sys.path[0]}/token.pickle"
+    if not path.exists(token_path):
         validate_email(user_email)
         writing_to_json_file(user_details)
         writing_to_a_txt(user_email)
@@ -142,3 +149,6 @@ def user_logout():
     except FileNotFoundError:
         print("You already loggged out!")
         print("Please run: \"wtc-cal login\"")
+
+
+#add something for auto logout
