@@ -5,6 +5,17 @@ from login import user_auth as user
 
 service = get_calendar_service()
 
+# def student_accept_yes(attendee):
+#     """When a student accepts a booking, the program automatically accepts
+#     and RSVP the event."""
+
+#     event = service.events().get(calendarId=attendee, eventId=id).execute()
+#     event['attendees'] = [
+#         {
+#             'responseStatus': 'accepted'
+#         }
+#     ]
+
 def create_bookings(id):
     """Accepting an empty slot that was created by a volunteer using the ID
     as the system argument."""
@@ -20,6 +31,8 @@ def create_bookings(id):
             # "responseStatus": 'accepted'
         }
     ]
+
+    # student_accept_yes(attendee)
 
     update_event = service.events().update(calendarId='wtcteam19jhb@gmail.com',
     eventId=event['id'], body=event).execute()
