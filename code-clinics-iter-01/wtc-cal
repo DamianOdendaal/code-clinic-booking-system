@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/usr/bin/python3
 import os
 import sys
 import subprocess
@@ -11,21 +11,50 @@ from bookings import cancel_booking as cancel_booking
 
 
 valid_sys_commands = ['register', 'status', 'login', 'logout', 'slots',
-    'book', 'cancel', 'cancel_booking','logout', 'view-cal', 'volunteer']
+    'book', 'cancel', 'cancel_booking','logout', 'view-cal', 'volunteer',
+    'init', 'test']
 
 def command_instructions():
     """Print out statements that shows how the booking system works."""
-    
-    print('\nThese are wtc-cal commands that can be used in this Code Clinic:\n')
 
-    print("\tstatus\t\tRun this command to check the connection")
-    print("\tlogin\t\tRun this command to log into the calendars")
-    print("\tlogout\t\tRun this command to logout of the calendar")
-    print("\tslots\t\tRun this command to see all slots [BOOKED], [OPEN]")
-    print("\tbook\t\tRun this command to book someone's slot")
-    print("\tvolunteer\tRun this command to open a slot for someone")
-    print("\tview-cal\tRun this command to view your calendar")
-    print("\tcancel\t\tRun this to command cancel a bookings or a voluteering slot\n")
+    if len(sys.argv) >= 2:
+        command = ""
+        for arg in sys.argv[1:]:
+            command += f"{arg}"
+
+        print(f"Unrecognized command: \"wtc-cal {command.strip()}\"")
+    
+    elif len(sys.argv) == 1:
+        print("Please provide some options\n")
+        print("usage: wtc-cal <command> [args]")
+
+
+    print('\nThese are wtc-cal commands that can be used in this Code Clinic:\n')
+    
+    print('setup and login')
+    print('\tlogin\t\tUsed to login')
+    print('\tlogout\t\tUsed to logout')
+    print('\tconfig\t\tUsed to config\n')
+
+    print('booking and slots')
+    print('\tvolunteer\tCreate a slot to be booked by a patient [RUN-TIME]')
+    print('\tslots\t\tView slots that were created by volunteers [OPEN], [BOOKED]')
+    print('\tbook\t\tUsed to book an empty slot as a patient')
+    print('\tcancel_booking\tUsed to cancel a booking [PATIENTS]')
+    print('\tcancel\t\tUsed to cancel an empty slot [VOLUNTEERS]\n')
+
+    print('calendars and viewing')
+    print('\tview-cal\tView your personal calendar on the terminal')
+
+
+def install_packages():
+    """This function will load all the necessary modules needed to run wtc-cal.
+    """
+
+    os.system("pip3 install termcolor")
+    os.system("pip3 install ptable")
+    os.system("pip3 install tabulate")
+    os.system("pip3 install --upgrade google-api-python-client google-auth-httplib2 google-auth-auth-oauthlib")
 
 
 def command_sys_argv():
@@ -37,16 +66,28 @@ def command_sys_argv():
 
         if 'status' == command:
             authentication.get_user_status()
+        elif 'init' == command:
+            book.block_volunteer()
         elif 'login' == command:
             authentication.user_login()
         elif 'logout' == command:
             authentication.user_logout()
         elif "slots" == command:
-            calendar.get_slots_calendar()
+            if authentication.get_login_state():
+                calendar.get_slots_calendar()
+            else:
+                print("Please login to use this command!")
         elif "view-cal" == command:
-            calendar.get_student_calendar()
+            if authentication.get_login_state():
+                calendar.get_student_calendar()
+            else:
+                print("Please login to use this command!")
         elif "volunteer" == command:
-            create.get_user_input()
+            if authentication.get_login_state():
+                create.get_user_input()
+            else:
+                print("Please login to use this command!")
+
         
     elif len(sys.argv) == 3 and sys.argv[1] in valid_sys_commands:
         command = sys.argv[1]
@@ -58,7 +99,6 @@ def command_sys_argv():
             else:
                 print("Please login to use this command.")
         elif "cancel" == command:
-            """ """
             if authentication.get_login_state():
                 delete.cancel_open_slot(id)
                 print(id)
@@ -68,8 +108,6 @@ def command_sys_argv():
             if authentication.get_login_state():
                 cancel_booking.cancel_booking(id)
                 print(id)
-
-
 
     else:
         command_instructions()

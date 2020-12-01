@@ -3,9 +3,11 @@ from datetime import timedelta
 from calendar_setup import get_calendar_service
 # from datetime import datetime, timedelta
 from pprint import pprint
+from login import user_auth as user
 
-# Fetching the Google Calendar API
-service = get_calendar_service()
+
+if user.get_login_state():
+    service = get_calendar_service()
 
 def date_and_time_str_google():
     """Converting datetime python data format into a date string that matches 

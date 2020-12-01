@@ -6,8 +6,8 @@ from termcolor import colored
 
 from login import user_auth as user
 
-# Fetching the Google Calendar API
-service = get_calendar_service()
+if user.get_login_state():
+    service = get_calendar_service()
 
 def date_and_time_str_google():
     """Converting datetime python data format into a date string that matches 
@@ -72,7 +72,7 @@ def show_code_clinics_calendar():
     for event in events:
         start = event['start'].get('dateTime', event['start'].get('date'))
 
-        print(event)
+        # print(event)
 
         if event['status'] == 'tentative':
             status = colors.get('available')
@@ -90,7 +90,7 @@ def show_code_clinics_calendar():
     return data
 
 
-def save_volunteer_id
+# def save_volunteer_id
 
 
 def show_student_calendar():

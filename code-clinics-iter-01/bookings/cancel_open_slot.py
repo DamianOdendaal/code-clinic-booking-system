@@ -2,8 +2,10 @@ import sys
 import datetime
 from datetime import datetime
 from calendar_setup import get_calendar_service
+from login import user_auth as user
 
-service = get_calendar_service()
+if user.get_login_state():
+    service = get_calendar_service()
 
 def cancel_open_slot(id):
     """The event slot creator can delete a created slot. """
