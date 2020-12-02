@@ -10,21 +10,22 @@ if user.get_login_state():
 
 
 def block_volunteer():
-#     """ """
+    """ """
 
 #     print(email)
-    clinic = cal.show_code_clinics_calendar()
+    # clinic = cal.show_code_clinics_calendar()
+    # # print(clinic)
     # for i in clinic:
     #     print(i)
 #     creator_email = cal.show_code_clinics_calendar()
 #     # for email_ in creator_email:
-    print("Email: ", get_attribute("53n4t5us90gp359utq5sgp52o4", "email"))
-    print("Date: ", get_attribute("53n4t5us90gp359utq5sgp52o4", "date"))
-    print("Time: ", get_attribute("53n4t5us90gp359utq5sgp52o4", "time"))
-    print("Summary: ", get_attribute("53n4t5us90gp359utq5sgp52o4", "summary"))
-    print("Patient:",get_attribute("53n4t5us90gp359utq5sgp52o4", "patient"))
-    print("Volunteer",get_attribute("53n4t5us90gp359utq5sgp52o4", "volunteer"))
-    print(f"Status: {get_attribute('53n4t5us90gp359utq5sgp52o4', 'patient')}")
+    # print("Email: ", get_attribute("53n4t5us90gp359utq5sgp52o4", "email"))
+    # print("Date: ", get_attribute("53n4t5us90gp359utq5sgp52o4", "date"))
+    # print("Time: ", get_attribute("53n4t5us90gp359utq5sgp52o4", "time"))
+    # print("Summary: ", get_attribute("53n4t5us90gp359utq5sgp52o4", "summary"))
+    # print("Patient:",get_attribute("53n4t5us90gp359utq5sgp52o4", "patient"))
+    # print("Volunteer",get_attribute("53n4t5us90gp359utq5sgp52o4", "volunteer"))
+    # print(f"Status: {get_attribute('53n4t5us90gp359utq5sgp52o4', 'patient')}")
     
 
 

@@ -29,7 +29,7 @@ def cancel_a_slot(id):
     status = attribute.get_attribute(id, 'status')
 
     if status == '[BOOKED]' and volunteer_email == user_email:
-        print(f"Sorry, you cannot cancel a {colored('[BOOKED]', 'red')}")
+        print(f"Sorry, you cannot cancel a {colored('[BOOKED]', 'red')} a booked slot.")
     elif user_email == patient_email:
         print(f"Please run 'wtc-cal cancel_booking <argv (id)>' to cancel your own booking.")
     else:
