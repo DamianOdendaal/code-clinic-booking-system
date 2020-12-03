@@ -1,4 +1,5 @@
 import datetime
+from bookings import list_calendars as data
 from datetime import timedelta
 from calendar_setup import get_calendar_service
 # from datetime import datetime, timedelta
@@ -67,6 +68,8 @@ def get_user_event_input():
         print('\n')
         time = input('Please specify a time between 07:00-17:00 at which you will avail yourself for 30 minutes\n\n\tHH:MM : ')
         print('\n')
+
+
         summary = input('Please name the concept you are offering help with\n\n\tTopic : ')
         print('\n')
         description = input('Please add a description of the concept you are offering help with\n\n\tDescription : ')
