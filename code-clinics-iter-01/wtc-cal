@@ -80,7 +80,7 @@ def command_sys_argv():
                 print("Please login to use this command!")
         elif "volunteer" == command:
             if authentication.get_login_state():
-                create.get_user_input()
+                create.volunteer()
             else:
                 print("Please login to use this command!")
 
