@@ -1,5 +1,0 @@
-<<<<<<< HEAD
-rbrummer@student.wethinkcode.co.za
-=======
-tetema@student.wethinkcode.co.za
->>>>>>> e41b56a708f37df507f151ad56622121fe3de35a

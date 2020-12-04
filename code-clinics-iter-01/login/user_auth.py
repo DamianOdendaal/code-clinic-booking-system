@@ -1,10 +1,15 @@
 from os import path
 from calendar_setup import get_calendar_service
-from datetime import datetime
+from calendar_setup import get_events_results
+from datetime import datetime, timedelta
 from termcolor import colored
 import sys
 import os
 import json
+
+# The token file location
+token_path = f'{sys.path[0]}/token.pickle'
+config_path = f"{sys.path[0]}/.config.json"
 
 
 def get_time_date():
@@ -27,8 +32,8 @@ def get_user_details():
     """Retrieving user details from the calendar setup module."""
 
     # Fetching the Google Calendar API
-    service = get_calendar_service()
-    events_result = service.events().list(calendarId='primary').execute()
+    # service = get_calendar_service()
+    events_result = get_events_results()
     
     user_email = events_result.get('summary')
     username = user_email.split('@')[0]
@@ -46,18 +51,25 @@ def get_user_details():
 
 def remove_token():
     """ Removing the token file if the user is not logged in or if the token
-    file exists.""" 
+    file exists."""
+
+    is_found = True
 
     try:
-        os.remove(path.realpath("token.pickle"))
+        os.remove(token_path)
     except FileNotFoundError:
-        pass
+        is_found = False
+        print("You are already logged out!")
+        print("\nPlease run: \"wtc-cal login\"\n")
+    
+    return is_found
+
 
 def get_login_state():
     """This function checks whether the user is logged in or not.
         > Returns a boolean."""
 
-    if path.exists('token.pickle'):
+    if path.exists(token_path):
         return True
     else:
         return False
@@ -72,30 +84,33 @@ def validate_email(user_email):
     domain_name = user_email.split('@')[1]
 
     if domain_name.find("wethinkcode.co.za") > -1:
-        print(f'Welcome {str(user_name).capitalize()}.')
+        msg = colored(f"Welcome {str(user_name).capitalize()}!", "green")
+        print(msg)
     else:
-        os.remove(path.realpath('token.pickle'))
+        remove_token()
         print("Invalid email address!")
 
 
-def writing_to_json_file(user_details):
+def writing_to_json_file():
     """Writing user data to a hidden .config file."""
 
     user_details = get_user_details()
 
-    with open('.config.json', 'w') as write_config:
+    with open(config_path, 'w') as write_config:
         json.dump(user_details, write_config)
 
 
-def writing_to_a_txt(current_user):
-    """ Writing the current user email address to a .txt file"""
+def get_user_email():
+    """Getting the data from the json file"""
 
-    user_file_txt = get_user_details()
-    current_user = user_file_txt.get('email')
+    user_details = None
 
-    current_logged_in = open('current_login.txt', 'w')
-    current_logged_in.write(current_user)
-    current_logged_in.close()
+    with open(config_path, 'r') as json_file:
+        user_details = json.load(json_file)
+
+    user_email = user_details.get('email')
+
+    return user_email
 
 
 def get_user_status():
@@ -103,10 +118,11 @@ def get_user_status():
     print out that the user is logged in, if not, then it should instructions to
     the user about loggin in."""
 
-    if path.exists('token.pickle'):
-        current_user = open("current_login.txt", 'r')
-        user_email = current_user.readline()
-        current_user.close()
+
+    if path.exists(token_path):
+
+        user_email = get_user_email()
+
         connected = colored('[CONNECTED]', 'green')
         print(connected + " Google Calendar | Code Clinic Booking System") 
         print(f"Signed in as {user_email}.")
@@ -120,15 +136,12 @@ def user_login():
     logged in, print out a statemet. If they're not, create a token file for
     them."""
 
-    remove_token()
 
-    user_details = get_user_details()
-    user_email = user_details.get("email")
+    if not path.exists(token_path):
+        writing_to_json_file()
+        user_email = get_user_email()
 
-    if not path.exists("../token.pickle"):
         validate_email(user_email)
-        writing_to_json_file(user_details)
-        writing_to_a_txt(user_email)
     else:
         print("You are already logged in!")
 
@@ -136,9 +149,48 @@ def user_login():
 def user_logout():
     """Loggin out the user from the booking sysem."""
 
-    try:
-        os.remove(path.abspath("token.pickle"))
-        print("You have been logged out from the system!")
-    except FileNotFoundError:
-        print("You already loggged out!")
-        print("Please run: \"wtc-cal login\"")
+    if remove_token():
+        print(colored("You have succesfully logged out!", "yellow"))
+
+
+def show_config():
+    """This function displays the config file."""
+
+    config = None
+
+    with open(config_path, 'r') as json_file:
+        config = json.load(json_file)
+
+    print(f"Reading config from {config_path}\n")
+    print("Config {")
+    print(f"    editor: wtc-cal")
+    print(f"    repo_path: \"{sys.path[0]}\"")
+    print(f"    username: \"{config.get('email')}\"")
+    print("    code_clinics_manager: \"wtcteam19jhb@gmail.co.za\"")
+    print("}")
+
+
+def auto_logout():
+    """This function deletes the token file after 30 minutes - It checks if the
+    token file is still valid."""
+
+    data = None
+
+    with open(config_path) as json_file:
+        data = json.load(json_file)
+
+    hours = int(data['time'][:1])
+    mins = int(data['time'][3:4])
+    month = int(data['date'][:1])
+    day = int(data['date'][3:4])
+    year = int('20'+data['date'][6:7])
+
+    date = datetime(year=year, month=month, day=day, hour=hours, minute=mins)    
+    logout_time = date + timedelta(minutes=30)
+
+    if (datetime.now() > logout_time):
+        save_data()
+        remove_token()
+        return True
+
+    return False

@@ -11,15 +11,15 @@ from bookings import cancel_open_slot as delete
 from bookings import cancel_booking as cancel_booking
 
 
-valid_sys_commands = ['register', 'status', 'login', 'logout', 'slots',
+valid_sys_commands = ['config', 'status', 'login', 'logout', 'slots',
     'book', 'cancel', 'cancel_booking','logout', 'my_cal', 'volunteer',
-    'init', 'test', 'setup']
+    'init', 'test', 'setup', 'help']
 
 
 def command_instructions():
     """Print out statements that shows how the booking system works."""
 
-    if len(sys.argv) >= 2:
+    if len(sys.argv) >= 2 and sys.argv[1] != 'help':
         command = ""
         for arg in sys.argv[1:]:
             command += f"{arg}"
@@ -28,7 +28,7 @@ def command_instructions():
     
     elif len(sys.argv) == 1:
         print("Please provide some options\n")
-        print("usage: wtc-cal <command> [<args>]")
+        print("\tusage: wtc-cal <command> [<args>]")
 
 
     print('\nThese are wtc-cal commands that can be used in this Code Clinic:\n')
@@ -61,11 +61,12 @@ def command_sys_argv():
             authentication.get_user_status()
         elif 'setup' == command:
             do_setup()
-        elif 'init' == command:
-            book.block_volunteer()
+        elif 'config' == command:
+            authentication.show_config()
         elif 'login' == command:
             authentication.user_login()
         elif 'logout' == command:
+            save_data()
             authentication.user_logout()
         elif "slots" == command:
             if authentication.get_login_state():

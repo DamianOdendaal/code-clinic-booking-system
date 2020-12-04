@@ -1,7 +1,13 @@
-import datetime
+import sys
+import re
+import json
+import datetime as dt
+from termcolor import colored
+from dateutil import parser
+from calendar_setup import *
 from bookings import list_calendars as data
-from datetime import timedelta
-from calendar_setup import get_calendar_service
+from datetime import datetime, timedelta
+# from calendar_setup import get_calendar_service
 # from datetime import datetime, timedelta
 from pprint import pprint
 from login import user_auth as user
@@ -128,3 +134,11 @@ def get_user_input():
             break
         else:
             continue
+
+
+def params():
+    """This function gets the parameters (datetime and summary) needed to
+    create a slot and return a tuple of them."""
+
+    now = datetime.now()
+    pass
