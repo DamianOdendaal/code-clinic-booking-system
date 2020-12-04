@@ -5,6 +5,7 @@ import sys
 from login import user_auth
 from slots import *
 from volunteer import *
+from patient import *
 
 
 #create a seperate file for the installation
@@ -21,7 +22,7 @@ def install_packages():
 
 
 
-valid_sys_commands = ['config', 'slot_details', 'view-cal', 'volunteer', 
+valid_sys_commands = ['config', 'slot_details', 'my_cal', 'volunteer', 
 'status', 'login', 'logout', 'slots','book', 'cancel', 'logout', 'help']
 
 
@@ -50,15 +51,15 @@ def command_instructions():
     print('\tlogout\t\tUsed to logout')
     print('\tconfig\t\tUsed to config\n')
     
-    print('booking and slots')
+    print('processing slots')
     print('\tvolunteer\tCreate a slot to be booked')
     print('\tbook\t\tUsed to book an empty slot as a patient')
     print('\tcancel\t\tUsed to cancel a booking or volunteering slot\n')
 
     print('calendars and viewing')
-    print('\tslots\t\tView volunteer slots [OPEN], [BOOKED]')
+    print('\tslots\t\tView volunteer slots')
     print("\tslot_details \tView details of a given slot")
-    print('\tview-cal\tView your personal calendar\n\n')
+    print('\tmy_cal\t\tView your personal calendar\n\n')
 
 
 def command_sys_argv():
@@ -66,7 +67,7 @@ def command_sys_argv():
     This function handles command line arguments that work with the booking system.
     """
 
-    if len(sys.argv) == 2 and sys.argv[1] in valid_sys_commands:
+    if len(sys.argv) >= 2 and sys.argv[1] in valid_sys_commands:
         command = sys.argv[1]
 
         if 'status' == command:
@@ -76,7 +77,7 @@ def command_sys_argv():
         elif 'config' == command:
                 user_auth.show_config()
         elif 'logout' == command:
-            save_data()
+            save_data(get_code_clinics_calendar())
             user_auth.user_logout()
         elif 'help' == command:
             command_instructions()
@@ -86,14 +87,17 @@ def command_sys_argv():
                     show_calendars()
                 elif "slot_details" == command:
                     slot_details()
-                elif "view-cal" == command:
+                elif "my_cal" == command:
                     show_calendars('primary')
                 elif "book" == command:
-                    print("functionality doesn't exist yet")               
+                    book()
+                    save_data(get_code_clinics_calendar())
                 elif "volunteer" == command:
                     volunteer()
+                    save_data(get_code_clinics_calendar())
                 elif "cancel" == command:
                     print("functionality doesn't exist yet")
+                    save_data(get_code_clinics_calendar())
             else:
                 print("Please login to use this command!")
     else:

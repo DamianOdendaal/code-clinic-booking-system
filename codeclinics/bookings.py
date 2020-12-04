@@ -49,18 +49,52 @@ def delete_slot():
     print("Event deleted!")
 
 
-def exist():
-    """
-    This checks if a booking or slot exist
-    """
-    pass
+# def exist():
+#     """
+#     This checks if a booking or slot exist
+#     """
+#     pass
 
 
-def is_valid():
+# def is_valid():
+#     """
+#     This function checks if a patient is allowed to cancel a booking and if a
+#     volunteer is allowed to cancel a slot
+#     - A patient cannot cancel another patients slot
+#     - A volunteer cannot book their own slot
+#     - A volunteer cannot cancel another volunteers slot
+#     """
+    
+ 
+
+
+
+
+def save_data(data):
     """
-    This function checks if a patient is allowed to cancel a booking and if a
-    volunteer is allowed to cancel a slot
-    - A patient cannot cancel another patients slot
-    - A volunteer cannot book their own slot
-    - A volunteer cannot cancel another volunteers slot
+    This function saves the code clinics data to a local file
     """
+
+    old_data = load_data()
+
+    file_path = f"{sys.path[0]}/login/data.json" 
+    if data != old_data:
+        with open(file_path, 'w') as file:
+            json.dump(data, file)
+
+
+def load_data():
+    """
+    This function loads the code clinics data to a local file
+    """
+
+    data = None
+    file_path = f"{sys.path[0]}/login/data.json" 
+    try:
+        with open(file_path, 'r') as file:
+            data = json.load(file)
+    except:
+        pass
+
+    return data
+

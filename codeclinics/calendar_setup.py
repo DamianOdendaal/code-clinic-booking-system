@@ -82,3 +82,10 @@ def get_time_constraints():
 
     return start, end
 
+
+def clear():
+    """
+    This function clears the terminal
+    """
+
+    os.system("clear")

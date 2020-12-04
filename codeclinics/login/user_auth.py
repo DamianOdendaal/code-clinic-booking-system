@@ -7,6 +7,11 @@ import os
 import json
 
 
+# The token file location
+token_path = f'{sys.path[0]}/token.pickle'
+config_path = f"{sys.path[0]}/.config.json"
+
+
 def get_time_date():
     """Getting the current time and date. This function returns a dictionary
     of time and date."""
@@ -46,17 +51,16 @@ def remove_token():
     """ Removing the token file if the user is not logged in or if the token
     file exists.""" 
 
-    is_error = True
-    token_path = f"{sys.path[0]}/token.pickle"
+    is_found = True
 
     try:
         os.remove(token_path)
     except FileNotFoundError:
-        is_error = False
+        is_found = False
         print("You already loggged out!")
         print("\nPlease run: \"wtc-cal login\"\n")
 
-    return is_error
+    return is_found
 
 
 def validate_email(user_email):
@@ -80,7 +84,7 @@ def writing_to_json_file():
 
     user_details = get_user_details()
 
-    with open('.config.json', 'w') as write_config:
+    with open(config_path, 'w') as write_config:
         json.dump(user_details, write_config)
 
 
@@ -89,15 +93,9 @@ def get_user_status():
     print out that the user is logged in, if not, then it should instructions to
     the user about loggin in."""
 
-    token_path = f"{sys.path[0]}/token.pickle"
     if path.exists(token_path):
-        user_details = dict
-
-        with open(".config.json", 'r') as json_file:
-            user_details = json.load(json_file)
-
-        user_email = user_details.get('email')
-            
+    
+        user_email = get_user_email()   
 
         connected = colored('[CONNECTED]', 'green')
         print(connected + " Google Calendar | Code Clinic Booking System") 
@@ -110,19 +108,12 @@ def get_user_status():
 def user_login():
     """Signing the user by redirecting them to the sign in page. If they are
     logged in, print out a statemet. If they're not, create a token file for
-    them."""
-    
-    user_details = dict
+    them."""        
 
-    with open(".config.json", 'r') as json_file:
-        user_details = json.load(json_file)
-
-    user_email = user_details.get('email')
-        
-
-    token_path = f"{sys.path[0]}/token.pickle"
     if not path.exists(token_path):
         writing_to_json_file()
+
+        user_email = get_user_email
         validate_email(user_email)
     else:
         print("You are already logged in!")
@@ -139,7 +130,6 @@ def get_login_state():
     """This function checks whether the user is logged in or not.
         > Returns a boolean."""
 
-    token_path = f"{sys.path[0]}/token.pickle"
     if path.exists(token_path):
         return True
     else:
@@ -152,7 +142,7 @@ def show_config():
     """
 
     config = None
-    with open(".config.json", 'r') as json_file:
+    with open(config_path, 'r') as json_file:
         config = json.load(json_file)
 
     print(f"Reading config from {sys.path[0]}/.config.json\n")
@@ -164,21 +154,35 @@ def show_config():
     print("}")
 
 
+def get_user_email():
+    """Getting the data from the json file"""
+
+    user_details = None
+
+    with open(config_path, 'r') as json_file:
+        user_details = json.load(json_file)
+
+    user_email = user_details.get('email')
+
+    return user_email
+
+
 #Still have to look at this thoroughly
 def auto_logout():
     """
     This function checks if your token is still valid
     """
-    file_path = f"{sys.path[0]}/.config.json"
-    with open(file_path) as json_file:
+    
+    data = None
+
+    with open(config_path, 'r') as json_file:
         data = json.load(json_file)
-    #get the time
-    hours = int(data['Time'][0]+data['Time'][1])
-    mins = int(data['Time'][3]+data['Time'][4])
-    #get the day
-    day = int(data['Date'][3]+data['Date'][4])
-    mon = int(data['Date'][0]+data['Date'][1])
-    year = int('20'+data['Date'][6]+data['Date'][7])
+  
+    hours = int(data['time'][:1])
+    mins = int(data['time'][3:4])
+    month = int(data['date'][:1])
+    day = int(data['date'][3:4])
+    year = int('20'+data['date'][6:7])
     
     #logout_time = date + timedelta(minutes=30)
     date = datetime(year=year, month=mon, day=day, hour=hours, minute=mins)    

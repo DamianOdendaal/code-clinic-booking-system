@@ -55,24 +55,38 @@ def volunteer():
     else:
         fail = colored("Failed", "red")
         start, end, summary, description = get_params()
-        if is_valid(start, summary, user_email):
+
+        if is_volunteering_valid(start, summary, user_email, description):
             id = create_event(start, end, summary, description, user_email)
-            id = colored(id.upper(), "cyan")
         else:
             print(f"\nVolunteering {fail}.")
 
 
-# Still have to work on this ***WAITING ON DATAFILES 
-def is_valid(start, summary, id):
+# is_voluteering()
+def is_volunteering_valid(start, summary, user_email, descrption):
     """
-    This function checks if slot does not already exist
+    This function checks if slot does not already exist and returns a boolean
     """
-    if summary == None or start == None:
-        return False
-    else:
-        #must check if it already exists
-        # probably use the data file (manipulation) to validate this
-        pass
+
+    data = load_data()
+    
+    items = []
+    for item in data:
+        if item[4] == user_email:
+            items.append(item)
+
+    if len(items) != 0:
+        start = parser.parse(start)
+        date = start.strftime("%Y-%m-%d")
+        time = start.strftime("%H:%M:%S")
+
+        for slot in items:
+            is_valid_1 = slot[0] == date and slot[1] == time
+            is_valid_2 = slot[2] == summary and slot[6] == descrption
+
+            if is_valid_1 and is_valid_2:
+                print(colored("Double booking is not allowed", "red"))
+                return False
 
     return True
 
@@ -112,7 +126,7 @@ def get_time(result_date, now_date):
     match = re.match("\d\d:\d\d:\d\d", input_time) is None
 
     if match != None:
-        time = parser.parse(now_date) + timedelta(minutes=30)
+        time = parser.parse(now_date) + timedelta(hours=1)
         input_date = parser.parse(now_date.split(" ",1)[0] + " " + input_time)
         input_time = parser.parse(input_time)
 
@@ -128,7 +142,7 @@ def get_time(result_date, now_date):
             return input_time
 
     error_msg = (f"""\nInvalid input error.
-    - You can only book 30 min from the current time
+    - You must book an hour before session time
     - Specify a time between 07:00-17:00
     - Make sure the time is in the format (HH:MM:SS)""")
 
