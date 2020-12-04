@@ -32,5 +32,7 @@ def cancel_a_slot(id):
         print(f"Sorry, you cannot cancel a {colored('[BOOKED]', 'red')} a booked slot.")
     elif user_email == patient_email:
         print(f"Please run 'wtc-cal cancel_booking <argv (id)>' to cancel your own booking.")
+    elif user_email != volunteer_email:
+        print("You cannot cancel a SLOT which was not created by you!")
     else:
         cancel_open_slot(id)
