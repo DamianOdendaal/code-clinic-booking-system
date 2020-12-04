@@ -157,3 +157,47 @@ def get_slots_calendar():
 
     print(table)
 
+
+def formatted_data_output(data):
+    """This function formats the data to add color to some content when it will
+    be printed out and return then formated data."""
+
+    print_data = []
+
+    if len(data[0]) == 5:
+        for item in data:
+            # Make the summary limited to 12 character if it exceeds 15 chars.
+            info = item[2]
+            event_summary = f"{info[:12]}..." if len(info) > 15 else info
+            slot = [item[0], item[1], event_summary, item[3], item[4]]
+
+            print_data.append(slot)
+
+        return print_data
+
+    for item in data:
+        info = item[2]
+        event_summary = f"{info[:12]}..." if len(info) > 15 else info
+
+        volunteer = item[4].get('email')
+
+        # Display just the user name instead of user email of the patient
+        patient = item[3]
+        if patient != "":
+            patient = item[3].split("@")[0]
+        else:
+            patient = item[3]
+
+        # Add color to the status output
+        if item[6] == "[AVAILABLE]":
+            status = colored("[AVAILABLE]", "cyan")
+        elif item[6] == "[CONFIRMED]":
+            status = colored("[CONFIRMED]", "green")
+
+        # Return output slot
+        slot = [item[0], item[1], event_summary, patient, volunteer, item[5],
+                status]
+
+        print_data.append(slot)
+
+    return print_data
