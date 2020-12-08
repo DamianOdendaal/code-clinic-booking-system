@@ -69,14 +69,17 @@ def get_events_results(calendar_id=None):
     return events_results
 
 
-def get_time_constraints(): 
+def get_time_constraints(prompt_days=None): 
     """
     This function returns the start and end times for the calendar timeMin
     and timeMax
     """
 
+    if prompt_days == None:
+        prompt_days = 7
+
     now = datetime.now(pytz.timezone("Africa/Cairo"))
-    end = now + timedelta(days=7)
+    end = now + timedelta(days=prompt_days)
     start = now.strftime("%Y-%m-%dT%H:%M:%S") + "Z"
     end = end.strftime("%Y-%m-%dT%H:%M:%S") + "Z"
 

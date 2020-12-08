@@ -10,7 +10,7 @@ def is_booking_valid(id):
     """
     This function checks if this booking is valid and returns a boolean
     """
-    
+
     now = datetime.now()
 
     data = load_data()
@@ -86,6 +86,8 @@ def book():
 
 def booking_summary(summary, volunteer, time, date):
     """This will print out the booking details in a summarised format."""
+
+    # print("\nSuccessful booking.\n")
 
     msg = colored("Booking Summary:", "green")
     print(f"\n{msg}\n")

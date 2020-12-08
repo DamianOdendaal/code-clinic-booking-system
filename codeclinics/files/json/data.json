@@ -1,15 +1,27 @@
 [
     [
         "2020-12-09",
-        "13:00:00",
-        "functions",
+        "14:00:00",
+        "whatever",
         "-",
         {
             "email": "tsoulo@student.wethinkcode.co.za"
         },
-        "sf3on8gg7vg7k4aj7m9953b7r4",
+        "r58pit58s1q58b0mljl6179s94",
         "[OPEN]",
-        "creating functions"
+        "ever"
+    ],
+    [
+        "2020-12-10",
+        "08:00:00",
+        "Lol",
+        "-",
+        {
+            "email": "kmohlabu@student.wethinkcode.co.za"
+        },
+        "hse00npqqc9q23kdus2druh7ao",
+        "[OPEN]",
+        "LOL"
     ],
     [
         "2020-12-10",
@@ -58,6 +70,30 @@
         "hlt6p26jj5tnjgo9d07thllh08",
         "[BOOKED]",
         "testing"
+    ],
+    [
+        "2020-12-11",
+        "12:30:00",
+        "Home",
+        "-",
+        {
+            "email": "kmohlabu@student.wethinkcode.co.za"
+        },
+        "46piglsirne511olm72i6nilkc",
+        "[OPEN]",
+        "Home"
+    ],
+    [
+        "2020-12-12",
+        "12:30:00",
+        "Home",
+        "-",
+        {
+            "email": "kmohlabu@student.wethinkcode.co.za"
+        },
+        "g5q7j2f0k2ieijo61jh9scf1v0",
+        "[OPEN]",
+        "Home"
     ],
     [
         "2020-12-13",

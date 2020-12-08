@@ -1,7 +1,6 @@
-# import os
+import os
 import sys
 import subprocess
-import os
 
 
 def install_packages():
@@ -20,6 +19,7 @@ def install_packages():
         'google-auth-oauthlib'])
     
     subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'termcolor'])
+    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'ptable'])
     subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'ics'])
     subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'jsonlib-python3'])
     subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'icalendar'])
@@ -27,5 +27,7 @@ def install_packages():
     print("\nSetup completed!\n")
 
 
+# This installs packages once since the first time you run the code you dont have the .config file yet
 if os.path.exists(f"{sys.path[0]}/files/json/.config.json") == False:
     install_packages()
+    os.system('clear')

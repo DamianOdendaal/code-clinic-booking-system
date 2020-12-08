@@ -138,7 +138,7 @@ def save_data(data):
         with open(file_path, 'w') as file:
             json.dump(data, file, indent=4)
 
-        # save_to_ics(data)
+        save_to_ics(data)
         # save_to_xls(data)
 
 
@@ -173,8 +173,6 @@ def save_to_ics(data):
         if e[6] == "[OPEN}]":
             status = "TENTATIVE"
 
-
-        print("Going")
         event = Event()
     
         event.add('summary', e[2])
@@ -187,7 +185,7 @@ def save_to_ics(data):
         if e[3] != "":
             attendee = vCalAddress(f"MAILTO:{e[3]}")
             event.add('attendee', attendee)
-        print(event)
+            
         cal.add_component(event)
 
 

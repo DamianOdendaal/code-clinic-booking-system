@@ -115,6 +115,7 @@ def user_login():
         writing_to_json_file()
 
         user_email = get_user_email()
+        os.system('clear')
         validate_email(user_email)
     else:
         print("You are already logged in!")
@@ -197,8 +198,6 @@ def auto_logout():
         if(datetime.now() > logout_time):
             save_data(get_code_clinics_calendar())
             remove_token()
-            # Create invalid token thing
-            print("\n  Token has expired please log in.")
             return True
 
     return False   

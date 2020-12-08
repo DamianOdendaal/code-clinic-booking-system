@@ -97,9 +97,10 @@ def command_sys_argv():
 
 
 if __name__ == "__main__":
-    # This updates the data every time the program suns
-    data = load_data()
-    save_data(data)
+    if user_auth.get_login_state():
+    # This updates the data every time wtc-cal is ran that is if you are 
+    # logged in
+        save_data(get_code_clinics_calendar())
 
     # Auto logs out user after 30 mins
     user_auth.auto_logout()
