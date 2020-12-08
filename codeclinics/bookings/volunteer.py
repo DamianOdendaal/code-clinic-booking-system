@@ -87,23 +87,24 @@ def is_volunteering_valid(start, user_email):
 
         # Get new volunteer booking date and start-time in type str
         date = start.strftime("%Y-%m-%d")
-        start_time = start.strftime("%H:%M:%S")
+        start_time = start.time()
         
 
         for slot in items:
             # Get existing slot end-time and date in type str
-            end_time = start.strftime("%H:%M:%S")
+            end_time = start.time()
             date2 = parser.parse(slot[0] +" "+ slot[1]) + timedelta(minutes=30)
-            end_time2 = date2.strftime("%H:%M:%S") 
+            end_time2 = date2.time() 
 
             # Condition to check if the times do not clash
-            time_validation = ((end_time <= slot[1] and end_time < end_time2) or 
-                (start_time >= end_time2 and end_time > slot[1]))
+            time_validation = ((end_time <= start_time and end_time < end_time2) or 
+                (start_time >= end_time2 and end_time > start_time))
 
+            
             # Condition to check if booking is on the same day and whether the times clash
             date_validation = slot[0] == date and time_validation
             if date_validation == False:
-                print(colored("\nDouble booking is not allowed!", "red"))
+                print("\nDouble booking is not allowed!\n")
                 return False
 
     return True

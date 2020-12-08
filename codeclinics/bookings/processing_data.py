@@ -1,6 +1,7 @@
 from calendar_setup.calendar_service import *
-from ics import Calendar, Event
-from icalendar import vCalAddress
+# from ics import Calendar, Event
+import ics
+from icalendar import Calendar, Event, vCalAddress
 import sys
 import re
 import datetime as dt
@@ -106,10 +107,12 @@ def delete_booking(slot, now):
 
     # print(time_now)
     # print(time_slot)
-
+    user_email = get_user()[0]
     # Compare date and time objects
     if date_now == date_slot and time_slot <= time_now:
-        print("Cannot cancel 15min befor session")
+        print("\nCannot cancel 15min befor session!\n")
+    elif user_email != slot[4].get('email'):
+        print("\nCannot cancel someone else's slot!\n")
     else:
         id = slot[5]
         event = service.events().get(calendarId='wtcteam19jhb@gmail.com', 
@@ -151,69 +154,48 @@ def load_data():
     try:
         with open(file_path, 'r') as file:
             data = json.load(file)
-
-        # save_to_ics(data)
-        # save_to_xls(data)
     except:
         pass
 
     return data
 
 
-# def save_to_ics(data):
-#     """
-#     This function converts .json data file to a .ics file format and saves it
-#     """
+def save_to_ics(data):
+    """
+    This function converts .json data file to a .ics file format and saves it
+    """
 
-#     for e in data:
-#         start = datetime.fromisoformat(e[0] + "T" + e[1] + "+02:00")
-#         end = start + timedelta(minutes=30)
-#         # organizer = vCalAddress(f'MAILTO:{d[4]['Email']}')
+    for e in data:
+        start = datetime.fromisoformat(e[0] + "T" + e[1] + "+02:00")
+        end = start + timedelta(minutes=30)
+        email = e[4].get('email')
+        organizer = vCalAddress(f"MAILTO:{email}")
 
-#         status = "[BOOKED]"        
-#         if e[6] == "[OPEN}]":
-#             status = "TENTATIVE"
+        status = "CONFIRMED"        
+        if e[6] == "[OPEN}]":
+            status = "TENTATIVE"
 
 
-
-
-        
-#         event = Event()
+        print("Going")
+        event = Event()
     
-#         event.add('summary', e[2])
-#         event.add('dtstart', start))
-#         event.add('dtend', end)
-#         event.add('description', d[7])
-#         event.add('organizer', )
-#         event.add('STATUS', status)
-#         event.add('uid', d[5])
-#         if d[3] != "":
-#             attendee = vCalAddress(f"MAILTO:{d[3]}")
-#             event.add('attendee', attendee)
-        
-#         cal.events.add(event)
-
-#     # e = Event()
-#     # e.name = "My cool event"
-#     # e.begin = '2014-01-01 00:00:00'
-#     # c.events.add(e)
-#     # c.events
-#     # # [<Event 'My cool event' begin:2014-01-01 00:00:00 end:2014-01-01 00:00:01>]
-    
-#     file_path = f"{sys.path[0]}/files/ics/data.ics" 
-#     with open(file_path, 'wb') as my_file:
-#     #     my_file.writelines(c
-#     #     ics.write(cal.to_ical())
-#     # # and it's done !
+        event.add('summary', e[2])
+        event.add('dtstart', start)
+        event.add('dtend', end)
+        event.add('description', e[7])
+        event.add('organizer', organizer)
+        event.add('STATUS', status)
+        event.add('uid', e[5])
+        if e[3] != "":
+            attendee = vCalAddress(f"MAILTO:{e[3]}")
+            event.add('attendee', attendee)
+        print(event)
+        cal.add_component(event)
 
 
-
-
-
-   
-    # with open(file_path, 'w') as file:
-    #     # json.dump(data, file, indent=4)
-    #     pass
+    file_path = f"{sys.path[0]}/files/ics/data.ics" 
+    with open(file_path, 'wb') as file:
+        file.write(cal.to_ical())
     
 
 def save_to_xls(json_path):
@@ -225,3 +207,5 @@ def save_to_xls(json_path):
     with open(file_path, 'w') as file:
         # json.dump(data, file, indent=4)
         pass
+
+

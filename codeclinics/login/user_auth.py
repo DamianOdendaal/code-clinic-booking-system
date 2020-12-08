@@ -1,5 +1,4 @@
 from os import path
-# from calendar.calendar_setup import get_events_results
 from calendar_setup.calendar_service import *
 from datetime import datetime, timedelta
 from termcolor import colored
@@ -199,7 +198,7 @@ def auto_logout():
             save_data(get_code_clinics_calendar())
             remove_token()
             # Create invalid token thing
-            # print("\n  Token has expired please log in.\n")
+            print("\n  Token has expired please log in.")
             return True
 
     return False   

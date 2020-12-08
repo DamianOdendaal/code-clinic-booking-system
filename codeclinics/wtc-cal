@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-
+from bookings.processing_data import save_to_ics
 import os
 import sys
 from login import user_auth
@@ -73,13 +73,14 @@ def command_sys_argv():
         elif 'config' == command:
             user_auth.show_config()
         elif 'logout' == command:
-            if os.path(f"{sys.path[0]}/creds/token.pickle"):
+            if os.path.exists(f"{sys.path[0]}/creds/token.pickle"):
                 save_data(get_code_clinics_calendar())
             user_auth.user_logout()
         elif 'help' == command:
             command_instructions()
         elif command in valid_sys_commands:
             if user_auth.get_login_state():
+                load_data()
                 if "slots" == command:
                     show_calendars()
                 elif "slot_details" == command:

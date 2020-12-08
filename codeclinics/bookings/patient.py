@@ -10,6 +10,7 @@ def is_booking_valid(id):
     """
     This function checks if this booking is valid and returns a boolean
     """
+    
     now = datetime.now()
 
     data = load_data()
@@ -27,14 +28,13 @@ def is_booking_valid(id):
         user_email = get_user()[0]
         date = parser.parse(slot[0] + " " + slot[1]) - timedelta(minutes=30)
         if slot[4].get('email') == user_email:
-            print(colored("Volunteer cannot book their own slot.", "red"))
+            print("\nVolunteer cannot book their own slot.")
             return False
         elif date < now:
-            print(colored("Cannot book 30 min before session.", "red"))
+            print("\nCannot book 30 min before session.\n")
             return False
         elif slot[3] != "-":
-            msg = colored("Slot is already booked.", "red")
-            print(f"{msg}")
+            print("\nSlot is already booked.\n")
             return False         
 
     return True
@@ -44,6 +44,7 @@ def book():
     """
     This function books a volunteer slot if its available
     """
+
     service = get_service()
     
     if len(sys.argv) != 3:

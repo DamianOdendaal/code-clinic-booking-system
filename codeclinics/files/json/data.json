@@ -1,5 +1,17 @@
 [
     [
+        "2020-12-09",
+        "13:00:00",
+        "functions",
+        "kmohlabu@student.wethinkcode.co.za",
+        {
+            "email": "tsoulo@student.wethinkcode.co.za"
+        },
+        "sf3on8gg7vg7k4aj7m9953b7r4",
+        "[BOOKED]",
+        "creating functions"
+    ],
+    [
         "2020-12-10",
         "10:00:00",
         "Lambda Functions",
@@ -14,25 +26,37 @@
     [
         "2020-12-10",
         "13:00:00",
-        "Unit testing",
+        "Arrays",
         "-",
         {
             "email": "tsoulo@student.wethinkcode.co.za"
         },
-        "hlt6p26jj5tnjgo9d07thllh08",
+        "24b0qmog250jjc17nbidt8ij3g",
         "[OPEN]",
+        "len()"
+    ],
+    [
+        "2020-12-10",
+        "13:00:00",
+        "Unit testing",
+        "tetema@student.wethinkcode.co.za",
+        {
+            "email": "tsoulo@student.wethinkcode.co.za"
+        },
+        "hlt6p26jj5tnjgo9d07thllh08",
+        "[BOOKED]",
         "testing"
     ],
     [
-        "2020-12-12",
-        "10:30:00",
-        "Double Booking",
-        "-",
+        "2020-12-13",
+        "12:30:00",
+        "rest",
+        "tsoulo@student.wethinkcode.co.za",
         {
             "email": "kmohlabu@student.wethinkcode.co.za"
         },
-        "hnr26b30t7eem22p7visieh65g",
-        "[OPEN]",
-        "Error handling"
+        "7ebltphugb2ocdrf70avuffukk",
+        "[BOOKED]",
+        "rest"
     ]
 ]
