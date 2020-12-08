@@ -1,9 +1,9 @@
 from random import randint
-from calendar_setup import get_events_results, clear
+from calendar_setup.calendar_service import *
 from prettytable import PrettyTable
 from termcolor import colored
 from dateutil import parser
-from bookings import *
+from bookings.processing_data import *
 import json
 import sys
 from datetime import datetime, timedelta
@@ -15,7 +15,6 @@ def show_calendars(prompt=None):
     This will get all the available slots form the WTC calendar. 
     """
 
-    clear()
     if prompt == "primary":
         user_name = get_user()[1] 
         print(f"\n{user_name.title()} Calendar")
@@ -88,10 +87,10 @@ def formatted_data_output(data):
             patient = item[3]
 
         # Add color to the status output
-        if item[6] == "[AVAILABLE]":
-            status = colored("[AVAILABLE]", "cyan")
-        elif item[6] == "[CONFIRMED]":
-            status = colored("[CONFIRMED]", "green")
+        if item[6] == "[OPEN]":
+            status = colored("[OPEN]", "cyan")
+        elif item[6] == "[BOOKED]":
+            status = colored("[BOOKED]", "red")
 
         # Return output slot
         slot = [item[0], item[1], event_summary, patient, volunteer, item[5],
@@ -131,10 +130,10 @@ def get_code_clinics_calendar():
         date, time = get_date_and_time(start)
 
         if event['status'] == 'tentative':
-            status = "[AVAILABLE]"
-            patient = ""
+            status = "[OPEN]"
+            patient = "-"
         elif event['status'] == 'confirmed':
-            status = "[CONFIRMED]"
+            status = "[BOOKED]"
             patient = event['attendees'][0]['email']
 
         data.append([date, time, event['summary'], patient, event['creator'],
@@ -176,7 +175,7 @@ def slot_details():
             command += f"{arg} "
         print(f"Unrecognized command: \"wtc-cal {command.strip()}\"")
     else:
-        id = sys.argv[2].strip().upper()
+        id = sys.argv[2].strip()
         data = load_data()
     
         slot = None
@@ -188,19 +187,17 @@ def slot_details():
         if slot == None:
             print(colored("Slot does not exist.", "red"))
         else:
-            clear()
-            print(item)
-            print(len(item))
             date = parser.parse(slot[0] +" "+ slot[1]) + timedelta(minutes=30)
-            end = date.strftime("%Y-%m-%d %H:%M:%S")
+            end = date.strftime("%H:%M")
 
             msg = colored("Slot details:", "yellow")
             print(f"\n{msg} {item[5]}\n")
-            print("  Creator : ", item[4].title())
-            print("  Summary : ", item[3])
-            print("  Description : ", "") #have to delete current data to use item[7]
-            print("  Starts at : ", slot[0] + " " + slot[1])
-            print("  Ends at : ", end)
+            print("  Creator:\t", item[4].get('email'))
+            print("  Attendee:\t", item[3])
+            print("  Summary:\t", item[2])
+            print("  Description:\t", item[7])
+            print("  Date:\t\t", slot[0])
+            print(f"  Time:\t\t {slot[1][:5]} - {end}")
             print("\n")
 
         

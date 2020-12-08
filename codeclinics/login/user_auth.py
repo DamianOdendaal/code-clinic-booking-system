@@ -1,15 +1,17 @@
 from os import path
-from calendar_setup import get_events_results
+# from calendar.calendar_setup import get_events_results
+from calendar_setup.calendar_service import *
 from datetime import datetime, timedelta
 from termcolor import colored
 import sys
 import os
 import json
-
+from bookings.processing_data import *
+from bookings.list_calendars import get_code_clinics_calendar
 
 # The token file location
-token_path = f'{sys.path[0]}/token.pickle'
-config_path = f"{sys.path[0]}/.config.json"
+token_path = f'{sys.path[0]}/creds/token.pickle'
+config_path = f"{sys.path[0]}/files/json/.config.json"
 
 
 def get_time_date():
@@ -85,7 +87,7 @@ def writing_to_json_file():
     user_details = get_user_details()
 
     with open(config_path, 'w') as write_config:
-        json.dump(user_details, write_config)
+        json.dump(user_details, write_config, indent=4)
 
 
 def get_user_status():
@@ -113,7 +115,7 @@ def user_login():
     if not path.exists(token_path):
         writing_to_json_file()
 
-        user_email = get_user_email
+        user_email = get_user_email()
         validate_email(user_email)
     else:
         print("You are already logged in!")
@@ -142,17 +144,20 @@ def show_config():
     """
 
     config = None
-    with open(config_path, 'r') as json_file:
-        config = json.load(json_file)
+    if os.path.exists(config_path):
+        with open(config_path, 'r') as json_file:
+            config = json.load(json_file)
 
-    print(f"Reading config from {sys.path[0]}/.config.json\n")
-    print("Config {")
-    print(f"    editor: wtc-cal")
-    print(f"    repo_path: \"{sys.path[0]}\"")
-    print(f"    username: \"{config.get('email')}\"")
-    print("    code_clinics_manager: \"wtcteam19jhb@gmail.co.za\"")
-    print("}")
-
+        print(f"Reading config from {sys.path[0]}/.config.json\n")
+        print("Config {")
+        print(f"    editor: wtc-cal")
+        print(f"    repo_path: \"{sys.path[0]}\"")
+        print(f"    username: \"{config.get('email')}\"")
+        print("    code_clinics_manager: \"wtcteam19jhb@gmail.co.za\"")
+        print("}")
+    else:
+        print("Config file does not exist")
+   
 
 def get_user_email():
     """Getting the data from the json file"""
@@ -167,30 +172,34 @@ def get_user_email():
     return user_email
 
 
-#Still have to look at this thoroughly
 def auto_logout():
     """
     This function checks if your token is still valid
     """
     
-    data = None
+    if path.exists(token_path):
+    
+        data = None
 
-    with open(config_path, 'r') as json_file:
-        data = json.load(json_file)
-  
-    hours = int(data['time'][:1])
-    mins = int(data['time'][3:4])
-    month = int(data['date'][:1])
-    day = int(data['date'][3:4])
-    year = int('20'+data['date'][6:7])
+        with open(config_path, 'r') as json_file:
+            data = json.load(json_file)
     
-    #logout_time = date + timedelta(minutes=30)
-    date = datetime(year=year, month=mon, day=day, hour=hours, minute=mins)    
-    logout_time = date + timedelta(minutes=30)
-    
-    if(datetime.now() > logout_time):
-        save_data()
-        remove_token()  
-        return True
+        # Parse type string date and time objects to integer type objects
+        hours = int(data['time'][:2])
+        mins = int(data['time'][3:5])
+        mon = int(data['date'][:2])
+        day = int(data['date'][3:5])
+        year = int('20'+data['date'][6:8])
+        
+        #logout_time = date + timedelta(minutes=30)
+        date = datetime(year=year, month=mon, day=day, hour=hours, minute=mins)    
+        logout_time = date + timedelta(minutes=30)
+        
+        if(datetime.now() > logout_time):
+            save_data(get_code_clinics_calendar())
+            remove_token()
+            # Create invalid token thing
+            # print("\n  Token has expired please log in.\n")
+            return True
 
     return False   

@@ -3,27 +3,19 @@
 import os
 import sys
 from login import user_auth
-from slots import *
-from volunteer import *
-from patient import *
+from calendar_setup.setup import install_packages
+from bookings.list_calendars import *
+from bookings.volunteer import *
+from bookings.patient import *
 
 
-#create a seperate file for the installation
-def install_packages():
-    """
-    This function will load all the necessary modules needed to run the wtc-cal
-    """
-    #Should use subprocess.run() or subprocess.Popen() so that we can manupilate the output
-    #Basicall hide the package installations from the user
-    os.system("pip3 install termcolor")
-    os.system("pip3 install ptable")
-    os.system("pip3 install tabulate")
-    os.system("pip3 install --upgrade google-api-python-client google-auth-httplib2 google-auth-auth-oauthlib ")
-
-
-
-valid_sys_commands = ['config', 'slot_details', 'my_cal', 'volunteer', 
+valid_sys_commands = ['setup', 'config', 'slot_details', 'my_cal', 'volunteer', 
 'status', 'login', 'logout', 'slots','book', 'cancel', 'logout', 'help']
+
+
+# for cmd in valid_sys_commands:
+#     commands_bold.append('\033[1m'+cmd+'\033[0m')
+
 
 
 def command_instructions():
@@ -46,6 +38,7 @@ def command_instructions():
     print("\thelp\t\tView commands to run wtc-cal tool\n")
 
     print('setup and login')
+    print('\t\t\tUsed to setup the wtc-cal tool')
     print('\tstatus\t\tUsed to check user connection status')
     print('\tlogin\t\tUsed to login')
     print('\tlogout\t\tUsed to logout')
@@ -70,14 +63,18 @@ def command_sys_argv():
     if len(sys.argv) >= 2 and sys.argv[1] in valid_sys_commands:
         command = sys.argv[1]
 
-        if 'status' == command:
+        if 'setup' == command:
+            install_packages()
+            pass
+        elif 'status' == command:
             user_auth.get_user_status()
         elif 'login' == command:
             user_auth.user_login()
         elif 'config' == command:
-                user_auth.show_config()
+            user_auth.show_config()
         elif 'logout' == command:
-            save_data(get_code_clinics_calendar())
+            if os.path(f"{sys.path[0]}/creds/token.pickle"):
+                save_data(get_code_clinics_calendar())
             user_auth.user_logout()
         elif 'help' == command:
             command_instructions()
@@ -96,24 +93,14 @@ def command_sys_argv():
                     volunteer()
                     save_data(get_code_clinics_calendar())
                 elif "cancel" == command:
-                    print("functionality doesn't exist yet")
+                    cancel()
                     save_data(get_code_clinics_calendar())
             else:
-                print("Please login to use this command!")
+                print("\n  Please login to use this command!\n")
     else:
         command_instructions()
 
 
-def invalid_token():
-    """
-    """
-    # duration = "{ secs: " + secs + ", nanos: " + nanos + "})."
-    print(f"Token expired: (), Duration ")
-    print("\n  wtc-cal login\n\n")
-
-
 if __name__ == "__main__":
-    # if user_auth.auto_logout():
-    #     invalid_token()
-
+    user_auth.auto_logout()
     command_sys_argv()

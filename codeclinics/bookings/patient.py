@@ -1,5 +1,5 @@
-from calendar_setup import *
-from bookings import *
+from calendar_setup.calendar_service import *
+from bookings.processing_data import *
 from termcolor import colored
 from datetime import datetime, timedelta
 from dateutil import parser
@@ -26,14 +26,15 @@ def is_booking_valid(id):
     else:
         user_email = get_user()[0]
         date = parser.parse(slot[0] + " " + slot[1]) - timedelta(minutes=30)
-        if slot[4] == user_email:
+        if slot[4].get('email') == user_email:
             print(colored("Volunteer cannot book their own slot.", "red"))
             return False
         elif date < now:
             print(colored("Cannot book 30 min before session.", "red"))
             return False
-        elif slot[3] != "":
-            print(colored("Slot is already booked.", "red"))
+        elif slot[3] != "-":
+            msg = colored("Slot is already booked.", "red")
+            print(f"{msg}")
             return False         
 
     return True
@@ -69,4 +70,25 @@ def book():
                 calendarId='wtcteam19jhb@gmail.com',
                 eventId=event["id"], body=event).execute()
 
-            print({colored("Booking confirmed!", "green")})
+            summary = event['summary']
+            volunteer = event['creator'].get('email')
+            start = parser.parse(event['start'].get('dateTime'))
+            time = start.strftime("%H:%M:%S")
+            date = start.strftime("%Y-%m-%d")
+
+            booking_summary(summary, volunteer, time, date)
+        else:
+            msg = colored("failed", "red")
+            print(f"Booking {msg}!")
+            
+
+
+def booking_summary(summary, volunteer, time, date):
+    """This will print out the booking details in a summarised format."""
+
+    msg = colored("Booking Summary:", "green")
+    print(f"\n{msg}\n")
+    print(f"  Summary: {summary}")
+    print(f"  Instructor: {volunteer}")
+    print(f"  Time: {time}")
+    print(f"  Date: {date}\n\n")

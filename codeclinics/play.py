@@ -1,78 +1,39 @@
-def confirm_bookings(id):
-    """Validation function that prevents the volunteer from booking their own
-    slot."""
 
-    user_email = user.get_user_details().get('email')
-    volunteer_email = get_attribute(id, 'email')
-    patient_email = get_attribute(id, 'patient')
-    status = get_attribute(id, 'status')
+commands_bold = []
 
-    if user_email == volunteer_email:
-        print("A volunteer cannot book an their OWN slot!")
-    elif status == '[BOOKED]':
-        print(f"Sorry, the event is already booked by {patient_email}.")
-        print(f"Please check an open slot. {colored('[AVAILABLE]', 'green')}")
-    else:
-        create_bookings(id)
+for cmd in valid_sys_commands:
+    commands_bold.append('\033[1m'+cmd+'\033[0m')
 
 
-def booking_summary(id):
-    """This will print out the booking details in a summarised format."""
+def command_instructions():
+    """Print out statements that shows how the booking system works."""
 
-    volunteer_email = get_attribute(id, 'email')
-    help_topic = get_attribute(id, 'summary')
-    time = get_attribute(id, 'time')
-    date = get_attribute(id, 'date')
+    if len(sys.argv) >= 2 and sys.argv[1] != 'help':
+        command = ""
+        for arg in sys.argv[1:]:
+            command += f"{arg}"
 
-    print("Booking Summary:")
-    print(f"You're getting help with: {help_topic}")
-    print(f"The volunteer: {volunteer_email}")
-    print(f"Time: {time}")
-    print(f"Date: {date}")
-
-ef get_attribute(id, prompt):
-    """
-    This function access the volunteer and patient items
-    """
-    calendar = cal.show_code_clinics_calendar()
-
-    slot = None
-    for item in calendar:
-        if item[6] == id:
-            slot = item
-    if slot != None:
-        if prompt == "email":
-            return slot[4]
-        elif prompt == "date":
-            return slot[0]
-        elif prompt == "time":
-            return slot[1]
-        elif prompt == "summary":
-            return slot[2]
-        elif prompt == "patient":
-            #use regex later stage things
-            return slot[3]
-        elif prompt == "volunteer":
-            return slot[4]
-        elif prompt == "status":
-            string = slot[5]
-            return string[5:13] 
+        print(f"Unrecognized command: \"wtc-cal {command.strip()}\"")
     
-    return slot
+    elif len(sys.argv) == 1:
+        print("Please provide some options\n")
+        print("\tusage: wtc-cal <command> [<args>]")
 
 
-    def cancel_a_slot(id):
-    """This function blocks the user from deleting an event if it's already
-    booked, or if the patient tries to delte the slot."""
+    print('\nThese are wtc-cal commands that can be used in this Code Clinic:\n')
+    
+    print('setup and login')
+    print('\t'+commands_bold[0]+'\t\tInstall required packages')
+    print('\t'+commands_bold[1]+'\t\tUsed to login')
+    print('\t'+commands_bold[2]+'\t\tUsed to logout')
+    print('\t'+commands_bold[3]+'\t\tUsed to config\n')
 
-    user_email = user.get_user_details().get('email')
-    volunteer_email = attribute.get_attribute(id, 'email')
-    patient_email = attribute.get_attribute(id, 'patient')
-    status = attribute.get_attribute(id, 'status')
+    print('booking and slots')
+    print('\t'+commands_bold[4]+'\tCreate a slot to be booked by a patient [RUN-TIME]')
+    print('\t'+commands_bold[5]+'\t\tView slots that were created by volunteers [OPEN], [BOOKED]')
+    print('\t'+commands_bold[6]+'\t\tUsed to book an empty slot as a patient')
+    print('\t'+commands_bold[7]+'\tUsed to cancel a booking [PATIENTS]')
+    print('\t'+commands_bold[8]+'\t\tUsed to cancel an empty slot [VOLUNTEERS]\n')
 
-    if status == '[BOOKED]' and volunteer_email == user_email:
-        print(f"Sorry, you cannot cancel a {colored('[BOOKED]', 'red')} a booked slot.")
-    elif user_email == patient_email:
-        print(f"Please run 'wtc-cal cancel_booking <argv (id)>' to cancel your own booking.")
-    else:
-        cancel_open_slot(id)
+    print('calendars and viewing')
+    print('\t'+commands_bold[9]+'\tView your personal calendar on the terminal'

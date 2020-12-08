@@ -1,5 +1,5 @@
-from calendar_setup import *
-from bookings import *
+from calendar_setup.calendar_service import *
+from bookings.processing_data import *
 import sys
 import re
 import datetime as dt
@@ -42,6 +42,11 @@ def volunteer():
 
 
     print('\nThese are the dates for the next 7 days:\n')
+    # for i in range(7):
+    #     date = dt.date.today() + timedelta(days=i)
+    #     day = date.weekday()
+    #     print(f"\t{date} {day}")
+
     for i in dates:
         print('\t' + i, dates[i], weekdays(dates[i].weekday()+1), sep=' : ')
 
@@ -56,14 +61,13 @@ def volunteer():
         fail = colored("Failed", "red")
         start, end, summary, description = get_params()
 
-        if is_volunteering_valid(start, summary, user_email, description):
+        if is_volunteering_valid(start, user_email):
             id = create_event(start, end, summary, description, user_email)
         else:
             print(f"\nVolunteering {fail}.")
 
 
-# is_voluteering()
-def is_volunteering_valid(start, summary, user_email, descrption):
+def is_volunteering_valid(start, user_email):
     """
     This function checks if slot does not already exist and returns a boolean
     """
@@ -72,20 +76,34 @@ def is_volunteering_valid(start, summary, user_email, descrption):
     
     items = []
     for item in data:
-        if item[4] == user_email:
+        if item[4].get('email') == user_email:
             items.append(item)
 
-    if len(items) != 0:
+    if len(items) > 0:
+        
+        # Create current start and end datetime object
         start = parser.parse(start)
+        end = start + timedelta(minutes=30)
+
+        # Get new volunteer booking date and start-time in type str
         date = start.strftime("%Y-%m-%d")
-        time = start.strftime("%H:%M:%S")
+        start_time = start.strftime("%H:%M:%S")
+        
 
         for slot in items:
-            is_valid_1 = slot[0] == date and slot[1] == time
-            is_valid_2 = slot[2] == summary and slot[6] == descrption
+            # Get existing slot end-time and date in type str
+            end_time = start.strftime("%H:%M:%S")
+            date2 = parser.parse(slot[0] +" "+ slot[1]) + timedelta(minutes=30)
+            end_time2 = date2.strftime("%H:%M:%S") 
 
-            if is_valid_1 and is_valid_2:
-                print(colored("Double booking is not allowed", "red"))
+            # Condition to check if the times do not clash
+            time_validation = ((end_time <= slot[1] and end_time < end_time2) or 
+                (start_time >= end_time2 and end_time > slot[1]))
+
+            # Condition to check if booking is on the same day and whether the times clash
+            date_validation = slot[0] == date and time_validation
+            if date_validation == False:
+                print(colored("\nDouble booking is not allowed!", "red"))
                 return False
 
     return True
