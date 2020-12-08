@@ -1,9 +1,9 @@
 #!/usr/bin/python3
+import calendar_setup.setup
 from bookings.processing_data import save_to_ics
 import os
 import sys
 from login import user_auth
-from calendar_setup.setup import install_packages
 from bookings.list_calendars import *
 from bookings.volunteer import *
 from bookings.patient import *
@@ -11,11 +11,6 @@ from bookings.patient import *
 
 valid_sys_commands = ['setup', 'config', 'slot_details', 'my_cal', 'volunteer', 
 'status', 'login', 'logout', 'slots','book', 'cancel', 'logout', 'help']
-
-
-# for cmd in valid_sys_commands:
-#     commands_bold.append('\033[1m'+cmd+'\033[0m')
-
 
 
 def command_instructions():
@@ -63,10 +58,10 @@ def command_sys_argv():
     if len(sys.argv) >= 2 and sys.argv[1] in valid_sys_commands:
         command = sys.argv[1]
 
-        if 'setup' == command:
-            install_packages()
-            pass
-        elif 'status' == command:
+        # if 'setup' == command:
+        #     install_packages()
+        #     pass
+        if 'status' == command:
             user_auth.get_user_status()
         elif 'login' == command:
             user_auth.user_login()
@@ -80,7 +75,6 @@ def command_sys_argv():
             command_instructions()
         elif command in valid_sys_commands:
             if user_auth.get_login_state():
-                load_data()
                 if "slots" == command:
                     show_calendars()
                 elif "slot_details" == command:
@@ -103,5 +97,12 @@ def command_sys_argv():
 
 
 if __name__ == "__main__":
+    # This updates the data every time the program suns
+    data = load_data()
+    save_data(data)
+
+    # Auto logs out user after 30 mins
     user_auth.auto_logout()
+
+    # Runs wtc-cal commands
     command_sys_argv()

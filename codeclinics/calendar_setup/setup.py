@@ -1,6 +1,7 @@
 # import os
 import sys
 import subprocess
+import os
 
 
 def install_packages():
@@ -24,3 +25,7 @@ def install_packages():
     subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'icalendar'])
 
     print("\nSetup completed!\n")
+
+
+if os.path.exists(f"{sys.path[0]}/files/json/.config.json") == False:
+    install_packages()

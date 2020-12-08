@@ -61,7 +61,10 @@ def volunteer():
         fail = colored("Failed", "red")
         start, end, summary, description = get_params()
 
-        if is_volunteering_valid(start, user_email):
+        valid = all(arg != None for arg in [start, end, summary, description])
+        if valid == False:
+            print(f"\nVolunteering {fail}.")
+        elif is_volunteering_valid(start, user_email):
             id = create_event(start, end, summary, description, user_email)
         else:
             print(f"\nVolunteering {fail}.")
@@ -85,24 +88,31 @@ def is_volunteering_valid(start, user_email):
         start = parser.parse(start)
         end = start + timedelta(minutes=30)
 
-        # Get new volunteer booking date and start-time in type str
-        date = start.strftime("%Y-%m-%d")
-        start_time = start.time()
+        # Get new volunteer booking date, start-time and end-time
+        n_date = start.date()
+        n_start_time = start.time()
+        n_end_time = end.time()
         
 
         for slot in items:
-            # Get existing slot end-time and date in type str
-            end_time = start.time()
-            date2 = parser.parse(slot[0] +" "+ slot[1]) + timedelta(minutes=30)
-            end_time2 = date2.time() 
+            # Get old slot date, start-time
+            start = parser.parse(slot[0] +" "+ slot[1])
+            end = start + timedelta(minutes=30)
+
+            o_date = date.date()
+            o_start_time = start.time()
+            o_end_time = end.time() 
+
+            print(f"({n_end_time} <= {start_time} and {end_time} < {end_time2}) or {start_time} >= {end_time2} and {end_time} > {start_time})")
 
             # Condition to check if the times do not clash
             time_validation = ((end_time <= start_time and end_time < end_time2) or 
                 (start_time >= end_time2 and end_time > start_time))
 
-            
+            print(time_validation)
             # Condition to check if booking is on the same day and whether the times clash
-            date_validation = slot[0] == date and time_validation
+            date_validation = n_date == o_date and time_validation
+            print(date_validation)
             if date_validation == False:
                 print("\nDouble booking is not allowed!\n")
                 return False
@@ -118,19 +128,23 @@ def get_date(date):
 
     input_date_time = input("    Enter date (YYYY-MM-DD): ")
     match = re.match("\d\d\d\d-\d\d-\d\d", input_date_time) is None
-
     if match != None:
-       date_now = parser.parse(date)
-       input_date = parser.parse(input_date_time)
-       result = (input_date - date_now).days
-       
-       if result >= 0 and result <= 30:
-           return input_date
+
+        try:
+
+            date_now = parser.parse(date)
+            input_date = parser.parse(input_date_time)
+            result = (input_date - date_now).days      
+            if result >= 0 and result <= 30:
+                return input_date
+        except ValueError:
+            pass
     
     date_max = (parser.parse(date) + timedelta(days=30)).strftime("%Y-%m-%d")
     error_msg = (f"""\nInvalid input error.
     - Make sure the date is in the format (YYYY-MM-DD)
-    - Make sure the date is between the ({date}) and ({date_max})""")
+    - Make sure the date is between the ({date}) and ({date_max})
+    - Make sure all values are greater than zero""")
     
     return error_msg
     
@@ -145,6 +159,7 @@ def get_time(result_date, now_date):
     match = re.match("\d\d:\d\d:\d\d", input_time) is None
 
     if match != None:
+        # Value error check
         time = parser.parse(now_date) + timedelta(hours=1)
         input_date = parser.parse(now_date.split(" ",1)[0] + " " + input_time)
         input_time = parser.parse(input_time)
@@ -191,13 +206,12 @@ def get_params():
     summary, description = get_summary_and_description()
     now = datetime.now()
     date = get_date(now.strftime("%Y-%m-%d"))
-    if type(date) != datetime:
-        print(date)
+
+    if type(date) != dt.datetime:
         return None, None, None, None
 
     time = get_time(date, now.strftime("%Y-%m-%d %H:%M:%S"))
-    if type(time) != datetime:
-        print(time)
+    if type(time) != dt.time:
         return None, None, None, None
     
     if type(summary) == None:

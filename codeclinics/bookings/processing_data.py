@@ -80,7 +80,7 @@ def delete_slot(slot):
 
         print("Event cancelled!")
     else:
-        print("Cancellation Failed. Patient has already booked")
+        print("Cancellation Failed. \n\n - Patient has already booked\n")
 
 
 def delete_booking(slot, now):
@@ -111,8 +111,6 @@ def delete_booking(slot, now):
     # Compare date and time objects
     if date_now == date_slot and time_slot <= time_now:
         print("\nCannot cancel 15min befor session!\n")
-    elif user_email != slot[4].get('email'):
-        print("\nCannot cancel someone else's slot!\n")
     else:
         id = slot[5]
         event = service.events().get(calendarId='wtcteam19jhb@gmail.com', 
