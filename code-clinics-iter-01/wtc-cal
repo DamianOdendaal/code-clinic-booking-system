@@ -1,0 +1,123 @@
+#!/bin/python3
+# adding 'usr' to this does not work for me
+import os
+import sys
+import subprocess
+from setup import do_setup
+from login import user_auth as authentication
+from bookings import list_calendars as calendar
+from bookings import create_event as create
+from bookings import book_slot as book
+from bookings import cancel_open_slot as delete
+from bookings import cancel_booking as cancel_booking
+
+
+# valid_sys_commands = ['config', 'status', 'login', 'logout', 'slots',
+#     'book', 'cancel', 'cancel_booking','logout', 'my_cal', 'volunteer',
+#     'init', 'test', 'setup', 'help']
+
+
+valid_sys_commands = [
+    'setup','login','logout','config','volunteer','slots','book',
+    'cancel_booking','cancel','view-cal','status'
+]
+
+commands_bold = []
+
+for cmd in valid_sys_commands:
+    commands_bold.append('\033[1m'+cmd+'\033[0m')
+
+
+def command_instructions():
+    """Print out statements that shows how the booking system works."""
+
+    if len(sys.argv) >= 2 and sys.argv[1] != 'help':
+        command = ""
+        for arg in sys.argv[1:]:
+            command += f"{arg}"
+
+        print(f"Unrecognized command: \"wtc-cal {command.strip()}\"")
+    
+    elif len(sys.argv) == 1:
+        print("Please provide some options\n")
+        print("\tusage: wtc-cal <command> [<args>]")
+
+
+    print('\nThese are wtc-cal commands that can be used in this Code Clinic:\n')
+    
+    print('setup and login')
+    print('\t'+commands_bold[0]+'\t\tInstall required packages')
+    print('\t'+commands_bold[1]+'\t\tUsed to login')
+    print('\t'+commands_bold[2]+'\t\tUsed to logout')
+    print('\t'+commands_bold[3]+'\t\tUsed to config\n')
+
+    print('booking and slots')
+    print('\t'+commands_bold[4]+'\tCreate a slot to be booked by a patient [RUN-TIME]')
+    print('\t'+commands_bold[5]+'\t\tView slots that were created by volunteers [OPEN], [BOOKED]')
+    print('\t'+commands_bold[6]+'\t\tUsed to book an empty slot as a patient')
+    print('\t'+commands_bold[7]+'\tUsed to cancel a booking [PATIENTS]')
+    print('\t'+commands_bold[8]+'\t\tUsed to cancel an empty slot [VOLUNTEERS]\n')
+
+    print('calendars and viewing')
+    print('\t'+commands_bold[9]+'\tView your personal calendar on the terminal')
+
+def command_sys_argv():
+    """Different command line argument values that work with the booking system.
+    """
+
+    if len(sys.argv) == 2 and sys.argv[1] in valid_sys_commands:
+        command = sys.argv[1]
+
+        if 'status' == command:
+            authentication.get_user_status()
+        elif 'setup' == command:
+            do_setup()
+        elif 'config' == command:
+            authentication.show_config()
+        elif 'login' == command:
+            authentication.user_login()
+        elif 'logout' == command:
+            save_data()
+            authentication.user_logout()
+        elif "slots" == command:
+            if authentication.get_login_state():
+                calendar.get_slots_calendar()
+            else:
+                print("Please login to use this command!")
+        elif "my_cal" == command:
+            if authentication.get_login_state():
+                calendar.get_student_calendar()
+            else:
+                print("Please login to use this command!")
+        elif "volunteer" == command:
+            if authentication.get_login_state():
+                create.get_user_input()
+            else:
+                print("Please login to use this command!")
+
+        
+    elif len(sys.argv) == 3 and sys.argv[1] in valid_sys_commands:
+        command = sys.argv[1]
+        id = sys.argv[2]
+        if "book" == command:
+            if authentication.get_login_state():
+                book.confirm_bookings(id)
+                # print(id)
+            else:
+                print("Please login to use this command.")
+        elif "cancel" == command:
+            if authentication.get_login_state():
+                delete.cancel_a_slot(id)
+                # print(id)
+            else:
+                print("That event doesn't exist!")
+        elif "cancel_booking" == command:
+            if authentication.get_login_state():
+                cancel_booking.cancel_user_booking(id)
+                print(id)
+
+    else:
+        command_instructions()
+
+if __name__ == "__main__":
+    command_sys_argv()
