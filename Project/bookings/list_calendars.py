@@ -74,7 +74,7 @@ def show_code_clinics_calendar():
     for event in events:
         start = event['start'].get('dateTime', event['start'].get('date'))
 
-        print(event)
+        #print(event)
 
         if event['status'] == 'tentative':
             status = colors.get('available')

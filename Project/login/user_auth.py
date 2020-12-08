@@ -47,11 +47,18 @@ def get_user_details():
 def remove_token():
     """ Removing the token file if the user is not logged in or if the token
     file exists.""" 
+    is_found = True
 
     try:
         os.remove(path.realpath("token.pickle"))
     except FileNotFoundError:
         pass
+    #     is_found = False
+    #     print("You are already logged out!")
+    #     print("\nPlease run: \"wtc-cal login\"\n")
+    
+    # return is_found
+
 
 def get_login_state():
     """This function checks whether the user is logged in or not.

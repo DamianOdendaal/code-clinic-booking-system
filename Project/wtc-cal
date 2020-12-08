@@ -27,7 +27,7 @@ def command_instructions():
     print("\tview-cal\tRun this command to view your calendar")
     print("\tcancel\t\tRun this to command cancel a bookings or a voluteering slot\n")
 
-
+#export GOOGLE_APPLICATION_CREDENTIALS="/home/code-clinic-booking-system/Project/credentials.json"
 def command_sys_argv():
     """Different command line argument values that work with the booking system.
     """
