@@ -53,6 +53,15 @@ def remove_token():
     except FileNotFoundError:
         pass
 
+def get_login_state():
+    """This function checks whether the user is logged in or not.
+        > Returns a boolean."""
+    token_path = f"{sys.path[0]}/token.pickle"
+    if path.exists(token_path):
+        return True
+    else:
+        return False
+
 
 def validate_email(user_email):
     """Ths function checks if used email is in the WeThinkCode_ organization.
@@ -83,7 +92,7 @@ def writing_to_a_txt(current_user):
 
     user_file_txt = get_user_details()
     current_user = user_file_txt.get('email')
-    print(user_file_txt) 
+
     current_logged_in = open('current_login.txt', 'w')
     current_logged_in.write(current_user)
     current_logged_in.close()
@@ -93,9 +102,9 @@ def get_user_status():
     """Getting the status of the signed in user. If they're signed in, it should
     print out that the user is logged in, if not, then it should instructions to
     the user about loggin in."""
-
-    if path.exists('token.pickle'):
-        current_user = open("current_login.txt", 'r')
+    
+    if path.exists(sys.path[0]+'/token.pickle'):
+        current_user = open(os.path.abspath(sys.path[0]+"/current_login.txt"), 'r')
         user_email = current_user.readline()
         current_user.close()
         connected = colored('[CONNECTED]', 'green')
@@ -106,41 +115,32 @@ def get_user_status():
         print(offline + "\nPlease run: \"wtc-cal login\"")
 
 
-def get_login_state():
-    """
-    This function check's whether the user is logged in or not
-    Return:bool
-    """
-    if path.exists('token.pickle'):
-        return True
-    else:
-        return False   
-
-
 def user_login():
     """Signing the user by redirecting them to the sign in page. If they are
     logged in, print out a statemet. If they're not, create a token file for
     them."""
+  
+    if get_login_state() == False:
+        remove_token()
 
-    remove_token()
+        user_details = get_user_details()
+        user_email = user_details.get("email")
 
-    user_details = get_user_details()
-    user_email = user_details.get("email")
-
-    if not path.exists(path.abspath("token.pickle")):
-        validate_email(user_email)
-        writing_to_json_file(user_details)
-        writing_to_a_txt(user_email)
+        if not path.exists("../token.pickle"):
+            validate_email(user_email)
+            writing_to_json_file(user_details)
+            writing_to_a_txt(user_email)
+        else:
+            print("You are already logged in!")
     else:
         print("You are already logged in!")
-
 
 def user_logout():
     """Loggin out the user from the booking sysem."""
 
     try:
-        os.remove(path.abspath("token.pickle"))
+        os.remove(path.abspath(sys.path[0]+"/token.pickle"))
         print("You have been logged out from the system!")
     except FileNotFoundError:
         print("You already loggged out!")
-        print("Please run: \"wtc-cal login\"")
+        print("Please run: \"wtc-cal login\"")     
