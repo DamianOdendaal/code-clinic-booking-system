@@ -54,14 +54,14 @@ def command_sys_argv():
     """
     This function handles command line arguments that work with the booking system.
     """
+    save_to_xlsx()
 
     if len(sys.argv) >= 2 and sys.argv[1] in valid_sys_commands:
         command = sys.argv[1]
 
-        # if 'setup' == command:
-        #     install_packages()
-        #     pass
-        if 'status' == command:
+        if 'setup' == command:
+            install_packages()
+        elif 'status' == command:
             user_auth.get_user_status()
         elif 'login' == command:
             user_auth.user_login()

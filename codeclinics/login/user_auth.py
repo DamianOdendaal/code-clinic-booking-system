@@ -1,4 +1,5 @@
 from os import path
+from pathlib import Path
 from calendar_setup.calendar_service import *
 from datetime import datetime, timedelta
 from termcolor import colored
@@ -10,7 +11,7 @@ from bookings.list_calendars import get_code_clinics_calendar
 
 # The token file location
 token_path = f'{sys.path[0]}/creds/token.pickle'
-config_path = f"{sys.path[0]}/files/json/.config.json"
+config_path = f"{sys.path[0]}/.config.json"
 
 
 def get_time_date():
@@ -180,24 +181,24 @@ def auto_logout():
     if path.exists(token_path):
     
         data = None
-
-        with open(config_path, 'r') as json_file:
-            data = json.load(json_file)
+        if os.path.exists(config_path):
+            with open(config_path, 'r') as json_file:
+                data = json.load(json_file)
     
-        # Parse type string date and time objects to integer type objects
-        hours = int(data['time'][:2])
-        mins = int(data['time'][3:5])
-        mon = int(data['date'][:2])
-        day = int(data['date'][3:5])
-        year = int('20'+data['date'][6:8])
-        
-        #logout_time = date + timedelta(minutes=30)
-        date = datetime(year=year, month=mon, day=day, hour=hours, minute=mins)    
-        logout_time = date + timedelta(minutes=30)
-        
-        if(datetime.now() > logout_time):
-            save_data(get_code_clinics_calendar())
-            remove_token()
-            return True
+            # Parse type string date and time objects to integer type objects
+            hours = int(data['time'][:2])
+            mins = int(data['time'][3:5])
+            mon = int(data['date'][:2])
+            day = int(data['date'][3:5])
+            year = int('20'+data['date'][6:8])
+            
+            #logout_time = date + timedelta(minutes=30)
+            date = datetime(year=year, month=mon, day=day, hour=hours, minute=mins)    
+            logout_time = date + timedelta(hours=3)
+            
+            if(datetime.now() > logout_time):
+                save_data(get_code_clinics_calendar())
+                remove_token()
+                return True
 
     return False   

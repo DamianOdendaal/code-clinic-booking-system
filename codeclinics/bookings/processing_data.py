@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 from dateutil import parser
 import json
 from termcolor import colored
+import pandas as pd
 
 
 # iCal calendar object
@@ -21,8 +22,7 @@ def get_user():
     """
 
     user_details = None
-    config_path = f"{sys.path[0]}/files/json/.config.json"
-    with open(config_path, 'r') as json_file:
+    with open(f"{sys.path[0]}.config.json", 'r') as json_file:
         user_details = json.load(json_file)
 
     user_email = user_details.get('email')
@@ -139,7 +139,7 @@ def save_data(data):
             json.dump(data, file, indent=4)
 
         save_to_ics(data)
-        # save_to_xls(data)
+        save_to_xlsx()
 
 
 def load_data():
@@ -194,14 +194,14 @@ def save_to_ics(data):
         file.write(cal.to_ical())
     
 
-def save_to_xls(json_path):
+def save_to_xlsx():
     """
     This function converts .json data file to a .xls file format and saves it
     """
     
-    file_path = f"{sys.path[0]}/files/xls/data.xls" 
-    with open(file_path, 'w') as file:
-        # json.dump(data, file, indent=4)
-        pass
+    file_path = f"{sys.path[0]}/files/xlsx/data.xls" 
+    pd.read_json(f"{sys.path[0]}/files/data.json").to_excel(file_path)
+    print("TF")
 
+# save_to_xlsx()
 

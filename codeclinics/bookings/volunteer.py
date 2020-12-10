@@ -247,6 +247,7 @@ def create_event(start, end, summary, description, email):
     service = get_service()
 
     event_result = service.events().insert(calendarId='wtcteam19jhb@gmail.com',
+        conferenceDataVersion=1,
         body={
             "summary": summary,
             "description": description,
@@ -260,25 +261,16 @@ def create_event(start, end, summary, description, email):
             },
             "status": 'tentative',
             "creator": { "email": email },
-            # "conferenceData": None
-
+            "conferenceData": {
+                "createRequest": { 
+                    "requestId": "",
+                    "conferenceSolutionKey": {
+                        "type": "hangoutsMeet"
+                    } 
+                }
+            }
         }).execute()
-
-
-    # eventPatch = {
-    #     "conferenceData": {
-    #         "createRequest": { "requestId": "WTC_JHB_19" }
-    #     }
-    # }
-
-    # event_patch = service.events().patch({
-    #     "calendarId": "wtcteam19jhb@gmail.com",
-    #     "eventId": event_result['id'],
-    #     "resource": eventPatch,
-    #     "sendNotifications": True,
-    #     "conferenceDataVersion": 1
-    #     }).execute()
-
+        
     msg = colored("Created [OPEN] volunteer slot", "cyan")
     print(f"\n\n{msg}\n")
     print("\tCreator:\t", email)
