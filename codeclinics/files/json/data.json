@@ -1,0 +1,122 @@
+[
+    [
+        "2020-12-09",
+        "14:00:00",
+        "whatever",
+        "-",
+        {
+            "email": "tsoulo@student.wethinkcode.co.za"
+        },
+        "r58pit58s1q58b0mljl6179s94",
+        "[OPEN]",
+        "ever"
+    ],
+    [
+        "2020-12-10",
+        "08:00:00",
+        "Lol",
+        "-",
+        {
+            "email": "kmohlabu@student.wethinkcode.co.za"
+        },
+        "hse00npqqc9q23kdus2druh7ao",
+        "[OPEN]",
+        "LOL"
+    ],
+    [
+        "2020-12-10",
+        "10:00:00",
+        "Lambda Functions",
+        "nknkosi@student.wethinkcode.co.za",
+        {
+            "email": "tetema@student.wethinkcode.co.za"
+        },
+        "3ma6mtbd9nqmjkq7l7tcdar4mg",
+        "[BOOKED]",
+        "Hello World!"
+    ],
+    [
+        "2020-12-10",
+        "10:00:00",
+        "rest bafethu",
+        "-",
+        {
+            "email": "tetema@student.wethinkcode.co.za"
+        },
+        "affpio331p6jtv38v768tlp0n0",
+        "[OPEN]",
+        "rest rest rest"
+    ],
+    [
+        "2020-12-10",
+        "13:00:00",
+        "Arrays",
+        "-",
+        {
+            "email": "tsoulo@student.wethinkcode.co.za"
+        },
+        "24b0qmog250jjc17nbidt8ij3g",
+        "[OPEN]",
+        "len()"
+    ],
+    [
+        "2020-12-10",
+        "13:00:00",
+        "Unit testing",
+        "tetema@student.wethinkcode.co.za",
+        {
+            "email": "tsoulo@student.wethinkcode.co.za"
+        },
+        "hlt6p26jj5tnjgo9d07thllh08",
+        "[BOOKED]",
+        "testing"
+    ],
+    [
+        "2020-12-11",
+        "12:30:00",
+        "Home",
+        "-",
+        {
+            "email": "kmohlabu@student.wethinkcode.co.za"
+        },
+        "46piglsirne511olm72i6nilkc",
+        "[OPEN]",
+        "Home"
+    ],
+    [
+        "2020-12-12",
+        "12:30:00",
+        "Home",
+        "-",
+        {
+            "email": "kmohlabu@student.wethinkcode.co.za"
+        },
+        "g5q7j2f0k2ieijo61jh9scf1v0",
+        "[OPEN]",
+        "Home"
+    ],
+    [
+        "2020-12-13",
+        "12:30:00",
+        "rest",
+        "tsoulo@student.wethinkcode.co.za",
+        {
+            "email": "kmohlabu@student.wethinkcode.co.za"
+        },
+        "7ebltphugb2ocdrf70avuffukk",
+        "[BOOKED]",
+        "rest"
+    ],
+    [
+        "2020-12-13",
+        "12:30:00",
+        "Some",
+        "-",
+        {
+            "email": "kmohlabu@student.wethinkcode.co.za"
+        },
+        "dkilkl753qml5nif57o7gtmjk0",
+        "[OPEN]",
+        "Some"
+    ]
+]
