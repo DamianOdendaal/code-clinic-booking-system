@@ -22,18 +22,6 @@ def show_calendars(prompt=None):
     elif prompt == None:
         print("\nCode Clinics Calendar")
         print_slots(get_code_clinics_calendar())
-    
-    else:
-        command = sys.argv[1]
-        if (len(sys.argv) == 3 and (command == 'slots' or command == "my_cal")
-            and sys.argv[2].isdigit()):
-            get_time_constraints(int(sys.argv[2]))
-        else:
-            command = ""
-            for arg in sys.argv[1:]:
-                command += f"{arg} "
-            print(f"Unrecognized command: \"wtc-cal {command.strip()}\"")
-
 
 
 def print_slots(data):
@@ -41,26 +29,27 @@ def print_slots(data):
     This function will print out the slots
     """
 
-    date = colored("DATE", 'green')
-    time = colored("TIME", 'green')
-    summary = colored("SUMMARY", 'cyan')
-    volunteer = colored("VOLUNTEER", 'red')
-    creator = colored("CREATOR", 'red')
-    patient = colored("PATIENT", "magenta")
-    id = colored("ID", "yellow")
+    if data != []:
+        date = colored("DATE", 'green')
+        time = colored("TIME", 'green')
+        summary = colored("SUMMARY", 'cyan')
+        volunteer = colored("VOLUNTEER", 'red')
+        creator = colored("CREATOR", 'red')
+        patient = colored("PATIENT", "magenta")
+        id = colored("ID", "yellow")
 
-    table = PrettyTable()
+        table = PrettyTable()
 
-    if len(data[0]) == 5:
-        table.field_names = [date, time, summary, creator, id]
-    else:
-        table.field_names = [date, time, summary, patient, 
-                            volunteer, id, "STATUS"]
-        data = formatted_data_output(data)
-   
-    for entry in data:
-        table.add_row(entry)
-    print(table)
+        if len(data[0]) == 5:
+            table.field_names = [date, time, summary, creator, id]
+        else:
+            table.field_names = [date, time, summary, patient, 
+                                volunteer, id, "STATUS"]
+            data = formatted_data_output(data)
+    
+        for entry in data:
+            table.add_row(entry)
+        print(table)
 
 
 def formatted_data_output(data):
@@ -148,11 +137,10 @@ def get_code_clinics_calendar():
             status = "[BOOKED]"
             patient = event['attendees'][0]['email']
 
-        # if "func" == event['summary']:
-        #     for item in event.items():
-        #         print(item)
+        hangout_link = event.get("hangoutLink")
+
         data.append([date, time, event['summary'], patient, event['creator'],
-                    event['id'], status, event.get('description')])
+                    event['id'], status, event.get('description'), hangout_link])
 
     return data
 

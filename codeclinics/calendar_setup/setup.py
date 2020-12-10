@@ -21,9 +21,11 @@ def install_packages():
     subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'termcolor'])
     subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'ptable'])
     subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'ics'])
-    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'jsonlib-python3'])
     subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'icalendar'])
     subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'pandas'])
+    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'openpyxl', 'xlsxwriter', 'xlrd'])
+    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'jsonlib-python3'])
+
 
 
     print("\nSetup completed!\n")

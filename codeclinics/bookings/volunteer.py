@@ -269,7 +269,8 @@ def create_event(start, end, summary, description, email):
                     } 
                 }
             }
-        }).execute()
+        },
+        sendUpdates=all).execute()
         
     msg = colored("Created [OPEN] volunteer slot", "cyan")
     print(f"\n\n{msg}\n")

@@ -49,18 +49,21 @@ def get_user_details():
     return user_details
 
 
-def remove_token():
+def remove_token(prompt=None):
     """ Removing the token file if the user is not logged in or if the token
     file exists.""" 
 
     is_found = True
 
-    try:
-        os.remove(token_path)
-    except FileNotFoundError:
-        is_found = False
-        print("You already loggged out!")
-        print("\nPlease run: \"wtc-cal login\"\n")
+    if prompt != None:
+        is_found = os.path.exists(token_path)
+    elif prompt == None:
+        try:
+            os.remove(token_path)
+        except FileNotFoundError:
+            is_found = False
+            print("You already loggged out!")
+            print("\nPlease run: \"wtc-cal login\"\n")
 
     return is_found
 
@@ -127,6 +130,9 @@ def user_logout():
 
     if remove_token():
         print(colored("You have successfully logged out!", "yellow"))
+        return True
+
+    return False
 
 
 def get_login_state():

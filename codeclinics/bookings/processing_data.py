@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 from dateutil import parser
 import json
 from termcolor import colored
-import pandas as pd
+# import pandas as pd
 
 
 # iCal calendar object
@@ -22,7 +22,7 @@ def get_user():
     """
 
     user_details = None
-    with open(f"{sys.path[0]}.config.json", 'r') as json_file:
+    with open(f"{sys.path[0]}/.config.json", 'r') as json_file:
         user_details = json.load(json_file)
 
     user_email = user_details.get('email')
@@ -139,7 +139,7 @@ def save_data(data):
             json.dump(data, file, indent=4)
 
         save_to_ics(data)
-        save_to_xlsx()
+        # save_to_xlsx(data)
 
 
 def load_data():
@@ -164,7 +164,7 @@ def save_to_ics(data):
     """
 
     for e in data:
-        start = datetime.fromisoformat(e[0] + "T" + e[1] + "+02:00")
+        start = dt.datetime.fromisoformat(e[0] + "T" + e[1] + "+02:00")
         end = start + timedelta(minutes=30)
         email = e[4].get('email')
         organizer = vCalAddress(f"MAILTO:{email}")
@@ -194,14 +194,36 @@ def save_to_ics(data):
         file.write(cal.to_ical())
     
 
-def save_to_xlsx():
+def save_to_xlsx(data):
     """
     This function converts .json data file to a .xls file format and saves it
     """
-    
-    file_path = f"{sys.path[0]}/files/xlsx/data.xls" 
-    pd.read_json(f"{sys.path[0]}/files/data.json").to_excel(file_path)
-    print("TF")
 
-# save_to_xlsx()
+    date = []
+    time = []
+    summary = []
+    patient = []
+    volunteer = []
+    id = []
+    status = []
+    description = []
+
+    for object in data:
+        date.append(object[0])
+        time.append(object[1])
+        summary.append(object[2])
+        patient.append(object[3])
+        volunteer.append(object[4])
+        id.append(object[5])
+        status.append(object[6])
+        description.append(object[7])
+
+    formatted_data = {"Date": dates, "Time": time , "Summary": summary,
+        "Patient": patient, "Volunteer": volunteer, "ID": id, "Status": status,
+        "Description": description}
+
+    df = pd.DataFrame(formatted_data)
+
+    df.to_excel(f"{sysz.path[0]}/files/xlsx/data.xlsx")
+
 
