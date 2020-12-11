@@ -125,10 +125,10 @@ def user_login():
         print("You are already logged in!")
 
 
-def user_logout():
+def user_logout(prompt=None):
     """Loggin out the user from the booking sysem."""
 
-    if remove_token():
+    if remove_token(prompt):
         print(colored("You have successfully logged out!", "yellow"))
         return True
 

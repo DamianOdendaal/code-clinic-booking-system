@@ -40,8 +40,8 @@ def print_slots(data):
 
         table = PrettyTable()
 
-        if len(data[0]) == 5:
-            table.field_names = [date, time, summary, creator, id]
+        if len(data[0]) == 4:
+            table.field_names = [date, time, summary, creator]
         else:
             table.field_names = [date, time, summary, patient, 
                                 volunteer, id, "STATUS"]
@@ -162,7 +162,7 @@ def get_primary_calendar():
         date, time = get_date_and_time(start)
 
         data.append([date, time, event['summary'],
-                    event['creator'].get('email'), event['id'].upper()])
+                    event['creator'].get('email')])
 
     return data
 

@@ -1,14 +1,15 @@
 import os
 import sys
 import unittest
-import datetime
 from login import user_auth
-from datetime import datetime
+from datetime import datetime, timedelta
 ##### Calendar setup imports
 import googleapiclient.discovery
 from calendar_setup import calendar_service, setup
-import datetime
+from os import 
+# import datetime
 import pytz
+##### Bookings imports
 
 
 class LoginTestCase(unittest.TestCase):
@@ -80,7 +81,7 @@ class LoginTestCase(unittest.TestCase):
         """
         This tests the user_login() function.
         """
-        pass
+        
     
 
     def test_user_logout(self):
@@ -89,10 +90,10 @@ class LoginTestCase(unittest.TestCase):
         """
         output = None
         if os.path.exists(f"{sys.path[0]}/creds/token.pickle"):
-            output = user_auth.user_logout()
+            output = user_auth.user_logout("test")
             self.assertTrue(output)
         else:
-            output = user_auth.user_logout()
+            output = user_auth.user_logout("test")
             self.assertFalse(output)
 
         
@@ -115,7 +116,7 @@ class LoginTestCase(unittest.TestCase):
         pass
 
         
-    def test_get_user_email():
+    def test_get_user_email(self):
         """
         This tests the get_user_email() function.
         """
@@ -125,14 +126,15 @@ class LoginTestCase(unittest.TestCase):
         self.assertNotEqual(output, '')
 
     
-    def test_auto_logout():
+    def test_auto_logout(self):
         """
         This tests the test_auto_logout() function.
         """
         
-        output = user_auth.auto_logout()
+        # output = user_auth.auto_logout()
 
         #must use datetime stuff
+        pass
 
 
 class CalendarSetupTestCase(unittest.TestCase):

@@ -29,9 +29,3 @@ def install_packages():
 
 
     print("\nSetup completed!\n")
-
-
-# This installs packages once since the first time you run the code you dont have the .config file yet
-if os.path.exists(f"{sys.path[0]}/.config.json") == False:
-    install_packages()
-    os.system('clear')

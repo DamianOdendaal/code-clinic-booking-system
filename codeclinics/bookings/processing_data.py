@@ -97,16 +97,13 @@ def delete_booking(slot, now):
     # Get date now and booking date
     date_now = now.date()
     date_slot = start.date()
-    # print(date_now)
-    # print(date_slot)
+
 
     # Get time now and booking start date 15 minutes prior
     start = start - timedelta(minutes=15)
     time_slot = start.time()
     time_now = now.time()
 
-    # print(time_now)
-    # print(time_slot)
     user_email = get_user()[0]
     # Compare date and time objects
     if date_now == date_slot and time_slot <= time_now:
@@ -139,7 +136,6 @@ def save_data(data):
             json.dump(data, file, indent=4)
 
         save_to_ics(data)
-        # save_to_xlsx(data)
 
 
 def load_data():
@@ -193,37 +189,4 @@ def save_to_ics(data):
     with open(file_path, 'wb') as file:
         file.write(cal.to_ical())
     
-
-def save_to_xlsx(data):
-    """
-    This function converts .json data file to a .xls file format and saves it
-    """
-
-    date = []
-    time = []
-    summary = []
-    patient = []
-    volunteer = []
-    id = []
-    status = []
-    description = []
-
-    for object in data:
-        date.append(object[0])
-        time.append(object[1])
-        summary.append(object[2])
-        patient.append(object[3])
-        volunteer.append(object[4])
-        id.append(object[5])
-        status.append(object[6])
-        description.append(object[7])
-
-    formatted_data = {"Date": dates, "Time": time , "Summary": summary,
-        "Patient": patient, "Volunteer": volunteer, "ID": id, "Status": status,
-        "Description": description}
-
-    df = pd.DataFrame(formatted_data)
-
-    df.to_excel(f"{sysz.path[0]}/files/xlsx/data.xlsx")
-
 
