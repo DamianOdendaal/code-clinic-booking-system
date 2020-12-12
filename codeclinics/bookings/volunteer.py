@@ -48,8 +48,12 @@ def volunteer():
     #     day = date.weekday()
     #     print(f"\t{date} {day}")
 
-    for i in dates:
-        print('\t' + i, dates[i], weekdays(dates[i].weekday()+1), sep=' : ')
+    for v,i in enumerate(dates):
+        if v == 0:
+            current_day = f" {colored('[Current DAY]', 'yellow')}"
+            print('\t' + i, weekdays(dates[i].weekday()+1) + current_day, sep=': ')
+        else:  
+            print('\t' + i, weekdays(dates[i].weekday()+1), sep=': ')
 
 
     if len(sys.argv) != 2:
