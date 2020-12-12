@@ -1,111 +1,109 @@
-#!/bin/python3
+#!/usr/bin/python3
+import calendar_setup.setup
+from bookings.processing_data import save_to_ics
 import os
 import sys
-import subprocess
-from login import user_auth as authentication
-from bookings import list_calendars as calendar
-from bookings import create_event as create
-from bookings import book_slot as book
-from bookings import cancel_open_slot as delete
-from bookings import cancel_booking as cancel_booking
-import json
-from datetime import datetime, timedelta
+from login import user_auth
+from bookings.list_calendars import *
+from bookings.volunteer import *
+from bookings.patient import *
 
 
-valid_sys_commands = ['register', 'status', 'login', 'logout', 'slots',
-    'book', 'cancel', 'cancel_booking','logout', 'view-cal', 'volunteer']
+valid_sys_commands = ['setup', 'config', 'slot_details', 'my_cal', 'volunteer', 
+'status', 'login', 'logout', 'slots','book', 'cancel', 'logout', 'help']
+
 
 def command_instructions():
-    """Print out statements that shows how the booking system works."""
+    """
+    This function prints out statements that shows how the booking system works.
+    """
+    
+    if len(sys.argv) >= 2 and sys.argv[1] != 'help':
+        command = ""
+        for arg in sys.argv[1:]:
+            command += f"{arg} "
+        print(f"Unrecognized command: \"wtc-cal {command.strip()}\"")
+    elif len(sys.argv) == 1:
+        print("Please provide some options\n")
+        print("\tusage: wtc-cal <command> [args]")
+
     
     print('\nThese are wtc-cal commands that can be used in this Code Clinic:\n')
 
-    print("\tstatus\t\tRun this command to check the connection")
-    print("\tlogin\t\tRun this command to log into the calendars")
-    print("\tlogout\t\tRun this command to logout of the calendar")
-    print("\tslots\t\tRun this command to see all slots [BOOKED], [OPEN]")
-    print("\tbook\t\tRun this command to book someone's slot")
-    print("\tvolunteer\tRun this command to open a slot for someone")
-    print("\tview-cal\tRun this command to view your calendar")
-    print("\tcancel\t\tRun this to command cancel a bookings or a voluteering slot\n")
+    print("\thelp\t\tView commands to run wtc-cal tool\n")
+
+    print('setup and login')
+    print('\t\t\tUsed to setup the wtc-cal tool')
+    print('\tstatus\t\tUsed to check user connection status')
+    print('\tlogin\t\tUsed to login')
+    print('\tlogout\t\tUsed to logout')
+    print('\tconfig\t\tUsed to config\n')
+    
+    print('processing slots')
+    print('\tvolunteer\tCreate a slot to be booked')
+    print('\tbook\t\tUsed to book an empty slot as a patient')
+    print('\tcancel\t\tUsed to cancel a booking or volunteering slot\n')
+
+    print('calendars and viewing')
+    print('\tslots\t\tView volunteer slots')
+    print("\tslot_details \tView details of a given slot")
+    print('\tmy_cal\t\tView your personal calendar\n\n')
 
 
 def command_sys_argv():
-    """Different command line argument values that work with the booking system.
+    """
+    This function handles command line arguments that work with the booking system.
     """
 
-    if len(sys.argv) == 2 and sys.argv[1] in valid_sys_commands:
+    if len(sys.argv) >= 2 and sys.argv[1] in valid_sys_commands:
         command = sys.argv[1]
 
+        # if 'setup' == command:
+        #     install_packages()
+        #     pass
         if 'status' == command:
-            authentication.get_user_status()
+            user_auth.get_user_status()
         elif 'login' == command:
-            authentication.user_login()
+            user_auth.user_login()
+        elif 'config' == command:
+            user_auth.show_config()
         elif 'logout' == command:
-            authentication.user_logout()
-        elif "slots" == command:
-            if authentication.get_login_state():
-                calendar.get_slots_calendar()
+            if os.path.exists(f"{sys.path[0]}/creds/token.pickle"):
+                save_data(get_code_clinics_calendar())
+            user_auth.user_logout()
+        elif 'help' == command:
+            command_instructions()
+        elif command in valid_sys_commands:
+            if user_auth.get_login_state():
+                if "slots" == command:
+                    show_calendars()
+                elif "slot_details" == command:
+                    slot_details()
+                elif "my_cal" == command:
+                    show_calendars('primary')
+                elif "book" == command:
+                    book()
+                    save_data(get_code_clinics_calendar())
+                elif "volunteer" == command:
+                    volunteer()
+                    save_data(get_code_clinics_calendar())
+                elif "cancel" == command:
+                    cancel()
+                    save_data(get_code_clinics_calendar())
             else:
-                print("Please login to use this command.")  
-        elif "view-cal" == command:
-            if authentication.get_login_state():
-                calendar.get_student_calendar()
-            else:
-                print("Please login to use this command.")    
-        elif "volunteer" == command:
-            if authentication.get_login_state():
-                create.get_user_input()
-            else:
-                print("Please login to use this command.")    
-        
-    elif len(sys.argv) == 3 and sys.argv[1] in valid_sys_commands:
-        command = sys.argv[1]
-        id = sys.argv[2]
-        if "book" == command:
-            if authentication.get_login_state():
-                book.create_bookings(id)
-                print(id)
-            else:
-                print("Please login to use this command.")
-        elif "cancel" == command:
-            """ """
-            if authentication.get_login_state():
-                delete.cancel_open_slot(id)
-                print(id)
-            else:
-                print("That event doesn't exist!")
-        elif "cancel_booking" == command:
-            if authentication.get_login_state():
-                cancel_booking.cancel_booking(id)
-                print(id)
-
-
-
+                print("\n  Please login to use this command!\n")
     else:
         command_instructions()
 
 
-def login_time():
-    file_path = f"{sys.path[0]}/.config.json"
-    with open(file_path) as json_file:
-        data = json.load(json_file)
-    #get the time
-    hours = int(data['time'][0]+data['time'][1])
-    mins = int(data['time'][3]+data['time'][4])
-    #get the day
-    day = int(data['date'][3]+data['date'][4])
-    mon = int(data['date'][0]+data['date'][1])
-    year = int('20'+data['date'][6]+data['date'][7])
-    
-    #logout_time = date + timedelta(minutes=30)
-    date = datetime(year=year, month=mon, day=day, hour=hours, minute=mins)    
-    logout_time = date + timedelta(minutes=30)
-    
-    if(datetime.now() > logout_time):
-        authentication.remove_token()  
-    return False    
-
 if __name__ == "__main__":
-    login_time()
+    if user_auth.get_login_state():
+    # This updates the data every time wtc-cal is ran that is if you are 
+    # logged in
+        save_data(get_code_clinics_calendar())
+
+    # Auto logs out user after 30 mins
+    user_auth.auto_logout()
+
+    # Runs wtc-cal commands
     command_sys_argv()
