@@ -40,13 +40,19 @@ def is_booking_valid(id):
     return True
 
 
+def accepted():
+    """ """
+
+
+
+
 def book():
     """
     This function books a volunteer slot if its available
     """
 
     service = get_service()
-    volunteer = event['creator'].get('email')
+    
 
     
     if len(sys.argv) != 3:
@@ -60,13 +66,19 @@ def book():
 
             event = service.events().get(calendarId='wtcteam19jhb@gmail.com', 
             maxAttendees = 1, eventId=id).execute()
-
+            
+            volunteer = event['creator'].get('email')
             event['status'] = 'confirmed'
             attendee = get_user()[0]
+
             event['attendees'] = [
                 {
                     "email": attendee,
-                    "email": volunteer
+                    "responseStatus": 'accepted'
+                },
+                {
+                    'email': volunteer,
+                    "responseStatus": 'accepted'
                 }
             ]
 

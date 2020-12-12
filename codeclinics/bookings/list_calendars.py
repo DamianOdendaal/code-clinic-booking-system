@@ -176,10 +176,10 @@ def get_primary_calendar():
     for event in events:
         start = event['start'].get('dateTime', event['start'].get('date'))
         date, time = get_date_and_time(start)
-
+         
         data.append([date, time, event['summary'],
                     event['creator'].get('email'), event['id']])
-
+     
     return data
 
 
