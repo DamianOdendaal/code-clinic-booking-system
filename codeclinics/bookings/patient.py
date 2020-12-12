@@ -46,6 +46,8 @@ def book():
     """
 
     service = get_service()
+    volunteer = event['creator'].get('email')
+
     
     if len(sys.argv) != 3:
         command = ""
@@ -64,6 +66,7 @@ def book():
             event['attendees'] = [
                 {
                     "email": attendee,
+                    "email": volunteer
                 }
             ]
 
