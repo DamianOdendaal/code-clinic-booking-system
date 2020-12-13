@@ -63,12 +63,14 @@ class LoginTestCase(unittest.TestCase):
             self.assertFalse(output)
 
 
-    # def test_validate_email(self):
-    #     """
-    #     This tests the validate_email() function's
-    #     output from login.user_auth.py.
-    #     """
-    #     pass
+    @patch('login.user_auth.validate_email',return_value='jdoe@wethinkcode.co.za')
+    def test_validate_email(self, input):
+        """
+        This tests the validate_email() function's
+        output from login.user_auth.py.
+        """
+        output = user_auth.validate_email(user_email=str)
+        self.assertEqual(output, 'jdoe@wethinkcode.co.za')
 
 
     def test_writing_to_json_file(self):
@@ -189,13 +191,6 @@ class CalendarSetupTestCase(unittest.TestCase):
     """
     Test cases for the "setup" module
     """
-    # def test_install_packages(self):
-    #     """
-    #     This tests the install_packages() function
-    #     """
-
-    #     pass
-
 
 class BookingsTestCase(unittest.TestCase):
     """
