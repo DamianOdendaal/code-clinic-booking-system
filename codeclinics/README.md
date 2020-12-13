@@ -11,6 +11,12 @@ Path:
 ~/code-clinic-booking-system/codeclinics/files/ics
 ```
 
+### Things still to be Done
+
+1. Adding more tests for certain modules.
+2. Adding a functionality that will make the volunteer and patient 'status' to the event respond to 'Going' instead of 'Maybe'.
+3. Making the terminal scroll horizontally rather than text wrapping information - and making the terminal output be clustered.
+
 ## Cloning the repo
 
 Please add the git repo to your home directory. Run all the steps in order as they appear in this document:
