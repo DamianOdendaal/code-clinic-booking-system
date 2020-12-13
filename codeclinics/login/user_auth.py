@@ -139,9 +139,7 @@ def get_login_state():
 
 
 def show_config():
-    """
-    This function displays the config file
-    """
+    """This function displays the config file."""
 
     config = None
     if os.path.exists(config_path):
@@ -157,7 +155,7 @@ def show_config():
         print("}")
     else:
         print("Config file does not exist")
-   
+
 
 def get_user_email():
     """Getting the data from the json file"""

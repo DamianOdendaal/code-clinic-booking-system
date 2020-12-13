@@ -11,9 +11,7 @@ from dateutil import parser
 
 
 def show_calendars(prompt=None):
-    """
-    This will get all the available slots form the WTC calendar. 
-    """
+    """This will get all the available slots form the WTC calendar."""
 
     if prompt == "primary":
         user_name = get_user()[1] 
@@ -35,11 +33,9 @@ def show_calendars(prompt=None):
             print(f"Unrecognized command: \"wtc-cal {command.strip()}\"")
 
 
-
 def print_slots(data):
-    """
-    This function will print out the slots
-    """
+    """This function will print out the calendars - for both student and calendar
+    slots."""
 
     date = colored("DATE", 'green')
     time = colored("TIME", 'green')
@@ -53,8 +49,8 @@ def print_slots(data):
 
     if data != []:
 
-        if len(data[0]) == 5:
-            table.field_names = [date, time, summary, creator, id]
+        if len(data[0]) == 4:
+            table.field_names = [date, time, summary, creator]
         else:
             table.field_names = [date, time, summary, patient, 
                                 volunteer, id, "STATUS"]
@@ -64,17 +60,17 @@ def print_slots(data):
             table.add_row(entry)
         print(table)
     else:
-        print("EMPTY SHANDIES")
+        print("There are no upcoming events.")
+        print("   Run 'wtc-cal volunteer' to create a slot!")
 
 
 def formatted_data_output(data):
-    """
-    This function formats the data to add color to some content when it will be
-    printed out and returns the formated data
-    """
+    """This function formats the data to add color to some content when it will be
+    printed out and returns the formated data."""
 
     print_data = []
 
+    # Data for STUDENT CALENDAR
     if len(data[0]) == 5:
         for item in data:
             # Make the summary limited to 12 characters if it exceeds 15
@@ -86,7 +82,7 @@ def formatted_data_output(data):
             
         return print_data
 
-
+    # Data for SLOTS CALENDAR
     for item in data:
         # Make the summary limited to 12 characters if it exceeds that number
         info = item[2]
@@ -102,7 +98,6 @@ def formatted_data_output(data):
         else:
             patient = item[3]
 
-        # Add color to the status output
         if item[6] == "[OPEN]":
             status = colored("[OPEN]", "cyan")
         elif item[6] == "[BOOKED]":
@@ -118,10 +113,9 @@ def formatted_data_output(data):
 
 
 def get_date_and_time(date_time):
-    """
-    This function takes a datetime object and returns a seperate date and time
-    strings
-    """
+    """This function takes a datetime object and returns a seperate date and time
+    strings."""
+
     date_time = parser.parse(date_time)
     time = date_time.strftime("%H:%M:%S")
     date = date_time.strftime("%Y-%m-%d")
@@ -130,9 +124,7 @@ def get_date_and_time(date_time):
 
   
 def get_code_clinics_calendar():
-    """
-    This function returns the code-clinics calendar
-    """
+    """This function returns the code-clinics calendar."""
 
     events_results = get_events_results('wtcteam19jhb@gmail.com')
     events = events_results.get('items', [])
@@ -152,9 +144,6 @@ def get_code_clinics_calendar():
             status = "[BOOKED]"
             patient = event['attendees'][0]['email']
 
-        # if "func" == event['summary']:
-        #     for item in event.items():
-        #         print(item)
         data.append([date, time, event['summary'], patient, event['creator'],
                     event['id'], status, event.get('description')])
 
@@ -162,9 +151,7 @@ def get_code_clinics_calendar():
 
 
 def get_primary_calendar():
-    """
-    This function returns the primary calendar (user calendar)
-    """
+    """This function returns the primary calendar (user calendar)."""
 
     events_results = get_events_results()
     events = events_results.get('items', [])
@@ -177,15 +164,14 @@ def get_primary_calendar():
         start = event['start'].get('dateTime', event['start'].get('date'))
         date, time = get_date_and_time(start)
          
-        data.append([date, time, event['summary'],
-                    event['creator'].get('email'), event['id']])
+        data.append([date, time, event['summary'], 
+            event['creator'].get('email')])
      
     return data
 
 
 def slot_details():
-    """
-    This function list details of the specified slot (Booking or Volunteering)
+    """This function list details of the specified slot (Booking or Volunteering).
     """
     
     if len(sys.argv) != 3:
@@ -217,6 +203,3 @@ def slot_details():
             print("  Description:\t", item[7])
             print("  Date:\t\t", slot[0])
             print(f"  Time:\t\t {slot[1][:5]} - {end}\n")
-            # print("\n")
-
-        
