@@ -1,0 +1,67 @@
+[
+    [
+        "2020-12-12",
+        "13:00:00",
+        "Confer",
+        "-",
+        {
+            "email": "tsoulo@student.wethinkcode.co.za"
+        },
+        "ddh5kr16o4bu7g5rfr45hog4t4",
+        "[OPEN]",
+        "stuff",
+        null
+    ],
+    [
+        "2020-12-12",
+        "13:00:00",
+        "Hello World!",
+        "-",
+        {
+            "email": "tetema@student.wethinkcode.co.za"
+        },
+        "erp21lo9gl8i1cbbppilnt197g",
+        "[OPEN]",
+        "Hahaha",
+        "https://meet.google.com/dmn-nfhu-hax"
+    ],
+    [
+        "2020-12-13",
+        "07:00:00",
+        "List Comprehensions",
+        "-",
+        {
+            "email": "tetema@student.wethinkcode.co.za"
+        },
+        "djg3pd6jk46pdtd6nls4ad7m2g",
+        "[OPEN]",
+        "Haha",
+        "https://meet.google.com/car-trzh-yzs"
+    ],
+    [
+        "2020-12-15",
+        "10:00:00",
+        "Lambda Functions",
+        "-",
+        {
+            "email": "tetema@student.wethinkcode.co.za"
+        },
+        "0nh3evjeuvdd1ivjuo83um1jgs",
+        "[OPEN]",
+        "Hello World!",
+        "https://meet.google.com/cma-evjp-txx"
+    ],
+    [
+        "2020-12-16",
+        "07:00:00",
+        "Functions",
+        "-",
+        {
+            "email": "tetema@student.wethinkcode.co.za"
+        },
+        "did9ohr1fa33t9585r596fv2qk",
+        "[OPEN]",
+        "Hello World!",
+        "https://meet.google.com/nkx-oyuv-xjw"
+    ]
+]
