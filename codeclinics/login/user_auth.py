@@ -1,5 +1,4 @@
 from os import path
-from pathlib import Path
 from calendar_setup.calendar_service import *
 from datetime import datetime, timedelta
 from termcolor import colored
@@ -11,7 +10,7 @@ from bookings.list_calendars import get_code_clinics_calendar
 
 # The token file location
 token_path = f'{sys.path[0]}/creds/token.pickle'
-config_path = f"{sys.path[0]}/.config.json"
+config_path = f"{sys.path[0]}/files/json/.config.json"
 
 
 def get_time_date():
@@ -49,21 +48,18 @@ def get_user_details():
     return user_details
 
 
-def remove_token(prompt=None):
+def remove_token():
     """ Removing the token file if the user is not logged in or if the token
     file exists.""" 
 
     is_found = True
 
-    if prompt != None:
-        is_found = os.path.exists(token_path)
-    elif prompt == None:
-        try:
-            os.remove(token_path)
-        except FileNotFoundError:
-            is_found = False
-            print("You already loggged out!")
-            print("\nPlease run: \"wtc-cal login\"\n")
+    try:
+        os.remove(token_path)
+    except FileNotFoundError:
+        is_found = False
+        print("You already loggged out!")
+        print("\nPlease run: \"wtc-cal login\"\n")
 
     return is_found
 
@@ -130,9 +126,6 @@ def user_logout():
 
     if remove_token():
         print(colored("You have successfully logged out!", "yellow"))
-        return True
-
-    return False
 
 
 def get_login_state():
@@ -146,9 +139,7 @@ def get_login_state():
 
 
 def show_config():
-    """
-    This function displays the config file
-    """
+    """This function displays the config file."""
 
     config = None
     if os.path.exists(config_path):
@@ -164,7 +155,7 @@ def show_config():
         print("}")
     else:
         print("Config file does not exist")
-   
+
 
 def get_user_email():
     """Getting the data from the json file"""
@@ -187,24 +178,24 @@ def auto_logout():
     if path.exists(token_path):
     
         data = None
-        if os.path.exists(config_path):
-            with open(config_path, 'r') as json_file:
-                data = json.load(json_file)
+
+        with open(config_path, 'r') as json_file:
+            data = json.load(json_file)
     
-            # Parse type string date and time objects to integer type objects
-            hours = int(data['time'][:2])
-            mins = int(data['time'][3:5])
-            mon = int(data['date'][:2])
-            day = int(data['date'][3:5])
-            year = int('20'+data['date'][6:8])
-            
-            #logout_time = date + timedelta(minutes=30)
-            date = datetime(year=year, month=mon, day=day, hour=hours, minute=mins)    
-            logout_time = date + timedelta(hours=3)
-            
-            if(datetime.now() > logout_time):
-                save_data(get_code_clinics_calendar())
-                remove_token()
-                return True
+        # Parse type string date and time objects to integer type objects
+        hours = int(data['time'][:2])
+        mins = int(data['time'][3:5])
+        mon = int(data['date'][:2])
+        day = int(data['date'][3:5])
+        year = int('20'+data['date'][6:8])
+        
+        #logout_time = date + timedelta(hours=2)
+        date = datetime(year=year, month=mon, day=day, hour=hours, minute=mins)    
+        logout_time = date + timedelta(hours=2)
+        
+        if(datetime.now() > logout_time):
+            save_data(get_code_clinics_calendar())
+            remove_token()
+            return True
 
     return False   
