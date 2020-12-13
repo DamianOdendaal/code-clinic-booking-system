@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 from dateutil import parser
 import json
 from termcolor import colored
+# import pandas as pd
 
 
 # iCal calendar object
@@ -21,8 +22,7 @@ def get_user():
     """
 
     user_details = None
-    config_path = f"{sys.path[0]}/files/json/.config.json"
-    with open(config_path, 'r') as json_file:
+    with open(f"{sys.path[0]}/.config.json", 'r') as json_file:
         user_details = json.load(json_file)
 
     user_email = user_details.get('email')
@@ -97,16 +97,13 @@ def delete_booking(slot, now):
     # Get date now and booking date
     date_now = now.date()
     date_slot = start.date()
-    # print(date_now)
-    # print(date_slot)
+
 
     # Get time now and booking start date 15 minutes prior
     start = start - timedelta(minutes=15)
     time_slot = start.time()
     time_now = now.time()
 
-    # print(time_now)
-    # print(time_slot)
     user_email = get_user()[0]
     # Compare date and time objects
     if date_now == date_slot and time_slot <= time_now:
@@ -139,7 +136,6 @@ def save_data(data):
             json.dump(data, file, indent=4)
 
         save_to_ics(data)
-        # save_to_xls(data)
 
 
 def load_data():
@@ -164,7 +160,7 @@ def save_to_ics(data):
     """
 
     for e in data:
-        start = datetime.fromisoformat(e[0] + "T" + e[1] + "+02:00")
+        start = dt.datetime.fromisoformat(e[0] + "T" + e[1] + "+02:00")
         end = start + timedelta(minutes=30)
         email = e[4].get('email')
         organizer = vCalAddress(f"MAILTO:{email}")
@@ -193,15 +189,4 @@ def save_to_ics(data):
     with open(file_path, 'wb') as file:
         file.write(cal.to_ical())
     
-
-def save_to_xls(json_path):
-    """
-    This function converts .json data file to a .xls file format and saves it
-    """
-    
-    file_path = f"{sys.path[0]}/files/xls/data.xls" 
-    with open(file_path, 'w') as file:
-        # json.dump(data, file, indent=4)
-        pass
-
 
