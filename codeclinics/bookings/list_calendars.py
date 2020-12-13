@@ -84,7 +84,7 @@ def formatted_data_output(data):
 
     # Data for SLOTS CALENDAR
     for item in data:
-        # Make the summary limited to 12 characters if it exceeds that number
+        # Make the summary limited to 12 characters if it exceeds 15
         info = item[2]
         event_summary = f"{info[:12]}..." if len(info) > 15 else info
 
@@ -103,7 +103,6 @@ def formatted_data_output(data):
         elif item[6] == "[BOOKED]":
             status = colored("[BOOKED]", "red")
 
-        # Return output slot
         slot = [item[0], item[1], event_summary, patient, volunteer, item[5],
                 status]
 
@@ -122,7 +121,7 @@ def get_date_and_time(date_time):
 
     return date, time
 
-  
+
 def get_code_clinics_calendar():
     """This function returns the code-clinics calendar."""
 
@@ -164,8 +163,14 @@ def get_primary_calendar():
         start = event['start'].get('dateTime', event['start'].get('date'))
         date, time = get_date_and_time(start)
          
+        email = ""
+        while True:
+            email = event['creator'].get('email')
+            if email.find("not") < 0:
+                break
+
         data.append([date, time, event['summary'], 
-            event['creator'].get('email')])
+            email])
      
     return data
 
@@ -196,7 +201,7 @@ def slot_details():
             end = date.strftime("%H:%M")
 
             msg = colored("Slot details:", "yellow")
-            print(f"\n{msg} {item[5]}\n")
+            print(f"\n{msg} {colored(item[5], 'yellow')}\n")
             print("  Creator:\t", item[4].get('email'))
             print("  Attendee:\t", item[3])
             print("  Summary:\t", item[2])

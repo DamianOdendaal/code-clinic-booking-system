@@ -3,36 +3,24 @@
         "2020-12-14",
         "10:00:00",
         "Hello World!",
-        "tetema@student.wethinkcode.co.za",
+        "kmohlabu@student.wethinkcode.co.za",
         {
-            "email": "ntlamola@student.wethinkcode.co.za"
+            "email": "tetema@student.wethinkcode.co.za"
         },
-        "fl85333mak4d5o96najptoim1c",
+        "ajmi4ctl2va0mcaut7flhr1tc4",
         "[BOOKED]",
-        "haha"
+        "Testing 101"
     ],
     [
         "2020-12-15",
         "10:00:00",
-        "Halala",
-        "ntlamola@student.wethinkcode.co.za",
+        "Hello WOrld!",
+        "tetema@student.wethinkcode.co.za",
         {
-            "email": "tetema@student.wethinkcode.co.za"
+            "email": "kmohlabu@student.wethinkcode.co.za"
         },
-        "l0ffqhll2rrfe0k31i3rgq4fdc",
+        "l5a0odkpo5o81puk8vjio5ureo",
         "[BOOKED]",
-        "Testing!"
-    ],
-    [
-        "2020-12-17",
-        "10:00:00",
-        "dzamn",
-        "ntlamola@student.wethinkcode.co.za",
-        {
-            "email": "ntlamola@student.wethinkcode.co.za"
-        },
-        "0mh82dot2l67fd2amvu4b4veus",
-        "[BOOKED]",
-        "like dzamn"
+        "Haha!"
     ]
 ]

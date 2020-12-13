@@ -1,5 +1,4 @@
 from calendar_setup.calendar_service import *
-# from ics import Calendar, Event
 import ics
 from icalendar import Calendar, Event, vCalAddress
 import sys
@@ -11,16 +10,14 @@ import json
 from termcolor import colored
 
 
-# iCal calendar object
 cal = Calendar()
 
 
 def get_user():
-    """
-    This function returns the user email and user name
-    """
+    """This function returns the user email and user name."""
 
     user_details = None
+
     config_path = f"{sys.path[0]}/files/json/.config.json"
     with open(config_path, 'r') as json_file:
         user_details = json.load(json_file)
@@ -32,9 +29,8 @@ def get_user():
 
 
 def cancel():
-    """
-    This function cancels a booking
-    """
+    """This function cancels a booking."""
+
     now = datetime.now()
 
     if len(sys.argv) != 3:
@@ -66,9 +62,7 @@ def cancel():
 
 
 def delete_slot(slot):
-    """
-    This function deletes the volunteer slot / deletes the event
-    """
+    """This function deletes the volunteer slot / deletes the event."""
 
     service = get_service()
 
@@ -77,16 +71,13 @@ def delete_slot(slot):
 
         event = service.events().delete(calendarId='wtcteam19jhb@gmail.com',
         eventId=id).execute()
-
         print("Event cancelled!")
     else:
         print("Cancellation Failed. \n\n - Patient has already booked\n")
 
 
 def delete_booking(slot, now):
-    """
-    This function deletes the booked slot / deletes the booking
-    """
+    """This function deletes the booked slot/deletes the booking."""
 
     service = get_service()
 
@@ -97,24 +88,20 @@ def delete_booking(slot, now):
     # Get date now and booking date
     date_now = now.date()
     date_slot = start.date()
-    # print(date_now)
-    # print(date_slot)
 
     # Get time now and booking start date 15 minutes prior
     start = start - timedelta(minutes=15)
     time_slot = start.time()
     time_now = now.time()
-
-    # print(time_now)
-    # print(time_slot)
     user_email = get_user()[0]
+
     # Compare date and time objects
     if date_now == date_slot and time_slot <= time_now:
         print("\nCannot cancel 15min befor session!\n")
     else:
         id = slot[5]
         event = service.events().get(calendarId='wtcteam19jhb@gmail.com', 
-                eventId=id).execute()
+            eventId=id).execute()
 
         event['status'] = 'tentative'
         event['attendees'] = []
@@ -127,9 +114,7 @@ def delete_booking(slot, now):
 
 
 def save_data(data):
-    """
-    This function saves the code clinics data to a local file
-    """
+    """This function saves the code clinics data to a local file."""
 
     old_data = load_data()
 
@@ -139,15 +124,13 @@ def save_data(data):
             json.dump(data, file, indent=4)
 
         save_to_ics(data)
-        # save_to_xls(data)
 
 
 def load_data():
-    """
-    This function loads the code clinics data to a local file
-    """
+    """This function loads the code clinics data to a local file."""
 
     data = None
+
     file_path = f"{sys.path[0]}/files/json/data.json" 
     try:
         with open(file_path, 'r') as file:
@@ -159,8 +142,7 @@ def load_data():
 
 
 def save_to_ics(data):
-    """
-    This function converts .json data file to a .ics file format and saves it
+    """This function converts .json data file to a .ics file format and saves it.
     """
 
     for e in data:
@@ -188,20 +170,9 @@ def save_to_ics(data):
             
         cal.add_component(event)
 
-
     file_path = f"{sys.path[0]}/files/ics/data.ics" 
+
     with open(file_path, 'wb') as file:
         file.write(cal.to_ical())
-    
-
-def save_to_xls(json_path):
-    """
-    This function converts .json data file to a .xls file format and saves it
-    """
-    
-    file_path = f"{sys.path[0]}/files/xls/data.xls" 
-    with open(file_path, 'w') as file:
-        # json.dump(data, file, indent=4)
-        pass
 
 

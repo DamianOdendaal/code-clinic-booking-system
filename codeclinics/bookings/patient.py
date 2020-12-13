@@ -9,7 +9,6 @@ def is_booking_valid(id):
     """This function checks if this booking is valid and returns a boolean."""
 
     now = datetime.now()
-
     data = load_data()
     
     slot = None
@@ -24,6 +23,7 @@ def is_booking_valid(id):
     else:
         user_email = get_user()[0]
         date = parser.parse(slot[0] + " " + slot[1]) - timedelta(minutes=30)
+
         if slot[4].get('email') == user_email:
             print("\nVolunteer cannot book their own slot.")
             return False
@@ -61,6 +61,9 @@ def book():
             event['attendees'] = [
                 {
                     "email": attendee,
+                },
+                {
+                    "email": volunteer + "not"
                 }
             ]
 
@@ -76,8 +79,8 @@ def book():
 
             booking_summary(summary, volunteer, time, date)
         else:
-            msg = colored("failed", "red")
-            print(f"Booking {msg}!")   
+            msg = colored("FAILED!", "red")
+            print(f"Booking {msg}")   
 
 
 def booking_summary(summary, volunteer, time, date):

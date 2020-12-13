@@ -28,9 +28,7 @@ def weekdays(day):
 
 
 def volunteer():
-    """
-    This function creates a volunteering slot
-    """
+    """This function creates a volunteering slot."""
 
     user_email, user_name = get_user()
     print(colored(f"{user_name.title()} slot volunteering:", "cyan"))
@@ -43,18 +41,13 @@ def volunteer():
 
 
     print('\nThese are the dates for the next 7 days:\n')
-    # for i in range(7):
-    #     date = dt.date.today() + timedelta(days=i)
-    #     day = date.weekday()
-    #     print(f"\t{date} {day}")
 
-    for v,i in enumerate(dates):
+    for v, i in enumerate(dates):
         if v == 0:
             current_day = f" {colored('[Current DAY]', 'yellow')}"
             print('\t' + i, weekdays(dates[i].weekday()+1) + current_day, sep=': ')
         else:  
             print('\t' + i, weekdays(dates[i].weekday()+1), sep=': ')
-
 
     if len(sys.argv) != 2:
         command = ""
@@ -65,9 +58,9 @@ def volunteer():
     else:
         fail = colored("Failed", "red")
         start, end, summary, description = get_params()
-        #####
+
         valid = all(arg != None for arg in [start, end, summary, description])
-        ######
+
         if valid == False:
             print(f"\nVolunteering {fail}.")
         elif is_volunteering_valid(start, user_email):
@@ -77,8 +70,7 @@ def volunteer():
 
 
 def is_volunteering_valid(start, user_email):
-    """
-    This function checks if slot does not already exist and returns a boolean
+    """This function checks if slot does not already exist and returns a boolean.
     """
 
     data = load_data()
@@ -111,7 +103,6 @@ def is_volunteering_valid(start, user_email):
             time_validation = ((n_end_time <= o_start_time and n_end_time < o_end_time) or 
                 (n_start_time >= o_end_time and n_end_time > o_start_time))
 
-            # print(time_validation)
             # Condition to check if booking is on the same day and whether the times clash
             date_validation = (n_date == o_date) #and time_validation
             if date_validation:
@@ -123,9 +114,8 @@ def is_volunteering_valid(start, user_email):
 
 
 def get_date(date):
-    """
-    This function gets the event date in the format (YYYY-MM-DD) from the user input
-    and returns a datetime object if correct or error message if not
+    """This function gets the event date in the format (YYYY-MM-DD) from the 
+    user input and returns a datetime object if correct or error message if not.
     """
 
     input_date_time = input("\n\n    Enter date (DD): ")
@@ -156,12 +146,11 @@ def get_date(date):
     
 
 def get_time(result_date, now_date):
-    """
-    This function gets the event time for the slot from the user, the time must be
-    at least 30 minutes later than the current time
-    """
+    """This function gets the event time for the slot from the user, the time must be
+    at least 30 minutes later than the current time."""
     
     input_time = input("    Enter time (HH:MM): ")
+
     match = re.match("\d\d:\d\d", input_time) is None
 
     if match != None:
@@ -187,11 +176,11 @@ def get_time(result_date, now_date):
     - Make sure the time is in the format (HH:MM:SS)""")
 
     return error_msg
-     
+
 
 def get_summary_and_description():
     """
-    This function gets the event summary from the user
+    This function gets the event summary from the user.
     """
 
     summary = input("    Enter topic: ")
@@ -206,10 +195,9 @@ def get_summary_and_description():
 def get_params():
     """
     This function gets the parameters (datetime and summary) needed to create
-    a slot and returns a tuple of them
+    a slot and returns a tuple of them.
     """
 
-    # summary, description = get_summary_and_description()
     now = datetime.now()
     date = get_date(now.strftime("%Y-%m-%d"))
 
@@ -239,10 +227,9 @@ def get_params():
 
 
 def create_event(start, end, summary, description, email):
-    """
-    This function creates an event (slot), in the calendar and returns the 
-    event id
-    """
+    """This function creates an event (slot), in the calendar and returns the 
+    event id."""
+
     service = get_service()
 
     conference_random_key = f'{random.randrange(1, 10**10)}'
@@ -282,8 +269,6 @@ def create_event(start, end, summary, description, email):
     print("\tSummary:\t", event_result['summary'])
     print("\tDescription:\t", event_result['description'])
     print("\tDate:\t\t", event_result['start']['dateTime'][:10])
-    # print("\tStarts at:\t", event_result['start']['dateTime'][11:16])
-    # print("\tEnds at:\t", event_result['end']['dateTime'][11:16])
     print("\tTime:\t\t", f'{time_start} - {end_time}')
     print("\n")
 

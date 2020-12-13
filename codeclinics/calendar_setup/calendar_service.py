@@ -13,10 +13,8 @@ SCOPES = ['https://www.googleapis.com/auth/calendar']
 
 
 def get_service():
-    """
-    This function sets up the Google calendar API, and it returns the calendar 
-    service
-    """
+    """This function sets up the Google calendar API, and it returns the calendar 
+    service."""
     
     creds = None
     # The file token.pickle stores the user's access and refresh tokens, and is
@@ -45,10 +43,8 @@ def get_service():
 
 
 def get_events_results(calendar_id=None):
-    """
-    This function returns a list of calendar events results from the calendar
-    service
-    """
+    """This function returns a list of calendar events results from the calendar
+    service."""
 
     service = get_service()
 
@@ -70,10 +66,8 @@ def get_events_results(calendar_id=None):
 
 
 def get_time_constraints(prompt_days=None): 
-    """
-    This function returns the start and end times for the calendar timeMin
-    and timeMax
-    """
+    """This function returns the start and end times for the calendar timeMin
+    and timeMax."""
 
     if prompt_days == None:
         prompt_days = 7
