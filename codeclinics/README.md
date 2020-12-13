@@ -91,7 +91,7 @@ wtc-cal cancel <ui_code>
 ```
 python3 -m unittest tests/test_main.py
 
-NOTE: running the tests will raise a ResourceWarning
+NOTE : running the tests will raise a ResourceWarning
 because we are opening a connection to the
 Google Calendar API that later closes automatically.
 ```
