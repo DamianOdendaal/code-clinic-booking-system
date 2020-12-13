@@ -24,6 +24,7 @@ class LoginTestCase(unittest.TestCase):
     """
 
     def test_get_time_date(self):
+<<<<<<< HEAD
         """
         This tests the get_time_date() function's 
         return value from login.user_auth.py.
@@ -32,29 +33,58 @@ class LoginTestCase(unittest.TestCase):
         date = now.strftime("%D")
         time = now.strftime("%H:%M")
         output = user_auth.get_time_date()
+=======
+        """This tests the get_time_date() function's return value from 
+        login.user_auth.py."""
+
+        now = datetime.now()
+        date = now.strftime("%D")
+        time = now.strftime("%H:%M")
+
+        output = user_auth.get_time_date()
+
+>>>>>>> b10a7418481b6d76f486bc6e6ffdc1e8fa54226e
         dateAndTime = {
             "date": date,
             "time": time
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> b10a7418481b6d76f486bc6e6ffdc1e8fa54226e
         self.assertEqual(dateAndTime, output)
 
 
     def test_get_user_details(self):
+<<<<<<< HEAD
         """
         This tests the get_user_details() function's
         return type from login.user_auth.py.
         """
 
         output = user_auth.get_user_details()
+=======
+        """This tests the get_user_details() function's return type from 
+        login.user_auth.py."""
+
+        output = user_auth.get_user_details()
+
+>>>>>>> b10a7418481b6d76f486bc6e6ffdc1e8fa54226e
         self.assertEqual(dict, type(output))
         self.assertEqual(len(output), 4)
 
 
     def test_remove_token(self):
+<<<<<<< HEAD
         """
         This tests the remove_token() function's
         return value from login.user_auth.py.
         """
+=======
+        """This tests the remove_token() function's return value from 
+        login.user_auth.py."""
+
+>>>>>>> b10a7418481b6d76f486bc6e6ffdc1e8fa54226e
         output = os.path.exists(f"{sys.path[0]}/creds/token.pickle")
         
         if output:
@@ -65,18 +95,31 @@ class LoginTestCase(unittest.TestCase):
 
     @patch('login.user_auth.validate_email',return_value='jdoe@wethinkcode.co.za')
     def test_validate_email(self, input):
+<<<<<<< HEAD
         """
         This tests the validate_email() function's
         output from login.user_auth.py.
         """
         output = user_auth.validate_email(user_email=str)
+=======
+        """This tests the validate_email() function's output from 
+        login.user_auth.py."""
+
+        output = user_auth.validate_email(user_email=str)
+
+>>>>>>> b10a7418481b6d76f486bc6e6ffdc1e8fa54226e
         self.assertEqual(output, 'jdoe@wethinkcode.co.za')
 
 
     def test_writing_to_json_file(self):
+<<<<<<< HEAD
         """
         This tests the writing_to_json_file() function.
         """
+=======
+        """This tests the writing_to_json_file() function."""
+        
+>>>>>>> b10a7418481b6d76f486bc6e6ffdc1e8fa54226e
         user_auth.writing_to_json_file()
         output = os.path.exists(f"{sys.path[0]}/.config.json")
         if output:
@@ -157,43 +200,71 @@ class CalendarSetupTestCase(unittest.TestCase):
     package
     """
 
+<<<<<<< HEAD
     """
     Test cases for the "calendar_service" module
     """
+=======
+>>>>>>> b10a7418481b6d76f486bc6e6ffdc1e8fa54226e
     def test_get_service(self):
         """
         This tests the get_service() function
         """
+<<<<<<< HEAD
         output = calendar_service.get_service()
+=======
+        
+        output = calendar_service.get_service()
+
+>>>>>>> b10a7418481b6d76f486bc6e6ffdc1e8fa54226e
         self.assertEqual(type(output), googleapiclient.discovery.Resource)
 
 
     def test_get_events_results(self):
+<<<<<<< HEAD
         """
         This tests the get_events_results() function
         """
 
         output = calendar_service.get_events_results()
+=======
+        """This tests the get_events_results() function."""
+
+        output = calendar_service.get_events_results()
+
+>>>>>>> b10a7418481b6d76f486bc6e6ffdc1e8fa54226e
         self.assertEqual(type(output), dict)
         self.assertTrue(len(output) > 0)
 
 
     def test_get_time_constraints(self):
+<<<<<<< HEAD
         """
         This tests the get_time_constraints() function
         """
         now = datetime.now(pytz.timezone("Africa/Cairo"))
+=======
+        """This tests the get_time_constraints() function."""
+
+        now = datetime.now(pytz.timezone("Africa/Johannesburg"))
+>>>>>>> b10a7418481b6d76f486bc6e6ffdc1e8fa54226e
         end = now + timedelta(days=7)
         start = now.strftime("%Y-%m-%dT%H:%M:%S") + "Z"
         end = end.strftime("%Y-%m-%dT%H:%M:%S") + "Z"
 
         output = calendar_service.get_time_constraints()
+<<<<<<< HEAD
         self.assertEqual(output, (start, end))
 
 
     """
     Test cases for the "setup" module
     """
+=======
+
+        self.assertEqual(output, (start, end))
+    
+>>>>>>> b10a7418481b6d76f486bc6e6ffdc1e8fa54226e
 
 class BookingsTestCase(unittest.TestCase):
     """
@@ -216,11 +287,25 @@ class BookingsTestCase(unittest.TestCase):
 
 
     def test_get_code_clinics_calendar(self):
+<<<<<<< HEAD
+=======
+        """
+        This tests the get_code_clinics_calandar() function
+        """
+
+>>>>>>> b10a7418481b6d76f486bc6e6ffdc1e8fa54226e
         output = list_calendars.get_code_clinics_calendar()
         self.assertEqual(type(output), list)
 
 
     def test_get_primary_calendar(self):
+<<<<<<< HEAD
+=======
+        """
+        This tests the get_primary_calendar()
+        """
+
+>>>>>>> b10a7418481b6d76f486bc6e6ffdc1e8fa54226e
         output = list_calendars.get_primary_calendar()
         self.assertEqual(type(output), list)
 
@@ -239,13 +324,30 @@ class BookingsTestCase(unittest.TestCase):
     """
 
     def test_get_user(self):
+<<<<<<< HEAD
+=======
+        """
+        This tests the get_user() function
+        """
+
+>>>>>>> b10a7418481b6d76f486bc6e6ffdc1e8fa54226e
         output = processing_data.get_user()
         self.assertEqual(type(output), tuple)
 
 
+<<<<<<< HEAD
     # def test_load_data(self):
     #     output = processing_data.load_data()
     #     self.assertSetEqual(type(output), None)
+=======
+    def test_load_data(self):
+        """
+        This tests the load_data() funciton
+        """
+
+        output = processing_data.load_data()
+        self.assertEqual(type(output), list())
+>>>>>>> b10a7418481b6d76f486bc6e6ffdc1e8fa54226e
 
 
     """
@@ -253,35 +355,65 @@ class BookingsTestCase(unittest.TestCase):
     """
 
     def test_weekdays(self):
+<<<<<<< HEAD
+=======
+        """ This tests the weekdays() function """
+
+>>>>>>> b10a7418481b6d76f486bc6e6ffdc1e8fa54226e
         output = volunteer.weekdays(day=1)
         self.assertEqual(type(output), str)
 
 
     def test_is_volunteering_valid(self):
+<<<<<<< HEAD
+=======
+        """ This tests is_volunteering() function """
+
+>>>>>>> b10a7418481b6d76f486bc6e6ffdc1e8fa54226e
         output = volunteer.is_volunteering_valid(start=str, user_email=str)
         self.assertEqual(type(output), bool)
 
 
     @patch('bookings.volunteer.get_date', return_value='13')
     def test_get_date(self, input):
+<<<<<<< HEAD
+=======
+        """ This tests get_date() """
+
+>>>>>>> b10a7418481b6d76f486bc6e6ffdc1e8fa54226e
         output = volunteer.get_date()
         self.assertEqual(output, '13')
 
 
     @patch('bookings.volunteer.get_time',return_value='10:00:00')
     def test_get_time(self, input):
+<<<<<<< HEAD
+=======
+        """ This tests get_time() function """
+
+>>>>>>> b10a7418481b6d76f486bc6e6ffdc1e8fa54226e
         output = volunteer.get_time()
         self.assertEqual(output, '10:00:00')
 
 
     @patch('bookings.volunteer.get_summary_and_description', return_value='loops')
     def test_get_summary_and_description(self, input):
+<<<<<<< HEAD
+=======
+        """ This tests get_summary_and_description() """
+
+>>>>>>> b10a7418481b6d76f486bc6e6ffdc1e8fa54226e
         output = volunteer.get_summary_and_description()
         self.assertEqual(output, 'loops')
 
 
     @patch('bookings.volunteer.get_params',return_value=('13','10:00:00'))
     def test_get_params(self, input):
+<<<<<<< HEAD
+=======
+        """ This tests the get_params """
+
+>>>>>>> b10a7418481b6d76f486bc6e6ffdc1e8fa54226e
         output = volunteer.get_params()
         self.assertEqual(output, ('13','10:00:00'))
 

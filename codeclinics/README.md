@@ -86,6 +86,7 @@ wtc-cal book <ui_code>
 wtc-cal cancel <ui_code>
 ```
 
+<<<<<<< HEAD
 ### Running the  Tests
 ```
 python3 -m unittest tests/test_main.py
@@ -95,6 +96,8 @@ because we are opening a connection to the
 Google Calendar API that later closes automatically.
 ```
 
+=======
+>>>>>>> b10a7418481b6d76f486bc6e6ffdc1e8fa54226e
 # Authors and Acknowledgement
 
 ## Team Members who made this System Possible
