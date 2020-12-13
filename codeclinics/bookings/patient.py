@@ -5,14 +5,10 @@ from datetime import datetime, timedelta
 from dateutil import parser
 
 
-# is_booking()
 def is_booking_valid(id):
-    """
-    This function checks if this booking is valid and returns a boolean
-    """
+    """This function checks if this booking is valid and returns a boolean."""
 
     now = datetime.now()
-
     data = load_data()
     
     slot = None
@@ -27,6 +23,7 @@ def is_booking_valid(id):
     else:
         user_email = get_user()[0]
         date = parser.parse(slot[0] + " " + slot[1]) - timedelta(minutes=30)
+
         if slot[4].get('email') == user_email:
             print("\nVolunteer cannot book their own slot.")
             return False
@@ -41,9 +38,7 @@ def is_booking_valid(id):
 
 
 def book():
-    """
-    This function books a volunteer slot if its available
-    """
+    """This function books a volunteer slot if its available."""
 
     service = get_service()
     
@@ -54,16 +49,21 @@ def book():
         print(f"\nUnrecognized command: \"wtc-cal {command.strip()}\"\n")
     else:
         id = sys.argv[2]
-        if is_booking_valid(id):
 
+        if is_booking_valid(id):
             event = service.events().get(calendarId='wtcteam19jhb@gmail.com', 
             maxAttendees = 1, eventId=id).execute()
-
+            
+            volunteer = event['creator'].get('email')
             event['status'] = 'confirmed'
             attendee = get_user()[0]
+
             event['attendees'] = [
                 {
                     "email": attendee,
+                },
+                {
+                    "email": volunteer + "not"
                 }
             ]
 
@@ -79,18 +79,16 @@ def book():
 
             booking_summary(summary, volunteer, time, date)
         else:
-            msg = colored("failed", "red")
-            print(f"Booking {msg}!")
-            
+            msg = colored("FAILED!", "red")
+            print(f"Booking {msg}")   
 
 
 def booking_summary(summary, volunteer, time, date):
     """This will print out the booking details in a summarised format."""
 
-    # print("\nSuccessful booking.\n")
-
-    msg = colored("Booking Summary:", "green")
+    msg = colored("BOOKING CONFIRMED:", "green")
     print(f"\n{msg}\n")
+    print(f"  Booking Summary")
     print(f"  Summary: {summary}")
     print(f"  Instructor: {volunteer}")
     print(f"  Time: {time}")
