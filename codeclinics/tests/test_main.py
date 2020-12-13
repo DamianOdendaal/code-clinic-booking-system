@@ -1,14 +1,13 @@
 import os
 import sys
+import pytz
 import unittest
 import datetime
-from login import user_auth
 from datetime import datetime
+from login import user_auth
+# import googleapiclient.discovery
+# from calendar_setup import calendar_service, setup
 ##### Calendar setup imports
-import googleapiclient.discovery
-from calendar_setup import calendar_service, setup
-import datetime
-import pytz
 
 
 class LoginTestCase(unittest.TestCase):
@@ -115,7 +114,7 @@ class LoginTestCase(unittest.TestCase):
         pass
 
         
-    def test_get_user_email():
+    def test_get_user_email(self):
         """
         This tests the get_user_email() function.
         """
@@ -125,7 +124,7 @@ class LoginTestCase(unittest.TestCase):
         self.assertNotEqual(output, '')
 
     
-    def test_auto_logout():
+    def test_auto_logout(self):
         """
         This tests the test_auto_logout() function.
         """
