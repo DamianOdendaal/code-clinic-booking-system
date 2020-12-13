@@ -4,7 +4,7 @@ Code Clinics is a booking CLI system that uses Google API. A student needs to bo
 
 ### Bonus Functionality
 
-There is an ics file - which is a Calendar Document. You can open it and see the bookings in an Application of your choice.
+There is an ics file - which is a Calendar extention. You can open it and see the bookings in an Application of your choice.
 
 Path: 
 ```bash
