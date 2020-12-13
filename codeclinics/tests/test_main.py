@@ -1,20 +1,11 @@
 import os
 import sys
 import unittest
-<<<<<<< HEAD
-import datetime
-from login import user_auth
-from datetime import datetime
-
-
-class OurTestCase(unittest.TestCase):
-=======
 from login import user_auth
 from datetime import datetime, timedelta
 ##### Calendar setup imports
 import googleapiclient.discovery
-from calendar_setup import calendar_service, setup
-from os import 
+from calendar_setup import calendar_service, setup 
 # import datetime
 import pytz
 ##### Bookings imports
@@ -25,7 +16,6 @@ class LoginTestCase(unittest.TestCase):
     This class contains all the tests for the user_auth module in the login package
     """
 
->>>>>>> dd3e82cdd58f30a53ae7e67017dff44a75abb118
     def test_get_time_date(self):
         """
         This tests the get_time_date() function's 
@@ -47,16 +37,10 @@ class LoginTestCase(unittest.TestCase):
         This tests the get_user_details() function's
         return type from login.user_auth.py.
         """
-<<<<<<< HEAD
-        getUserDetails = dict
-        output = user_auth.get_user_details()
-        self.assertEqual(getUserDetails, type(output))
-=======
 
         output = user_auth.get_user_details()
         self.assertEqual(dict, type(output))
         self.assertEqual(len(output), 4)
->>>>>>> dd3e82cdd58f30a53ae7e67017dff44a75abb118
 
 
     def test_remove_token(self):
@@ -81,11 +65,7 @@ class LoginTestCase(unittest.TestCase):
         This tests the writing_to_json_file() function.
         """
         user_auth.writing_to_json_file()
-<<<<<<< HEAD
-        output = os.path.exists(f"{sys.path[0]}/files/json/.config.json")
-=======
         output = os.path.exists(f"{sys.path[0]}/.config.json")
->>>>>>> dd3e82cdd58f30a53ae7e67017dff44a75abb118
         self.assertTrue(output)
 
 
@@ -100,23 +80,6 @@ class LoginTestCase(unittest.TestCase):
         """
         This tests the user_login() function.
         """
-<<<<<<< HEAD
-        pass
-    
-
-    # def test_user_logout(self):
-    #     """
-    #     This tests the user_logout() function.
-    #     """
-    #     output = user_auth.user_logout()
-    #     temp = output
-    #     if os.path.exists(f"{sys.path[0]}/creds/token.pickle"):
-    #         print('worked')
-    #         self.assertTrue(temp)
-    #     else:
-    #         print('Hola')
-    #         self.assertFalse(temp)
-=======
         
     
 
@@ -131,7 +94,6 @@ class LoginTestCase(unittest.TestCase):
         else:
             output = user_auth.user_logout("test")
             self.assertFalse(output)
->>>>>>> dd3e82cdd58f30a53ae7e67017dff44a75abb118
 
         
     def test_get_login_state(self):
@@ -146,28 +108,6 @@ class LoginTestCase(unittest.TestCase):
             self.assertFalse(output)
 
 
-<<<<<<< HEAD
-    # def test_show_config(self):
-        # """
-        # This tests the show_config() function.
-        # """
-
-        
-    # def test_get_user_email():
-        # """
-        # This tests the get_user_email() function.
-        # """
-    
-    
-    # def test_auto_logout():
-        # """
-        # This tests the test_auto_logout() function.
-        # """
-
-
-if __name__ == "__main__":
-    unittest.main()
-=======
     def test_show_config(self):
         """
         This tests the show_config() function.
@@ -182,7 +122,7 @@ if __name__ == "__main__":
 
         output = user_auth.get_user_email()
         self.assertEqual(type(output), str)
-        self.assertNotEqual(output, '')
+        # self.assertNotEqual(output, '')
 
     
     def test_auto_logout(self):
@@ -275,4 +215,3 @@ class BookingsTestCase(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
->>>>>>> dd3e82cdd58f30a53ae7e67017dff44a75abb118

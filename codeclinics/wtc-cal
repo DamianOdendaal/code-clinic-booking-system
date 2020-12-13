@@ -6,49 +6,11 @@ import sys
 from login import user_auth
 from bookings.list_calendars import *
 from bookings.volunteer import *
-from bookings.patient import *
+# from bookings.patient import *
 
 
 valid_sys_commands = ['setup', 'config', 'slot_details', 'my_cal', 'volunteer', 
 'status', 'login', 'logout', 'slots','book', 'cancel', 'logout', 'help']
-
-
-def command_instructions():
-    """
-    This function prints out statements that shows how the booking system works.
-    """
-    
-    if len(sys.argv) >= 2 and sys.argv[1] != 'help':
-        command = ""
-        for arg in sys.argv[1:]:
-            command += f"{arg} "
-        print(f"Unrecognized command: \"wtc-cal {command.strip()}\"")
-    elif len(sys.argv) == 1:
-        print("Please provide some options\n")
-        print("\tusage: wtc-cal <command> [args]")
-
-    
-    print('\nThese are wtc-cal commands that can be used in this Code Clinic:\n')
-
-    print("\thelp\t\tView commands to run wtc-cal tool\n")
-
-    print('setup and login')
-    print('\t\t\tUsed to setup the wtc-cal tool')
-    print('\tstatus\t\tUsed to check user connection status')
-    print('\tlogin\t\tUsed to login')
-    print('\tlogout\t\tUsed to logout')
-    print('\tconfig\t\tUsed to config\n')
-    
-    print('processing slots')
-    print('\tvolunteer\tCreate a slot to be booked')
-    print('\tbook\t\tUsed to book an empty slot as a patient')
-    print('\tcancel\t\tUsed to cancel a booking or volunteering slot\n')
-
-    print('calendars and viewing')
-    print('\tslots\t\tView volunteer slots')
-    print("\tslot_details \tView details of a given slot")
-    print('\tmy_cal\t\tView your personal calendar\n\n')
-
 
 def command_sys_argv():
     """
@@ -93,6 +55,43 @@ def command_sys_argv():
                 print("\n  Please login to use this command!\n")
     else:
         command_instructions()
+
+
+def command_instructions():
+    """
+    This function prints out statements that shows how the booking system works.
+    """
+    
+    if len(sys.argv) >= 2 and sys.argv[1] != 'help':
+        command = ""
+        for arg in sys.argv[1:]:
+            command += f"{arg} "
+        print(f"Unrecognized command: \"wtc-cal {command.strip()}\"")
+    elif len(sys.argv) == 1:
+        print("Please provide some options\n")
+        print("\tusage: wtc-cal <command> [args]")
+
+    
+    print('\nThese are wtc-cal commands that can be used in this Code Clinic:\n')
+
+    print("\thelp\t\tView commands to run wtc-cal tool\n")
+
+    print('setup and login')
+    print('\t\t\tUsed to setup the wtc-cal tool')
+    print('\tstatus\t\tUsed to check user connection status')
+    print('\tlogin\t\tUsed to login')
+    print('\tlogout\t\tUsed to logout')
+    print('\tconfig\t\tUsed to config\n')
+    
+    print('processing slots')
+    print('\tvolunteer\tCreate a slot to be booked')
+    print('\tbook\t\tUsed to book an empty slot as a patient')
+    print('\tcancel\t\tUsed to cancel a booking or volunteering slot\n')
+
+    print('calendars and viewing')
+    print('\tslots\t\tView volunteer slots')
+    print("\tslot_details \tView details of a given slot")
+    print('\tmy_cal\t\tView your personal calendar\n\n')
 
 
 if __name__ == "__main__":

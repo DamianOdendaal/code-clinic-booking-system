@@ -56,11 +56,7 @@ def remove_token(prompt=None):
 
     if prompt != None:
         is_found = os.path.exists(token_path)
-<<<<<<< HEAD
-    else:
-=======
     elif prompt == None:
->>>>>>> dd3e82cdd58f30a53ae7e67017dff44a75abb118
         try:
             os.remove(token_path)
         except FileNotFoundError:
@@ -134,11 +130,6 @@ def user_logout(prompt=None):
     if remove_token(prompt):
         print(colored("You have successfully logged out!", "yellow"))
         return True
-<<<<<<< HEAD
-=======
-
-    return False
->>>>>>> dd3e82cdd58f30a53ae7e67017dff44a75abb118
 
     return False
 

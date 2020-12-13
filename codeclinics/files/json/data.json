@@ -1,87 +1,54 @@
 [
     [
-        "2020-12-12",
-        "13:00:00",
-        "Confer",
-        "-",
-        {
-            "email": "tsoulo@student.wethinkcode.co.za"
-        },
-        "ddh5kr16o4bu7g5rfr45hog4t4",
-        "[OPEN]",
-<<<<<<< HEAD
-        "stuff"
-=======
-        "stuff",
-        null
->>>>>>> dd3e82cdd58f30a53ae7e67017dff44a75abb118
-    ],
-    [
-        "2020-12-12",
-        "13:00:00",
-        "Hello World!",
-        "-",
-        {
-            "email": "tetema@student.wethinkcode.co.za"
-        },
-        "erp21lo9gl8i1cbbppilnt197g",
-        "[OPEN]",
-<<<<<<< HEAD
-        "Hahaha"
-=======
-        "Hahaha",
-        "https://meet.google.com/dmn-nfhu-hax"
->>>>>>> dd3e82cdd58f30a53ae7e67017dff44a75abb118
-    ],
-    [
         "2020-12-13",
-        "07:00:00",
-        "List Comprehensions",
+        "14:10:00",
+        "`lambda Functions",
         "-",
         {
             "email": "tetema@student.wethinkcode.co.za"
         },
-        "djg3pd6jk46pdtd6nls4ad7m2g",
+        "ell4hc9hiu9ai3o4gk1bl2doh4",
         "[OPEN]",
-<<<<<<< HEAD
-        "Haha"
-=======
-        "Haha",
-        "https://meet.google.com/car-trzh-yzs"
->>>>>>> dd3e82cdd58f30a53ae7e67017dff44a75abb118
+        "Hello World!",
+        "https://meet.google.com/abd-ivho-zod"
     ],
     [
-        "2020-12-15",
+        "2020-12-14",
         "10:00:00",
+        "Data Structure",
+        "tsoulo@student.wethinkcode.co.za",
+        {
+            "email": "tetema@student.wethinkcode.co.za"
+        },
+        "06qrkpmuo0qcqvuveiep9nc4i0",
+        "[BOOKED]",
+        "Hello World!",
+        "https://meet.google.com/atr-wtxs-bnv"
+    ],
+    [
+        "2020-12-14",
+        "12:00:00",
         "Lambda Functions",
         "-",
         {
             "email": "tetema@student.wethinkcode.co.za"
         },
-        "0nh3evjeuvdd1ivjuo83um1jgs",
+        "ehr0dqpca4i8bkceafvuv9nnco",
         "[OPEN]",
-<<<<<<< HEAD
-        "Hello World!"
-=======
         "Hello World!",
-        "https://meet.google.com/cma-evjp-txx"
->>>>>>> dd3e82cdd58f30a53ae7e67017dff44a75abb118
+        "https://meet.google.com/xmn-iejy-hyb"
     ],
     [
-        "2020-12-16",
-        "07:00:00",
-        "Functions",
+        "2020-12-15",
+        "11:00:00",
+        "Hello World!",
         "-",
         {
             "email": "tetema@student.wethinkcode.co.za"
         },
-        "did9ohr1fa33t9585r596fv2qk",
+        "ofk6f9djsq6k08tnut1qdpop9g",
         "[OPEN]",
-<<<<<<< HEAD
-        "Hello World!"
-=======
-        "Hello World!",
-        "https://meet.google.com/nkx-oyuv-xjw"
->>>>>>> dd3e82cdd58f30a53ae7e67017dff44a75abb118
+        "Bleeh!",
+        "https://meet.google.com/upf-jfbs-kzj"
     ]
 ]

@@ -1,13 +1,6 @@
 {
-<<<<<<< HEAD:codeclinics/files/json/.config.json
     "username": "rbrummer",
     "email": "rbrummer@student.wethinkcode.co.za",
-    "date": "12/10/20",
-    "time": "15:13"
-=======
-    "username": "kmohlabu",
-    "email": "kmohlabu@student.wethinkcode.co.za",
-    "date": "12/11/20",
-    "time": "11:03"
->>>>>>> dd3e82cdd58f30a53ae7e67017dff44a75abb118:codeclinics/.config.json
+    "date": "12/13/20",
+    "time": "11:00"
 }
